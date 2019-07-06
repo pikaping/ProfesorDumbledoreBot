@@ -1,0 +1,13 @@
+[Unit]
+Description=Profesor Dumbledore Bot
+After=mysql.target
+
+[Service]
+Type=simple
+User=profdumbledore
+WorkingDirectory=/home/profdumbledore
+ExecStart=/usr/local/bin/profdumbledore -c /etc/profdumbledore/config.ini
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

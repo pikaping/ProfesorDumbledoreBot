@@ -1,2 +1,6 @@
 .DS_Store
 *.pyc
+profdumbledorebot/model.py
+profdumbledorebot/twitter.py
+profdumbledorebot/custom_commands.py
+profdumbledorebot/sql/ccmd.py
