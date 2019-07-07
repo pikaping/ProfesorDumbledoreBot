@@ -34,7 +34,6 @@ setup(
     description='Telegram bot for helping Wizards Unite groups management',
     install_requires=[
         'emoji==0.5.1',
-        'mysqlclient==1.4.1',
         'python-Levenshtein==0.12.0',
         'python-telegram-bot==12.0.0b1',
         'pytz>=2018.9',

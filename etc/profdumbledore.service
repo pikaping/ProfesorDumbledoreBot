@@ -1,6 +1,5 @@
 [Unit]
 Description=Profesor Dumbledore Bot
-After=mysql.target
 
 [Service]
 Type=simple

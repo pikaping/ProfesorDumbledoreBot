@@ -26,20 +26,21 @@ import logging
 import telegram
 
 import profdumbledorebot.support as support
-import profdumbledorebot.sql.settings as set_sql
 
 from telegram.ext.dispatcher import run_async
 from profdumbledorebot.news import init_news, stop_news
+from profdumbledorebot.sql usergroup import *
+from profdumbledorebot.sql.settings import get_nanny_settings, get_group_settings
 
 
 def nanny_text(bot, user_id, chat_id, message):
-    nanny = set_sql.get_nanny_settings(chat_id)
+    nanny = get_nanny_settings(chat_id)
 
     if nanny and nanny.text:
         if support.is_admin(chat_id, user_id, bot) and not nanny.admin_too:
             return False
 
-        delete_message(chat_id, message.message_id, bot)
+        support.delete_message(chat_id, message.message_id, bot)
         if nanny and nanny.warn:
             send_warn(bot, chat_id, user_id, nanny.reply)
         else:
@@ -55,7 +56,7 @@ def process_gif(bot, update):
     nanny = get_nanny_settings(chat_id)
 
     if nanny and nanny.animation:
-        if is_admin(chat_id, user_id, bot) and not nanny.admin_too:
+        if support.is_admin(chat_id, user_id, bot) and not nanny.admin_too:
             return
 
         support.delete_message(chat_id, message.message_id, bot)
@@ -66,7 +67,7 @@ def process_gif(bot, update):
 
 
 def process_cmd(bot, update):
-    (chat_id, chat_type, user_id, text, message) = extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
 
     try:
         args = re.sub(r"^/[a-zA-Z0-9_]+", "", text).strip().split(" ")
@@ -92,10 +93,10 @@ def process_cmd(bot, update):
     nanny = get_nanny_settings(chat_id)
 
     if nanny and nanny.command:
-        if is_admin(chat_id, user_id, bot) and not nanny.admin_too:
+        if support.is_admin(chat_id, user_id, bot) and not nanny.admin_too:
             return
 
-        delete_message(chat_id, message.message_id, bot)
+        support.delete_message(chat_id, message.message_id, bot)
 
         if nanny and nanny.warn:
             send_warn(bot, chat_id, user_id, nanny.reply)
@@ -105,14 +106,14 @@ def process_cmd(bot, update):
 
 
 def process_contact(bot, update):
-    (chat_id, chat_type, user_id, text, message) = extract_update_info(update) 
+    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update) 
     nanny = get_nanny_settings(chat_id)
 
     if nanny and nanny.contact:
-        if is_admin(chat_id, user_id, bot) and not nanny.admin_too:
+        if support.is_admin(chat_id, user_id, bot) and not nanny.admin_too:
             return
 
-        delete_message(chat_id, message.message_id, bot)
+        support.delete_message(chat_id, message.message_id, bot)
 
         if nanny and nanny.warn:
             send_warn(bot, chat_id, user_id, nanny.reply)
@@ -122,14 +123,14 @@ def process_contact(bot, update):
 
 
 def process_file(bot, update):
-    (chat_id, chat_type, user_id, text, message) = extract_update_info(update) 
+    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update) 
     nanny = get_nanny_settings(chat_id)
 
     if nanny and nanny.document:
-        if is_admin(chat_id, user_id, bot) and not nanny.admin_too:
+        if support.is_admin(chat_id, user_id, bot) and not nanny.admin_too:
             return
 
-        delete_message(chat_id, message.message_id, bot)
+        support.delete_message(chat_id, message.message_id, bot)
 
         if nanny and nanny.warn:
             send_warn(bot, chat_id, user_id, nanny.reply)
@@ -139,15 +140,15 @@ def process_file(bot, update):
 
 
 def process_game(bot, update):
-    (chat_id, chat_type, user_id, text, message) = extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
 
     nanny = get_nanny_settings(chat_id)
 
     if nanny and nanny.games:
-        if is_admin(chat_id, user_id, bot) and not nanny.admin_too:
+        if support.is_admin(chat_id, user_id, bot) and not nanny.admin_too:
             return
 
-        delete_message(chat_id, message.message_id, bot)
+        support.delete_message(chat_id, message.message_id, bot)
 
         if nanny and nanny.warn:
             send_warn(bot, chat_id, user_id, nanny.reply)
@@ -157,14 +158,14 @@ def process_game(bot, update):
 
 
 def process_ubi(bot, update):
-    (chat_id, chat_type, user_id, text, message) = extract_update_info(update) 
+    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update) 
 
     nanny = get_nanny_settings(chat_id)
     if nanny and nanny.location:
-        if is_admin(chat_id, user_id, bot) and not nanny.admin_too:
+        if support.is_admin(chat_id, user_id, bot) and not nanny.admin_too:
             return
 
-        delete_message(chat_id, message.message_id, bot)
+        support.delete_message(chat_id, message.message_id, bot)
 
         if nanny and nanny.warn:
             send_warn(bot, chat_id, user_id, nanny.reply)
@@ -174,15 +175,15 @@ def process_ubi(bot, update):
 
 
 def process_pic(bot, update):
-    (chat_id, chat_type, user_id, text, message) = extract_update_info(update) 
+    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update) 
 
     nanny = get_nanny_settings(chat_id)
 
     if nanny and nanny.photo:
-        if is_admin(chat_id, user_id, bot) and not nanny.admin_too:
+        if support.is_admin(chat_id, user_id, bot) and not nanny.admin_too:
             return
 
-        delete_message(chat_id, message.message_id, bot)
+        support.delete_message(chat_id, message.message_id, bot)
 
         if nanny and nanny.warn:
             send_warn(bot, chat_id, user_id, nanny.reply)
@@ -192,15 +193,15 @@ def process_pic(bot, update):
 
 
 def process_sticker(bot, update):
-    (chat_id, chat_type, user_id, text, message) = extract_update_info(update) 
+    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update) 
 
     nanny = get_nanny_settings(chat_id)
 
     if nanny and nanny.sticker:
-        if is_admin(chat_id, user_id, bot) and not nanny.admin_too:
+        if support.is_admin(chat_id, user_id, bot) and not nanny.admin_too:
             return
 
-        delete_message(chat_id, message.message_id, bot)
+        support.delete_message(chat_id, message.message_id, bot)
 
         if nanny and nanny.warn:
             send_warn(bot, chat_id, user_id, nanny.reply)
@@ -210,15 +211,15 @@ def process_sticker(bot, update):
 
 
 def process_voice(bot, update):
-    (chat_id, chat_type, user_id, text, message) = extract_update_info(update)  
+    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)  
 
     nanny = get_nanny_settings(chat_id)
 
     if nanny and nanny.voice:
-        if is_admin(chat_id, user_id, bot) and not nanny.admin_too:
+        if support.is_admin(chat_id, user_id, bot) and not nanny.admin_too:
             return
 
-        delete_message(chat_id, message.message_id, bot)
+        support.delete_message(chat_id, message.message_id, bot)
 
         if nanny and nanny.warn:
             send_warn(bot, chat_id, user_id, nanny.reply)
@@ -228,15 +229,15 @@ def process_voice(bot, update):
 
 
 def process_video(bot, update):
-    (chat_id, chat_type, user_id, text, message) = extract_update_info(update) 
+    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update) 
 
     nanny = get_nanny_settings(chat_id)
 
     if nanny and nanny.video:
-        if is_admin(chat_id, user_id, bot) and not nanny.admin_too:
+        if support.is_admin(chat_id, user_id, bot) and not nanny.admin_too:
             return
 
-        delete_message(chat_id, message.message_id, bot)
+        support.delete_message(chat_id, message.message_id, bot)
 
         if nanny and nanny.warn:
             send_warn(bot, chat_id, user_id, nanny.reply)
@@ -246,15 +247,15 @@ def process_video(bot, update):
 
 
 def process_url(bot, update):
-    (chat_id, chat_type, user_id, text, message) = extract_update_info(update)  
+    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)  
 
     nanny = get_nanny_settings(chat_id)
 
     if nanny and nanny.urls:
-        if is_admin(chat_id, user_id, bot) and not nanny.admin_too:
+        if support.is_admin(chat_id, user_id, bot) and not nanny.admin_too:
             return False
 
-        delete_message(chat_id, message.message_id, bot)
+        support.delete_message(chat_id, message.message_id, bot)
 
         if nanny and nanny.warn:
             send_warn(bot, chat_id, user_id, nanny.reply)
@@ -278,8 +279,8 @@ def send_alert(bot, chat_id, nanny_text=None):
         text = nanny_text
 
     sent_message = bot.sendMessage(chat_id=chat_id, text=text, parse_mode=telegram.ParseMode.MARKDOWN)
-    delete_object = DeleteContext(chat_id, sent_message.message_id)
-    job_queue.run_once(callback_delete, 10, context=delete_object)
+    delete_object = support.DeleteContext(chat_id, sent_message.message_id)
+    job_queue.run_once(support.callback_delete, 10, context=delete_object)
 
 
 def send_warn(bot, chat_id, user_id, nanny_text=None):
@@ -314,7 +315,7 @@ def set_nanny(bot, update, args=None):
     user = update.effective_user
     msg = update.effective_message
 
-    if not is_admin(chat_id, user_id, bot):
+    if not support.is_admin(chat_id, user_id, bot):
         return
 
     args = msg.text.split(None, 1)

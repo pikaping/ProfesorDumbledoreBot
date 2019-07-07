@@ -14,7 +14,6 @@ idna==2.8
 kiwisolver==1.0.1
 Mako==1.0.7
 MarkupSafe==1.1.0
-mysqlclient==1.4.1
 networkx==2.2
 Pillow==5.4.1
 pycparser==2.19
