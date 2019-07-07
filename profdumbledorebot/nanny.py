@@ -28,9 +28,9 @@ import telegram
 import profdumbledorebot.support as support
 
 from telegram.ext.dispatcher import run_async
+from profdumbledorebot.sql usergroup import warn_user
 from profdumbledorebot.news import init_news, stop_news
-from profdumbledorebot.sql usergroup import *
-from profdumbledorebot.sql.settings import get_nanny_settings, get_group_settings
+from profdumbledorebot.sql.settings import get_nanny_settings, get_group_settings, set_nanny_reply
 
 
 def nanny_text(bot, user_id, chat_id, message):
@@ -304,8 +304,8 @@ def send_warn(bot, chat_id, user_id, nanny_text=None):
             text = "No tengo permisos suficientes para expulsar usuarios"
 
     sent_message = bot.sendMessage(chat_id=chat_id, text=text, parse_mode=telegram.ParseMode.MARKDOWN)
-    delete_object = DeleteContext(chat_id, sent_message.message_id)
-    job_queue.run_once(callback_delete, 10, context=delete_object)
+    delete_object = support.DeleteContext(chat_id, sent_message.message_id)
+    job_queue.run_once(support.callback_delete, 10, context=delete_object)
 
 
 @run_async
