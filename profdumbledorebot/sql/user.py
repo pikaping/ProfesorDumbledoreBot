@@ -23,9 +23,9 @@
 
 import logging
 import threading
-import profdumbledorebot.model as model
 
 from profdumbledorebot.mwt import MWT
+from profdumbledorebot.model import User
 from profdumbledorebot.db import get_session
 from sqlalchemy.sql.expression import and_, or_
 from profdumbledorebot.sql.support import get_unique_from_query
@@ -53,7 +53,7 @@ def get_user_by_name(username):
 
 @MWT(timeout=60*60)
 def has_fc(user_id):
-    try:        
+    try:
         session = get_session()
         fc = get_unique_from_query(session.query(User.friend_id).filter(User.id == user_id))
         if fc:
@@ -120,7 +120,7 @@ def unban_user(user_id):
         session.close()
 
 
-def commit_user(user_id, alias=None, level=None, profession=None, house=None, validation=None):
+def commit_user(user_id, alias=None, level=None, profession=None, house=None, team=None, validation=None):
     with LOCK:
         session = get_session()
         user = get_unique_from_query(session.query(User).filter(User.id == user_id))
@@ -134,6 +134,8 @@ def commit_user(user_id, alias=None, level=None, profession=None, house=None, va
             user.validation = validation
         if profession:
             user.profession = profession
+        if team:
+            user.team = team
         session.commit()
         session.close()
 

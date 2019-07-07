@@ -23,11 +23,11 @@
 
 import logging
 import threading
-import profdumbledorebot.model as model
 
 from profdumbledorebot.db import get_session
 from sqlalchemy.sql.expression import and_, or_
 from profdumbledorebot.sql.support import get_unique_from_query
+from profdumbledorebot.model import AdminGroups, SettingsAdmin, LinkedGroups
 
 LOCK = threading.RLock()
 
@@ -35,7 +35,7 @@ LOCK = threading.RLock()
 def get_admin(chat_id):
     try:
         session = get_session()
-        return get_unique_from_query(session.query(model.AdminGroups).filter(model.AdminGroups.id == chat_id))
+        return get_unique_from_query(session.query(AdminGroups).filter(AdminGroups.id == chat_id))
     finally:
         session.close()
 
@@ -43,7 +43,7 @@ def get_admin(chat_id):
 def get_particular_admin(chat_id):
     try:
         session = get_session()
-        return get_unique_from_query(session.query(model.SettingsAdmin).filter(model.SettingsAdmin.id == chat_id))
+        return get_unique_from_query(session.query(SettingsAdmin).filter(SettingsAdmin.id == chat_id))
     finally:
         session.close()
 
@@ -51,12 +51,12 @@ def get_particular_admin(chat_id):
 def get_admin_from_linked(chat_id):
     try:
         session = get_session()
-        linked = get_unique_from_query(session.query(model.LinkedGroups).filter(model.LinkedGroups.linked_id == chat_id))
+        linked = get_unique_from_query(session.query(LinkedGroups).filter(LinkedGroups.linked_id == chat_id))
         if linked is None:
             session.close()
             return None
 
-        return get_unique_from_query(session.query(model.AdminGroups).filter(model.AdminGroups.id == linked.admin_id))
+        return get_unique_from_query(session.query(AdminGroups).filter(AdminGroups.id == linked.admin_id))
     finally:
         session.close()
 
@@ -65,7 +65,7 @@ def get_admin_from_linked(chat_id):
 def set_admin_settings(chat_id, settings_str):
     with LOCK:
         session = get_session() 
-        admin = get_unique_from_query(session.query(model.AdminGroups).filter(model.AdminGroups.id == chat_id))
+        admin = get_unique_from_query(session.query(AdminGroups).filter(AdminGroups.id == chat_id))
         admin.set_admset_from_str(settings_str)
         session.commit()
         session.close()
@@ -74,7 +74,7 @@ def set_admin_settings(chat_id, settings_str):
 def set_ladmin_settings(chat_id, settings_str):
     with LOCK:
         session = get_session() 
-        admin = get_unique_from_query(session.query(model.SettingsAdmin).filter(model.SettingsAdmin.id == chat_id))
+        admin = get_unique_from_query(session.query(SettingsAdmin).filter(SettingsAdmin.id == chat_id))
         admin.set_setadm_from_str(settings_str)
         session.commit()
         session.close()
@@ -83,7 +83,7 @@ def set_ladmin_settings(chat_id, settings_str):
 def set_admin(chat_id):
     with LOCK:
         session = get_session()
-        admin = model.AdminGroups(id=chat_id)
+        admin = AdminGroups(id=chat_id)
         session.add(admin)
         session.commit()
         session.close()
@@ -93,8 +93,8 @@ def rm_admin(chat_id):
     with LOCK:
         session = get_session()
         try:
-            session.query(model.LinkedGroups).filter(model.LinkedGroups.admin_id==chat_id).delete()
-            session.query(model.AdminGroups).filter(model.AdminGroups.id==chat_id).delete()
+            session.query(LinkedGroups).filter(LinkedGroups.admin_id==chat_id).delete()
+            session.query(AdminGroups).filter(AdminGroups.id==chat_id).delete()
             session.commit()
             out = True
         except:
@@ -109,8 +109,8 @@ def rm_admin(chat_id):
 def get_linked_admin(chat_id, args):
     try:
         session = get_session()
-        linked = get_unique_from_query(session.query(model.LinkedGroups).filter(
-            and_(model.LinkedGroups.admin_id == chat_id, model.LinkedGroups.linked_id == args)))
+        linked = get_unique_from_query(session.query(LinkedGroups).filter(
+            and_(LinkedGroups.admin_id == chat_id, LinkedGroups.linked_id == args)))
 
         if linked is None:
             return False
@@ -122,9 +122,9 @@ def get_linked_admin(chat_id, args):
 def get_all_groups(chat_id):
     try:
         session = get_session()
-        linked = get_unique_from_query(session.query(model.LinkedGroups).filter(model.LinkedGroups.linked_id == chat_id))
+        linked = get_unique_from_query(session.query(LinkedGroups).filter(LinkedGroups.linked_id == chat_id))
         if linked is None:
-            linked = get_unique_from_query(session.query(model.AdminGroups).filter(model.AdminGroups.id == chat_id))
+            linked = get_unique_from_query(session.query(AdminGroups).filter(AdminGroups.id == chat_id))
             if linked is None:
                 session.close()
                 return None
@@ -133,14 +133,14 @@ def get_all_groups(chat_id):
         else:
             admin_id = linked.admin_id
 
-        return session.query(model.LinkedGroups).filter(model.LinkedGroups.admin_id == admin_id)
+        return session.query(LinkedGroups).filter(LinkedGroups.admin_id == admin_id)
     finally:
         session.close()
 
 def get_groups(chat_id):
     try:
         session = get_session()
-        linked = get_unique_from_query(session.query(model.LinkedGroups).filter(model.LinkedGroups.linked_id == chat_id))
+        linked = get_unique_from_query(session.query(LinkedGroups).filter(LinkedGroups.linked_id == chat_id))
         return linked
     finally:
         session.close()
@@ -149,7 +149,7 @@ def get_groups(chat_id):
 def new_link(admin, chat, title):
     with LOCK:
         session = get_session()
-        linked = model.LinkedGroups(admin_id=admin, linked_id=chat, title=title)
+        linked = LinkedGroups(admin_id=admin, linked_id=chat, title=title)
         session.add(linked)
         session.commit()
         session.close()
@@ -159,7 +159,7 @@ def new_link(admin, chat, title):
 def rm_link(group_id):
     with LOCK:
         session = get_session()
-        session.query(model.LinkedGroups).filter(model.LinkedGroups.linked_id == group_id).delete()
+        session.query(LinkedGroups).filter(LinkedGroups.linked_id == group_id).delete()
         session.commit()
         session.close()
         return 
@@ -167,7 +167,7 @@ def rm_link(group_id):
 def add_tlink(chat_id, arg):
     with LOCK:
         session = get_session()
-        linked = get_unique_from_query(session.query(model.LinkedGroups).filter(model.LinkedGroups.linked_id == chat_id))
+        linked = get_unique_from_query(session.query(LinkedGroups).filter(LinkedGroups.linked_id == chat_id))
         if linked is None:
             session.close()
             return None
@@ -180,7 +180,7 @@ def add_tlink(chat_id, arg):
 def add_type(chat_id, arg):
     with LOCK:
         session = get_session()
-        linked = get_unique_from_query(session.query(model.LinkedGroups).filter(model.LinkedGroups.linked_id == chat_id))
+        linked = get_unique_from_query(session.query(LinkedGroups).filter(LinkedGroups.linked_id == chat_id))
         if linked is None:
             session.close()
             return
@@ -193,7 +193,7 @@ def add_type(chat_id, arg):
 def set_tag(chat_id, arg):
     with LOCK:
         session = get_session()
-        linked = get_unique_from_query(session.query(model.LinkedGroups).filter(model.LinkedGroups.linked_id == chat_id))
+        linked = get_unique_from_query(session.query(LinkedGroups).filter(LinkedGroups.linked_id == chat_id))
         if linked is None:
             session.close()
             return

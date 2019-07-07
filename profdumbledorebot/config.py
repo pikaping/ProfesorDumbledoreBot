@@ -21,8 +21,9 @@
 #                                                                          #
 ############################################################################
 
-import configparser
 import os
+import configparser
+
 from os.path import expanduser
 
 

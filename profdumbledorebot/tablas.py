@@ -79,7 +79,7 @@ def new_pic(bot, update, args=None):
     if message.reply_to_message is None or message.reply_to_message.photo is None:
         return
 
-    with open('/var/local/nursejoy/tablas.json') as f:
+    with open('/var/local/profdumbledore/json/tablas.json') as f:
         data = json.load(f)
 
     name = ""
@@ -97,7 +97,7 @@ def new_pic(bot, update, args=None):
         "keywords":args
     })
 
-    with open('/var/local/nursejoy/tablas.json', 'w') as outfile:  
+    with open('/var/local/profdumbledore/json/tablas.json', 'w') as outfile:  
         json.dump(data, outfile)
 
     reload_tablas()
@@ -131,7 +131,7 @@ def edit_pic(bot, update, args=None):
     if message.reply_to_message is None or message.reply_to_message.photo is None:
         return
 
-    with open('/var/local/nursejoy/tablas.json') as f:
+    with open('/var/local/profdumbledore/json/tablas.json') as f:
         data = json.load(f)
 
     for k in data["tablas"]:
@@ -139,7 +139,7 @@ def edit_pic(bot, update, args=None):
             k["file_id"] = update.message.reply_to_message.photo[-1]["file_id"]
             break
 
-    with open('/var/local/nursejoy/tablas.json', 'w') as outfile:  
+    with open('/var/local/profdumbledore/json/tablas.json', 'w') as outfile:  
         json.dump(data, outfile)
 
     reload_tablas()
@@ -170,7 +170,7 @@ def rm_pic(bot, update, args=None):
     if args is None or len(args)!=1 or len(args[0])!=36:
         return
         
-    with open('/var/local/nursejoy/tablas.json') as f:
+    with open('/var/local/profdumbledore/json/tablas.json') as f:
         data = json.load(f)
 
     for k in data["tablas"]:
@@ -178,7 +178,7 @@ def rm_pic(bot, update, args=None):
             data["tablas"].remove(k)
             break
 
-    with open('/var/local/nursejoy/tablas.json', 'w') as outfile:  
+    with open('/var/local/profdumbledore/json/tablas.json', 'w') as outfile:  
         json.dump(data, outfile)
 
     reload_tablas()
@@ -211,7 +211,7 @@ def inline_tablas(bot, update):
                     id=uuid4(),
                     photo_file_id=i["file_id"],
                     title=i["name"],
-                    caption="@NurseJoyBot {}".format(i["name"]))
+                    caption="@ProfDumbledoreBot {}".format(i["name"]))
                 )
 
             if count == max_range:
@@ -228,7 +228,7 @@ def inline_tablas(bot, update):
                         id=uuid4(),
                         photo_file_id=i["file_id"],
                         title=i["name"],
-                        caption="@NurseJoyBot {}".format(i["name"]))
+                        caption="@ProfDumbledoreBot {}".format(i["name"]))
                     )
                     break
 
@@ -240,7 +240,7 @@ def inline_tablas(bot, update):
                 id=uuid4(),
                 photo_file_id=__TABLAS_JSON["tablas"][i]["file_id"],
                 title=__TABLAS_JSON["tablas"][i]["name"],
-                caption="@NurseJoyBot {}".format(__TABLAS_JSON["tablas"][i]["name"])))
+                caption="@ProfDumbledoreBot {}".format(__TABLAS_JSON["tablas"][i]["name"])))
 
         update.inline_query.answer(results=results, cache_time=0)
 
@@ -256,7 +256,7 @@ def tablas_btn(bot, update):
     
     match_new = re.match(r"tabla_new_(.*)", query.data)
     if match_new:
-        text = "Ha sido añadida la tabla {0} a nuestros archivos. Solicítala ya mediante `@nursejoybot {0}`\n\n¡Un saludo y buena caza!".format(match_new.group(1))
+        text = "Ha sido añadida la tabla {0} a nuestros archivos. Solicítala ya mediante `@ProfDumbledoreBot {0}`\n\n¡Suerte en tu busqueda mago!".format(match_new.group(1))
         bot.sendMessage(
             chat_id=news_id,
             text=text,
@@ -264,7 +264,7 @@ def tablas_btn(bot, update):
 
     match_edit = re.match(r"tabla_edit_(.*)", query.data)
     if match_new is None and match_edit:
-        text = "Ha sido modificada la tabla {0}. Recuerda que puedes solicitarla mediante `@nursejoybot {0}`\n\n¡Un saludo y buena caza!".format(match_new.group(1))
+        text = "Ha sido modificada la tabla {0}. Recuerda que puedes solicitarla mediante `@ProfDumbledoreBot {0}`\n\n¡Suerte en tu busqueda mago!".format(match_new.group(1))
         bot.sendMessage(
             chat_id=news_id,
             text=text,
@@ -281,6 +281,6 @@ def tablas_btn(bot, update):
 def reload_tablas():
     global __TABLAS_JSON
 
-    with open('/var/local/nursejoy/tablas.json') as f:
+    with open('/var/local/profdumbledore/json/tablas.json') as f:
         __TABLAS_JSON = json.load(f)
 

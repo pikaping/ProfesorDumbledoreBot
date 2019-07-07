@@ -54,7 +54,7 @@ def list_cmd(bot, update):
     output = text.split(None, 1)
     out = escape_markdown(output[1]) + "\n\nApuntados:"
 
-    bot.send_message(
+    bot.sendMessage(
         chat_id=chat_id,
         text=out,
         parse_mode=telegram.ParseMode.MARKDOWN,
@@ -189,7 +189,7 @@ def listrefloat_cmd(bot, update):
         InlineKeyboardButton(text="Paso...", callback_data='list_left')
     ]]
 
-    bot.send_message(
+    bot.sendMessage(
         chat_id=chat_id,
         text=escape_markdown(text),
         parse_mode=telegram.ParseMode.MARKDOWN,

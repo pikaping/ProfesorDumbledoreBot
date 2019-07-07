@@ -51,31 +51,37 @@ LINK_REGEX = re.compile(r'(?<!\\)\[.+?\]\((.*?)\)')
 BTN_URL_REGEX = re.compile(r"(\[([^\[]+?)\]\(buttonurl:(?:/{0,2})(.+?)(:same)?\))")
 
 
-def replace(user_id, first_name, admin=True):
+def replace(user_id, name=None, admin=True):
     user = get_user(user_id)
 
-    if user is None or user.house is model.Houses.NONE:
+    if user is None or user.house is model.Houses.NONE.value:
         text_house = "_Desconocido_"
-    elif user.house is model.Houses.GRYFFINDOR:
+    elif user.house is model.Houses.GRYFFINDOR.value:
         text_house = "❤️🦁"
-    elif user.house is model.Houses.HUFFLEPUFF:
+    elif user.house is model.Houses.HUFFLEPUFF.value:
         text_house = "💛🦡"
-    elif user.house is model.Houses.RAVENCLAW:
+    elif user.house is model.Houses.RAVENCLAW.value:
         text_house = "💙🦅"
-    elif user.house is model.Houses.SLYTHERIN:
+    elif user.house is model.Houses.SLYTHERIN.value:
         text_house = "💚🐍"
 
 
-    if user is None or user.profession is NONE
+    if user is None or user.profession is model.Professions.NONE.value:
         text_prof = "_Desconocido_"
-    elif user.profession is AUROR:
-        text_prof = "_Auror_"
-    elif user.profession is MAGIZOOLOGIST:
-        text_prof = "_Magizoologo_"
-    elif user.profession is PROFESSOR:
-        text_prof = "_Profesor_"
+    elif user.profession is model.Professions.AUROR.value:
+        text_prof = "⚔"
+    elif user.profession is model.Professions.MAGIZOOLOGIST.value:
+        text_prof = "🐾"
+    elif user.profession is model.Professions.PROFESSOR.value:
+        text_prof = "📚"
 
-    text_alias = escape_markdown("@{}".format(user.alias) if user and user.alias else "")
+    if user and user.alias:
+        text_alias = escape_markdown("@{}".format(user.alias))
+    elif name is not None:
+        text_alias = escape_markdown(name)
+    else:
+        text_alias = "_Desconocido_"
+
     text_level = ("*{}*".format(user.level) if user and user.level else "*??*")
 
     if user and user.banned:
@@ -114,6 +120,14 @@ def callback_delete(bot, job):
         return
     except:
         return
+
+def delete_message(chat_id, message_id, bot):
+    try:
+        bot.deleteMessage(chat_id=chat_id, message_id=message_id)
+        return True
+
+    except:
+        return False
 
 
 def build_keyboard(buttons):
@@ -324,6 +338,11 @@ def is_admin(chat_id, user_id, bot):
       if user_id == admin.user.id:
         is_admin = True
     return is_admin
+
+
+@MWT(timeout=60*60)
+def get_usergroup_tlg(chat_id, user_id, bot):
+    return bot.get_chat_member(chat_id, user_id)
 
 
 def extract_update_info(update):

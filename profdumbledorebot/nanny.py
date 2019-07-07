@@ -25,31 +25,18 @@ import re
 import logging
 import telegram
 
-import profdumbledorebot.sql.settings as settings_sql
+import profdumbledorebot.support as support
+import profdumbledorebot.sql.settings as set_sql
 
 from telegram.ext.dispatcher import run_async
 from profdumbledorebot.news import init_news, stop_news
 
-from nursejoybot.storagemethods import (
-    get_nanny_settings,
-    get_group_settings,
-    set_nanny_reply,
-    are_banned,
-    warn_user
-)
-from nursejoybot.supportmethods import (
-    is_admin,
-    delete_message_timed,
-    extract_update_info,
-    delete_message,
-    button_markdown_parser
-)
 
-def nanny_text(bot, user_id, chat_id, message) -> bool:
-    nanny = get_nanny_settings(chat_id)
+def nanny_text(bot, user_id, chat_id, message):
+    nanny = set_sql.get_nanny_settings(chat_id)
 
     if nanny and nanny.text:
-        if is_admin(chat_id, user_id, bot) and not nanny.admin_too:
+        if support.is_admin(chat_id, user_id, bot) and not nanny.admin_too:
             return False
 
         delete_message(chat_id, message.message_id, bot)
@@ -258,7 +245,7 @@ def process_video(bot, update):
             send_alert(bot, chat_id, nanny.reply)
 
 
-def process_url(bot, update) -> bool:
+def process_url(bot, update):
     (chat_id, chat_type, user_id, text, message) = extract_update_info(update)  
 
     nanny = get_nanny_settings(chat_id)

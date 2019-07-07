@@ -503,7 +503,15 @@ Escríbeme por privado en @NurseJoyBot el comando /register. En vez de eso, pued
 🔔 Subida de nivel
 Para subir de nivel, unicamente debes enviarme una captura de pantalla de tu perfilde Pokémon GO por privado y yo haré el resto." 
 
-Dumbledore: Bienvenido al mundo mágico, para registrarte conmigo debes entrar en mi despacho, escribeme por privado la contraseña /cucuruchodecucarachas 
+Dumbledore:
+
+📖 Bienvenido al mundo mágico del profesor Dumbledore. Tómate tu tiempo en leer la guia para magos.
+
+💙💛❤️ Registrar pasaporte del Ministerio
+Escribeme por privado la contraseña `/cucuruchodecucarachas` y responde a mis preguntas.  
+
+🔔 Editar pasaporte del Ministerio
+Para subir de nivel, unicamente debes enviarme una captura de pantalla de tu perfilde Pokémon GO por privado y yo haré el resto.
 
 Son nuestras elecciones las que muestran lo que somos, mucho más que nuestras habilidades, así pues elige bien y dime, ¿Cual es tu casa de hogwarts? 
 

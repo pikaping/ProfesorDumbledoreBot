@@ -25,8 +25,8 @@ import re
 import logging
 import telegram
 
-import profdumbledorebot.sql.support as sql_support
 import profdumbledorebot.supportmethods as support
+import profdumbledorebot.sql.support as sql_support
 
 from pytz import timezone
 from datetime import datetime
@@ -34,16 +34,6 @@ from nursejoybot.db import get_session
 from telegram.ext.dispatcher import run_async
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
-from nursejoybot.supportmethods import (
-    is_admin,
-    extract_update_info,
-    ensure_escaped,
-    delete_message,
-    update_settings_message,
-    get_unique_from_query,
-    get_unified_timezone,
-    get_welcome_type
-)
 
 @run_async
 def settings(bot, update, args=None):
@@ -217,6 +207,7 @@ def set_cooldown(bot, update, args=None):
 @run_async
 def settingsbutton(bot, update):
     logging.debug("%s %s", bot, update)
+    
     query = update.callback_query
     data = query.data
     user = update.effective_user

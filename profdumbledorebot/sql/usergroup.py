@@ -25,6 +25,7 @@ import logging
 import threading
 
 from datetime import datetime
+from profdumbledorebot.mwt import MWT
 from profdumbledorebot.db import get_session
 from profdumbledorebot.model import UserGroup
 from sqlalchemy.sql.expression import and_, or_
@@ -33,6 +34,7 @@ from profdumbledorebot.sql.support import get_unique_from_query
 LOCK = threading.RLock()
 
 
+@MWT(timeout=60*60)
 def get_users_from_group(group_id):
     try:
         session = get_session()

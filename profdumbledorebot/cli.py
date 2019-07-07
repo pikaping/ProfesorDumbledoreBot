@@ -40,10 +40,11 @@ import profumbledorebot.tablas as tablas
 import profumbledorebot.config as config
 import profumbledorebot.settings as settings
 import profumbledorebot.supportmethods as support
-from profumbledorebot.nanny import process_cmd, set_nanny
 import profumbledorebot.profumbledorebot as profumbledorebot
 
+
 from logging.handlers import  TimedRotatingFileHandler
+from profumbledorebot.nanny import process_cmd, set_nanny
 from telegram.ext import Updater, CommandHandler, MessageHandler, InlineQueryHandler, CallbackQueryHandler, Filters
 
 
@@ -114,37 +115,37 @@ def start_bot():
     dispatcher.add_handler(CommandHandler('new_cmd', new_cmd_cmd, Filters.group))
     dispatcher.add_handler(CommandHandler('list_cmds', list_cmds_cmd, Filters.group))
     '''
-    dispatcher.add_handler(CommandHandler('rm_admin', rm_admin_cmd, Filters.group))
-    dispatcher.add_handler(CommandHandler('create_admin', create_admin_cmd, Filters.group))
-    dispatcher.add_handler(CommandHandler('settings_admin', settings_admin_cmd, Filters.group))
+    dispatcher.add_handler(CommandHandler('rm_admin', admin.rm_admin_cmd, Filters.group))
+    dispatcher.add_handler(CommandHandler('create_admin', admin.create_admin_cmd, Filters.group))
+    dispatcher.add_handler(CommandHandler('settings_admin', admin.settings_admin_cmd, Filters.group))
 
-    dispatcher.add_handler(CommandHandler('rm_link', rm_link_cmd, Filters.group))
-    dispatcher.add_handler(CommandHandler('add_tag', add_tag_cmd, Filters.group, pass_args=True))
-    dispatcher.add_handler(CommandHandler('add_url', add_url_cmd, Filters.group, pass_args=True))
-    dispatcher.add_handler(CommandHandler('create_link', create_link_cmd, Filters.group, pass_args=True))
+    dispatcher.add_handler(CommandHandler('rm_link', admin.rm_link_cmd, Filters.group))
+    dispatcher.add_handler(CommandHandler('add_tag', admin.add_tag_cmd, Filters.group, pass_args=True))
+    dispatcher.add_handler(CommandHandler('add_url', admin.add_url_cmd, Filters.group, pass_args=True))
+    dispatcher.add_handler(CommandHandler('create_link', admin.create_link_cmd, Filters.group, pass_args=True))
     
-    dispatcher.add_handler(CommandHandler(['groups','grupos'], groups_cmd, Filters.group))
+    dispatcher.add_handler(CommandHandler(['groups','grupos'], admin.groups_cmd, Filters.group))
 
-    dispatcher.add_handler(CommandHandler('ban', ban_cmd, Filters.group, pass_args=True))
-    dispatcher.add_handler(CommandHandler('kick', kick_cmd, Filters.group, pass_args=True))
-    dispatcher.add_handler(CommandHandler('warn', warn_cmd, Filters.group, pass_args=True))
-    dispatcher.add_handler(CommandHandler('unban', unban_cmd, Filters.group, pass_args=True))
+    dispatcher.add_handler(CommandHandler('ban', admin.ban_cmd, Filters.group, pass_args=True))
+    dispatcher.add_handler(CommandHandler('kick', admin.kick_cmd, Filters.group, pass_args=True))
+    dispatcher.add_handler(CommandHandler('warn', admin.warn_cmd, Filters.group, pass_args=True))
+    dispatcher.add_handler(CommandHandler('unban', admin.unban_cmd, Filters.group, pass_args=True))
     #dispatcher.add_handler(CommandHandler('unwarn', unwarn_cmd, Filters.group, pass_args=True))
 
-    dispatcher.add_handler(CommandHandler('uv', uv_cmd, Filters.group, pass_args=True))
-    dispatcher.add_handler(CommandHandler('kickuv', kickuv_cmd, Filters.group, pass_args=True))
-    dispatcher.add_handler(CommandHandler('kickmsg', kickmsg_cmd, Filters.group, pass_args=True))
-    dispatcher.add_handler(CommandHandler('kickold', kickold_cmd, Filters.group, pass_args=True))
+    dispatcher.add_handler(CommandHandler('uv', admin.uv_cmd, Filters.group, pass_args=True))
+    dispatcher.add_handler(CommandHandler('kickuv', admin.kickuv_cmd, Filters.group, pass_args=True))
+    dispatcher.add_handler(CommandHandler('kickmsg', admin.kickmsg_cmd, Filters.group, pass_args=True))
+    dispatcher.add_handler(CommandHandler('kickold', admin.kickold_cmd, Filters.group, pass_args=True))
 
-    dispatcher.add_handler(CommandHandler('rules', rules_cmd, Filters.group))   
-    dispatcher.add_handler(CommandHandler('set_rules', set_rules_cmd, Filters.group))  
-    dispatcher.add_handler(CommandHandler('clear_rules', clear_rules_cmd, Filters.group))
+    dispatcher.add_handler(CommandHandler('rules', rules.rules_cmd, Filters.group))   
+    dispatcher.add_handler(CommandHandler('set_rules', rules.set_rules_cmd, Filters.group))  
+    dispatcher.add_handler(CommandHandler('clear_rules', rules.clear_rules_cmd, Filters.group))
 
-    dispatcher.add_handler(CommandHandler('list', list_cmd, Filters.group))  
-    dispatcher.add_handler(CallbackQueryHandler(list_btn, pattern=r"^list_"))
-    dispatcher.add_handler(CommandHandler('listopen', listopen_cmd, Filters.group))    
-    dispatcher.add_handler(CommandHandler('listclose', listclose_cmd, Filters.group)) 
-    dispatcher.add_handler(CommandHandler('listrefloat', listrefloat_cmd, Filters.group)) 
+    dispatcher.add_handler(CommandHandler('list', lists.list_cmd, Filters.group))  
+    dispatcher.add_handler(CallbackQueryHandler(lists.list_btn, pattern=r"^list_"))
+    dispatcher.add_handler(CommandHandler('listopen', lists.listopen_cmd, Filters.group))    
+    dispatcher.add_handler(CommandHandler('listclose', lists.listclose_cmd, Filters.group)) 
+    dispatcher.add_handler(CommandHandler('listrefloat', lists.listrefloat_cmd, Filters.group)) 
 
     dispatcher.add_handler(CommandHandler('settings', settings_cmd, Filters.group))
     dispatcher.add_handler(CommandHandler('set_nanny', set_nanny_cmd, Filters.group)) 

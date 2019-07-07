@@ -26,7 +26,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 
-from nursejoybot.config import get_config
+from profdumbledorebot.config import get_config
 
 
 __ENGINE = None

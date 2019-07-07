@@ -23,10 +23,10 @@
 
 import logging
 import threading
-import profdumbledorebot.model as model
 
 from profdumbledorebot.db import get_session
 from sqlalchemy.sql.expression import and_, or_
+from profdumbledorebot.model import Welcome, WelcomeButtons, Types
 from profdumbledorebot.sql.support import get_unique_from_query
 
 LOCK = threading.RLock()
@@ -36,11 +36,11 @@ BTN_LOCK = threading.RLock()
 def get_welc_pref(chat_id):
     try:
         session = get_session()
-        welc = session.query(model.Welcome).get(str(chat_id))
+        welc = session.query(Welcome).get(str(chat_id))
         if welc:
             return welc.should_welcome, welc.custom_welcome, welc.welcome_type
         else:
-            return False, None, model.Types.TEXT
+            return False, None, Types.TEXT
     finally:
         session.close()
 
@@ -48,8 +48,8 @@ def get_welc_pref(chat_id):
 def get_welc_buttons(chat_id):
     session = get_session()
     try:
-        return session.query(model.WelcomeButtons).filter(
-            model.WelcomeButtons.chat_id == str(chat_id)).order_by(model.WelcomeButtons.id).all()
+        return session.query(WelcomeButtons).filter(
+            WelcomeButtons.chat_id == str(chat_id)).order_by(WelcomeButtons.id).all()
     finally:
         session.close()
 
@@ -58,7 +58,7 @@ def get_welcome_settings(chat_id):
     try:    
         session = get_session()
         group = get_unique_from_query(
-            session.query(model.Welcome).filter(model.Welcome.chat_id == chat_id)
+            session.query(Welcome).filter(Welcome.chat_id == chat_id)
         )
         return group
     finally:
@@ -68,9 +68,9 @@ def get_welcome_settings(chat_id):
 def set_welc_preference(chat_id, should_welcome):
     with LOCK:
         session = get_session()
-        curr = session.query(model.Welcome).get(str(chat_id))
+        curr = session.query(Welcome).get(str(chat_id))
         if not curr:
-            curr = model.Welcome(str(chat_id), should_welcome=should_welcome)
+            curr = Welcome(str(chat_id), should_welcome=should_welcome)
         else:
             curr.should_welcome = should_welcome
 
@@ -84,9 +84,9 @@ def set_custom_welcome(chat_id, custom_welcome, welcome_type, buttons=None):
 
     with LOCK:
         session = get_session()
-        welcome_settings = session.query(model.Welcome).get(str(chat_id))
+        welcome_settings = session.query(Welcome).get(str(chat_id))
         if not welcome_settings:
-            welcome_settings = model.Welcome(str(chat_id), True)
+            welcome_settings = Welcome(str(chat_id), True)
 
         if custom_welcome:
             welcome_settings.custom_welcome = custom_welcome
@@ -95,12 +95,12 @@ def set_custom_welcome(chat_id, custom_welcome, welcome_type, buttons=None):
         session.add(welcome_settings)
 
         with BTN_LOCK:
-            prev_buttons = session.query(model.WelcomeButtons).filter(model.WelcomeButtons.chat_id == str(chat_id)).all()
+            prev_buttons = session.query(WelcomeButtons).filter(WelcomeButtons.chat_id == str(chat_id)).all()
             for btn in prev_buttons:
                 session.delete(btn)
 
             for b_name, url, same_line in buttons:
-                button = model.WelcomeButtons(chat_id, b_name, url, same_line)
+                button = WelcomeButtons(chat_id, b_name, url, same_line)
                 session.add(button)
 
         session.commit()
@@ -109,7 +109,7 @@ def set_custom_welcome(chat_id, custom_welcome, welcome_type, buttons=None):
 def set_welcome_settings(chat_id, settings_str):
     with LOCK:
         session = get_session()
-        group = get_unique_from_query(session.query(model.Welcome).filter(model.Welcome.chat_id == chat_id))
+        group = get_unique_from_query(session.query(Welcome).filter(Welcome.chat_id == chat_id))
         group.set_welcomeset_from_str()
         session.commit()
         session.close()

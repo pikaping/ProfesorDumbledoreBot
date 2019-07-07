@@ -41,13 +41,8 @@ Para iniciar el registro debes abrir una conversación con el bot e iniciarlo. U
 
 ### Ficha del Mago ###
 
-Enviando el comando `/perfil` o `/profile` podrás acceder a toda la información sobre tu perfil en HPWU que has compartido con el bot.
+Enviando el comando `/perfil` o `/profile` podrás acceder y editar toda la información sobre tu perfil en HPWU que has compartido con el bot.
 
-La información se presenta en el siguiente formato:
-
-```
-@usuario, eres Auror nivel 12 💚🐍
-```
 
 Los dos emoticonos que siguen al nivel, representan la casa a la que pertenece el mago. Estos son los emoticonos seleccionados por nosotros.
 
@@ -56,6 +51,14 @@ Los dos emoticonos que siguen al nivel, representan la casa a la que pertenece e
   💛🦡 Hufflepuff
   💙🦅 Ravenclaw
   💚🐍 Slytherin
+```
+
+A continuación, encontraremos la profesión. Estos son los emoticonos seleccionados por nosotros.
+
+```
+  ⚔ Auror
+  🐾 Magizoologo
+  📚 Profesor
 ```
 
 Además, tambien contamos con otros emojis que nos servirán de flags.

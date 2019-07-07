@@ -27,14 +27,17 @@ import time
 import logging
 import telegram
 
-import profdumbledorebot.sql.admin as adm_support
-import profdumbledorebot.sql.support as sql_support
+import profdumbledorebot.sql.admin as adm_sql
 import profdumbledorebot.supportmethods as support
 
 from datetime import datetime
 from telegram.ext.dispatcher import run_async
 from telegram.utils.helpers import escape_markdown
+from profdumbledorebot.sql.support import are_banned
+from profdumbledorebot.settings import get_group_settings
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from profdumbledorebot.sql.user import get_user, get_user_by_name
+from profdumbledorebot.sql.usergroup import exists_user_group, set_user_group, warn_user
 
 # Admin Group
 
@@ -43,10 +46,10 @@ def settings_admin_cmd(bot, update):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.support.is_admin(chat_id, user_id, bot) or sql_support.are_banned(user_id, chat_id):
+    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
 
-    group = adm_support.get_admin(chat_id)
+    group = adm_sql.get_admin(chat_id)
     if group is None:
         bot.sendMessage(
             chat_id=chat_id,
@@ -63,11 +66,11 @@ def create_admin_cmd(bot, update):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.is_admin(chat_id, user_id, bot) or sql_support.are_banned(user_id, chat_id):
+    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
 
-    if adm_support.get_admin(chat_id) is None:
-        adm_support.set_admin(chat_id)
+    if adm_sql.get_admin(chat_id) is None:
+        adm_sql.set_admin(chat_id)
         output = "👌 Grupo configuado exitosamente. Continua vinculando grupos con este ID: `{}`\nNo olvides activar las alertas con `/settings_admin`.".format(chat_id)
     else:
         output = "👌 Ya está configurado este grupo como administrativo.\nAquí tienes tu ID: `{}`".format(chat_id)
@@ -83,11 +86,11 @@ def rm_admin_cmd(bot, update):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.is_admin(chat_id, user_id, bot) or sql_support.are_banned(user_id, chat_id):
+    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
 
-    if adm_support.get_admin(chat_id) is not None:
-        adm_support.rm_admin(chat_id)
+    if adm_sql.get_admin(chat_id) is not None:
+        adm_sql.rm_admin(chat_id)
     else:
         return
 
@@ -102,10 +105,10 @@ def groups_cmd(bot, update):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if sql_support.are_banned(user_id, chat_id):
+    if are_banned(user_id, chat_id):
         return
 
-    groups = adm_support.get_all_groups(chat_id)
+    groups = adm_sql.get_all_groups(chat_id)
     output = "*Listado de grupos vinculados:*"
 
     if groups is None:
@@ -114,24 +117,23 @@ def groups_cmd(bot, update):
     elif support.is_admin(chat_id, user_id, bot):
         for k in groups:
             if k.link is not None and re.match('@?[a-zA-Z]([a-zA-Z0-9_]+)$', k.link) is None:
-                output = output + "\n🏥 [{}]({}) - `{}`".format(k.label or k.title, k.link, k.linked_id)
+                output = output + "\n🏫 [{}]({}) - `{}`".format(k.label or k.title, k.link, k.linked_id)
             elif k.link is not None and re.match('@?[a-zA-Z]([a-zA-Z0-9_]+)$', k.link) is not None:
-                output = output + "\n🏥 {} - {} - `{}`".format(k.label or k.title, k.link, k.linked_id)
+                output = output + "\n🏫 {} - {} - `{}`".format(k.label or k.title, k.link, k.linked_id)
             else:
-                output = output + "\n🏥 {} - `{}`".format(k.label or k.title, k.linked_id)
+                output = output + "\n🏫 {} - `{}`".format(k.label or k.title, k.linked_id)
 
     else:
         for k in groups:
-            if k.group_type not in [GroupType.RED, GroupType.BLUE, GroupType.YELLOW]:
-                if k.link is not None and re.match('@?[a-zA-Z]([a-zA-Z0-9_]+)$', k.link) is None:
-                    output = output + "\n🏥 [{}]({})".format(k.label or k.title, k.link)
-                elif k.link is not None and re.match('@?[a-zA-Z]([a-zA-Z0-9_]+)$', k.link) is not None:
-                    output = output + "\n🏥 {} - {}".format(k.label or k.title, k.link)
-                else:
-                    output = output + "\n🏥 {}".format(k.label or k.title)
+            if k.link is not None and re.match('@?[a-zA-Z]([a-zA-Z0-9_]+)$', k.link) is None:
+                output = output + "\n🏫 [{}]({})".format(k.label or k.title, k.link)
+            elif k.link is not None and re.match('@?[a-zA-Z]([a-zA-Z0-9_]+)$', k.link) is not None:
+                output = output + "\n🏫 {} - {}".format(k.label or k.title, k.link)
+            else:
+                output = output + "\n🏫 {}".format(k.label or k.title)
 
     if chat_type != "private":
-        group = adm_support.get_group_settings(chat_id)
+        group = get_group_settings(chat_id)
         if group.reply_on_group:
             dest_id = chat_id
         else:
@@ -148,9 +150,9 @@ def groups_cmd(bot, update):
 
 @run_async
 def add_url_cmd(bot, update, args=None):
-    (chat_id, chat_type, user_id, text, message) = extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
 
-    if not support.is_admin(chat_id, user_id, bot) or sql_support.are_banned(user_id, chat_id):
+    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
 
     if args is None or len(args) != 1 or args[0] != '-' and (len(args[0]) < 3 or len(args[0]) > 60 or re.match("@?[a-zA-Z]([a-zA-Z0-9_]+)$|https://t\.me/joinchat/[a-zA-Z0-9_-]+$", args[0]) is None):
@@ -162,13 +164,13 @@ def add_url_cmd(bot, update, args=None):
 
     if args[0] != '-':
         enlace = args[0]
-        add_tlink(chat_id, enlace)
+        adm_sql.add_tlink(chat_id, enlace)
         bot.sendMessage(
             chat_id=chat_id,
             text="👌 Establecido el link del grupo a {}.".format(ensure_escaped(enlace)),
             parse_mode=telegram.ParseMode.MARKDOWN)
     else:
-        add_tlink(chat_id, None)
+        adm_sql.add_tlink(chat_id, None)
         bot.sendMessage(
             chat_id=chat_id,
             text="👌 Esto... Creo que acabo de olvidar el enlace del grupo...",
@@ -181,7 +183,7 @@ def create_link_cmd(bot, update, args=None):
     support.delete_message(chat_id, message.message_id, bot)
     chat_title = message.chat.title
 
-    if not support.is_admin(chat_id, user_id, bot) or sql_support.are_banned(user_id, chat_id):
+    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
 
     if args is None or len(args) != 1 or get_admin(args[0]) is None:
@@ -191,7 +193,7 @@ def create_link_cmd(bot, update, args=None):
             parse_mode=telegram.ParseMode.MARKDOWN)
         return
 
-    new_link(args[0], chat_id, chat_title)
+    adm_sql.new_link(args[0], chat_id, chat_title)
     bot.sendMessage(
         chat_id=chat_id,
         text="👌 El grupo ha sido registrado, continua el proceso desde el grupo de administracion.",
@@ -202,10 +204,10 @@ def add_tag_cmd(bot, update, args=None):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.is_admin(chat_id, user_id, bot) or sql_support.are_banned(user_id, chat_id):
+    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
 
-    if get_groups(chat_id) is not None:
+    if adm_sql.get_groups(chat_id) is not None:
         message = ' '.join(args)
     else:
         bot.sendMessage(
@@ -219,7 +221,7 @@ def add_tag_cmd(bot, update, args=None):
         if message is '-':
             message = None
             output = "👌 Nombre del grupo reestablecido correctamente."
-        set_tag(chat_id, message)
+        adm_sql.set_tag(chat_id, message)
     else:
         output = "❌ Este mensaje es demasiado largo."
 
@@ -234,10 +236,10 @@ def rm_link_cmd(bot, update):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.is_admin(chat_id, user_id, bot) or sql_support.are_banned(user_id, chat_id):
+    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
 
-    rm_link(chat_id)
+    adm_sql.rm_link(chat_id)
     bot.sendMessage(
         chat_id=chat_id,
         text="👌 El grupo ha sido desvinculado",
@@ -302,7 +304,7 @@ def kickmsg_cmd(bot, update, args=None):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.is_admin(chat_id, user_id, bot) or sql_support.are_banned(user_id, chat_id):
+    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
 
     if args is None or len(args) != 1 or not args[0].isdigit():
@@ -317,7 +319,7 @@ def kickmsg_cmd(bot, update, args=None):
 
     kick = 0
     msg_number = int(args[0])
-    users = get_users_from_group(chat_id)
+    users = adm_sql.get_users_from_group(chat_id)
     for user in users:
         time.sleep(0.05)
         try:
@@ -345,7 +347,7 @@ def kickold_cmd(bot, update, args=None):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
     
-    if not support.is_admin(chat_id, user_id, bot) or sql_support.are_banned(user_id, chat_id):
+    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
 
     if args is None or len(args) != 1 or not args[0].isdigit():
@@ -362,7 +364,7 @@ def kickold_cmd(bot, update, args=None):
     kick = 0
     days = int(args[0])
     start = datetime.utcnow()
-    users = get_users_from_group(chat_id)
+    users = adm_sql.get_users_from_group(chat_id)
     for user in users:
         time.sleep(0.05)
         try:
@@ -391,7 +393,7 @@ def uv_cmd(bot, update, args=None):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.is_admin(chat_id, user_id, bot) or sql_support.are_banned(user_id, chat_id):
+    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
 
     uv = 0
@@ -408,7 +410,7 @@ def uv_cmd(bot, update, args=None):
         return
 
     output = 'Listado de usuarios:\n'
-    users = get_users_from_group(chat_id)
+    users = adm_sql.get_users_from_group(chat_id)
     tlgrm = bot.get_chat_members_count(chat_id)
 
     for user in users:
@@ -451,7 +453,7 @@ def kickuv_cmd(bot, update, args=None):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.is_admin(chat_id, user_id, bot) or sql_support.are_banned(user_id, chat_id):
+    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
 
     if last_run(chat_id, 'kickuv'):
@@ -462,7 +464,7 @@ def kickuv_cmd(bot, update, args=None):
         return
 
     uv = 0
-    users = get_users_from_group(chat_id)
+    users = adm_sql.get_users_from_group(chat_id)
     for user in users:
         try:
             data = bot.get_chat_member(chat_id, user.user_id)
@@ -491,7 +493,7 @@ def warn_cmd(bot, update, args=None):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.is_admin(chat_id, user_id, bot) or sql_support.are_banned(user_id, chat_id):
+    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
 
     reason = ""
@@ -512,7 +514,7 @@ def warn_cmd(bot, update, args=None):
             reason = ' '.join(args)
     elif args is not None and len(args) > 0:
         if len(args) > 1 and args[0][0] is '-':
-            if get_linked_admin(chat_id, args[0]):
+            if adm_sql.get_linked_admin(chat_id, args[0]):
                 chat_id = args[0]
                 del args[0]
             else:
@@ -546,8 +548,8 @@ def warn_cmd(bot, update, args=None):
     if args is not None and len(args) > 0:
         reason = " ".join(args)
 
-    if get_admin(chat_id) is not None:
-        groups = get_all_groups(chat_id)
+    if adm_sql.get_admin(chat_id) is not None:
+        groups = adm_sql.get_all_groups(chat_id)
     else:
         groups = None
 
@@ -558,7 +560,7 @@ def warn_cmd(bot, update, args=None):
         warning = warn_user(chat_id, replied_user, 1)
         group = get_group_settings(chat_id)
         if warning < group.warn:
-            output = "👌 Entrenador [{0}](tg://user?id={1}) advertido correctamente! {2}/{3}".format(name, replied_user, warning, group.warn)
+            output = "👌 Mago [{0}](tg://user?id={1}) advertido correctamente! {2}/{3}".format(name, replied_user, warning, group.warn)
             if reason is not "":
                 output = output + "\nMotivo: {}".format(reason)
             keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("Eliminar warn", callback_data='rm_warn({})'.format(replied_user))]])
@@ -568,7 +570,7 @@ def warn_cmd(bot, update, args=None):
                 parse_mode=telegram.ParseMode.MARKDOWN,
                 reply_markup=keyboard)
         else:
-            output = "👌 Entrenador {} baneado correctamente!\nAlcanzado número máximo de advertencias.".format(name)
+            output = "👌 Mago {} baneado correctamente!\nAlcanzado número máximo de advertencias.".format(name)
             if reason is not "":
                 output = output + "\nMotivo: {}".format(reason)
 
@@ -589,11 +591,11 @@ def warn_cmd(bot, update, args=None):
                     parse_mode=telegram.ParseMode.MARKDOWN)
                 return
 
-        ladmin = get_particular_admin(chat_id)
+        ladmin = adm_sql.get_particular_admin(chat_id)
         if ladmin is not None and ladmin.ejections:
-            admin = get_admin_from_linked(chat_id)
+            admin = adm_sql.get_admin_from_linked(chat_id)
             if admin is not None and admin.ejections is True:
-                replace_pogo = replace(replied_user, name)
+                replace_pogo = support.replace(replied_user, name)
                 bot.sendMessage(
                     chat_id=admin.id,
                     text="ℹ️ {}\n👤 {} ha sido advertido {}/{}".format(message.chat.title, replace_pogo, warning, group.warn),
@@ -607,7 +609,7 @@ def warn_cmd(bot, update, args=None):
             warning = warn_user(chat_id, replied_user, 1)
             group = get_group_settings(chat_id)
             if warning < group.warn:
-                output = "👌 Entrenador [{0}](tg://user?id={1}) advertido correctamente! {2}/{3}".format(name, replied_user, warning, group.warn)
+                output = "👌 Mago [{0}](tg://user?id={1}) advertido correctamente! {2}/{3}".format(name, replied_user, warning, group.warn)
                 if reason is not "":
                     output = output + '\nMotivo: {}'.format(reason)
                 keyboard = InlineKeyboardMarkup([[InlineKeyboardButton('Eliminar warn', callback_data='rm_warn({})'.format(replied_user))]])
@@ -617,7 +619,7 @@ def warn_cmd(bot, update, args=None):
                     parse_mode=telegram.ParseMode.MARKDOWN,
                     reply_markup=keyboard)
             else:
-                output = "👌 Entrenador {} baneado correctamente!\nAlcanzado número máximo de advertencias.".format(name)
+                output = "👌 Mago {} baneado correctamente!\nAlcanzado número máximo de advertencias.".format(name)
                 if reason is not "":
                     output = output + "\nMotivo: {}".format(reason)
 
@@ -638,11 +640,11 @@ def warn_cmd(bot, update, args=None):
                         parse_mode=telegram.ParseMode.MARKDOWN)
                     return
 
-            ladmin = get_particular_admin(chat_id)
+            ladmin = adm_sql.get_particular_admin(chat_id)
             if ladmin is not None and ladmin.ejections:
-                admin = get_admin_from_linked(chat_id)
+                admin = adm_sql.get_admin_from_linked(chat_id)
                 if admin is not None and admin.ejections is True:
-                    replace_pogo = replace(replied_user, name)
+                    replace_pogo = support.replace(replied_user, name)
                     bot.sendMessage(
                         chat_id=admin.id,
                         text="ℹ️ {}\n👤 {} ha sido advertido {}/{}".format(message.chat.title, replace_pogo, warning, group.warn),
@@ -654,7 +656,7 @@ def kick_cmd(bot, update, args=None):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.is_admin(chat_id, user_id, bot) or sql_support.are_banned(user_id, chat_id):
+    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
 
     reason = ""
@@ -675,7 +677,7 @@ def kick_cmd(bot, update, args=None):
             reason = ' '.join(args)
     elif args is not None and len(args) > 0:
         if len(args) > 1 and args[0][0] is '-':
-            if get_linked_admin(chat_id, args[0]):
+            if adm_sql.get_linked_admin(chat_id, args[0]):
                 chat_id = args[0]
                 del args[0]
             else: 
@@ -709,8 +711,8 @@ def kick_cmd(bot, update, args=None):
     if args is not None and len(args) > 0:
         reason = ' '.join(args)
 
-    if get_admin(chat_id) is not None:
-        groups = get_all_groups(chat_id)
+    if adm_sql.get_admin(chat_id) is not None:
+        groups = adm_sql.get_all_groups(chat_id)
     else:
         groups = None
 
@@ -718,7 +720,7 @@ def kick_cmd(bot, update, args=None):
         try:
             bot.kickChatMember(chat_id, replied_user)
             bot.unbanChatMember(chat_id, replied_user)
-            output = "👌 Entrenador {} expulsado correctamente!".format(name)
+            output = "👌 Mago {} expulsado correctamente!".format(name)
             if reason is not "":
                 output = output + "\nMotivo: {}".format(reason)
             bot.sendMessage(
@@ -728,15 +730,15 @@ def kick_cmd(bot, update, args=None):
         except:
             bot.sendMessage(
                 chat_id=chat_id,
-                text="❌ No he podido expulsar al entrenador. Puede que sea administrador o ya no forme parte del grupo.",
+                text="❌ No he podido expulsar al Mago. Puede que sea administrador o ya no forme parte del grupo.",
                 parse_mode=telegram.ParseMode.MARKDOWN)
             return
 
-        ladmin = get_particular_admin(chat_id)
+        ladmin = adm_sql.get_particular_admin(chat_id)
         if ladmin is not None and ladmin.ejections:
-            admin = get_admin_from_linked(chat_id)
+            admin = adm_sql.get_admin_from_linked(chat_id)
             if admin is not None and admin.ejections is True:
-                replace_pogo = replace(replied_user, name)
+                replace_pogo = support.replace(replied_user, name)
                 bot.sendMessage(
                     chat_id=admin.id,
                     text="ℹ️ {}\n👤 {} ha sido expulsado".format(message.chat.title, replace_pogo),
@@ -747,23 +749,23 @@ def kick_cmd(bot, update, args=None):
             try:
                 bot.kickChatMember(chat_id, replied_user)
                 bot.unbanChatMember(chat_id, replied_user)
-                output = "👌 Entrenador {} expulsado correctamente!".format(name)
+                output = "👌 Mago {} expulsado correctamente!".format(name)
                 if reason is not "":
                     output = output + "\nMotivo: {}".format(reason)
             except:
                 bot.sendMessage(
                     chat_id=chat_id,
-                    text="❌ No he podido expulsar al entrenador. Puede que sea administrador o ya no forme parte del grupo.",
+                    text="❌ No he podido expulsar al Mago. Puede que sea administrador o ya no forme parte del grupo.",
                     parse_mode=telegram.ParseMode.MARKDOWN)
                 return
 
             bot.sendMessage(chat_id=chat_id, text=output,
                             parse_mode=telegram.ParseMode.MARKDOWN)
-            ladmin = get_particular_admin(chat_id)
+            ladmin = adm_sql.get_particular_admin(chat_id)
             if ladmin is not None and ladmin.ejections:
-                admin = get_admin_from_linked(chat_id)
+                admin = adm_sql.get_admin_from_linked(chat_id)
                 if admin is not None and admin.ejections is True:
-                    replace_pogo = replace(replied_user, name)
+                    replace_pogo = support.replace(replied_user, name)
                     bot.sendMessage(
                         chat_id=admin.id,
                         text="ℹ️ {}\n👤 {} ha sido expulsado".format(message.chat.title, replace_pogo),
@@ -775,7 +777,7 @@ def ban_cmd(bot, update, args=None):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.is_admin(chat_id, user_id, bot) or sql_support.are_banned(user_id, chat_id):
+    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
 
     reason = ""
@@ -797,7 +799,7 @@ def ban_cmd(bot, update, args=None):
             reason = ' '.join(args)
     elif args is not None and len(args) > 0:
         if len(args) > 1 and args[0][0] is '-':
-            if get_linked_admin(chat_id, args[0]):
+            if adm_sql.get_linked_admin(chat_id, args[0]):
                 chat_id = args[0]
                 del args[0]
             else:
@@ -831,15 +833,15 @@ def ban_cmd(bot, update, args=None):
     if args is not None and len(args) > 0:
         reason = ' '.join(args)
 
-    if get_admin(chat_id) is not None:
-        groups = get_all_groups(chat_id)
+    if adm_sql.get_admin(chat_id) is not None:
+        groups = adm_sql.get_all_groups(chat_id)
     else:
         groups = None
 
     if groups is None:
         try:
             bot.kickChatMember(chat_id, replied_user)
-            output = "👌 Entrenador {} baneado correctamente!".format(name)
+            output = "👌 Mago {} baneado correctamente!".format(name)
             if reason is not '':
                 output = output + "\nMotivo: {}".format(reason)
             keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("Eliminar Ban", callback_data='rm_ban({})'.format(replied_user))]])
@@ -851,15 +853,15 @@ def ban_cmd(bot, update, args=None):
         except:
             bot.sendMessage(
                 chat_id=chat_id,
-                text="❌ No he podido expulsar al entrenador. Puede que sea administrador.",
+                text="❌ No he podido expulsar al Mago. Puede que sea administrador.",
                 parse_mode=telegram.ParseMode.MARKDOWN)
             return
             
-        ladmin = get_particular_admin(chat_id)
+        ladmin = adm_sql.get_particular_admin(chat_id)
         if ladmin is not None and ladmin.ejections:
-            admin = get_admin_from_linked(chat_id)
+            admin = adm_sql.get_admin_from_linked(chat_id)
             if admin is not None and admin.ejections is True:
-                replace_pogo = replace(replied_user, name)
+                replace_pogo = support.replace(replied_user, name)
                 bot.sendMessage(
                     chat_id=admin.id,
                     text="ℹ️ {}\n👤 {} ha sido baneado".format(message.chat.title, replace_pogo),
@@ -869,7 +871,7 @@ def ban_cmd(bot, update, args=None):
             chat_id = group.linked_id
             try:
                 bot.kickChatMember(chat_id, replied_user)
-                output = "👌 Entrenador {} baneado correctamente!".format(name)
+                output = "👌 Mago {} baneado correctamente!".format(name)
                 if reason is not '':
                     output = output + "\nMotivo: {}".format(reason)
                 keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("Eliminar Ban", callback_data='rm_ban({})'.format(replied_user))]])
@@ -881,15 +883,15 @@ def ban_cmd(bot, update, args=None):
             except:
                 bot.sendMessage(
                     chat_id=chat_id,
-                    text="❌ No he podido expulsar al entrenador. Puede que sea administrador.",
+                    text="❌ No he podido expulsar al Mago. Puede que sea administrador.",
                     parse_mode=telegram.ParseMode.MARKDOWN)
                 return
 
-            ladmin = get_particular_admin(chat_id)
+            ladmin = adm_sql.get_particular_admin(chat_id)
             if ladmin is not None and ladmin.ejections:
-                admin = get_admin_from_linked(chat_id)
+                admin = adm_sql.get_admin_from_linked(chat_id)
                 if admin is not None and admin.ejections is True:
-                    replace_pogo = replace(replied_user, name)
+                    replace_pogo = support.replace(replied_user, name)
                     bot.sendMessage(
                         chat_id=admin.id,
                         text="ℹ️ {}\n👤 {} ha sido baneado".format(message.chat.title, replace_pogo),
@@ -901,7 +903,7 @@ def unban_cmd(bot, update, args=None):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.is_admin(chat_id, user_id, bot) or sql_support.are_banned(user_id, chat_id):
+    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
 
     reason = ""
@@ -918,7 +920,7 @@ def unban_cmd(bot, update, args=None):
             reason = ' '.join(args)
     elif args is not None and len(args) > 0:
         if len(args) > 1 and args[0][0] is '-':
-            if get_linked_admin(chat_id, args[0]):
+            if adm_sql.get_linked_admin(chat_id, args[0]):
                 chat_id = args[0]
                 del args[0]
             else:
@@ -950,15 +952,15 @@ def unban_cmd(bot, update, args=None):
             reason = ' '.join(args)
     else:
         return
-    if get_admin(chat_id) is not None:
-        groups = get_all_groups(chat_id)
+    if adm_sql.get_admin(chat_id) is not None:
+        groups = adm_sql.get_all_groups(chat_id)
     else:
         groups = None
 
     if groups is None:
         try:
             bot.unbanChatMember(chat_id, replied_user)
-            output = "👌 Entrenador {} desbaneado correctamente!".format(name)
+            output = "👌 Mago {} desbaneado correctamente!".format(name)
             if reason is not "":
                 output = output + "\nMotivo: {}".format(reason)
             bot.sendMessage(
@@ -968,15 +970,15 @@ def unban_cmd(bot, update, args=None):
         except:
             bot.sendMessage(
                 chat_id=chat_id,
-                text="❌ No he podido desbanear al entrenador",
+                text="❌ No he podido desbanear al Mago",
                 parse_mode=telegram.ParseMode.MARKDOWN)
             return
             
-        ladmin = get_particular_admin(chat_id)
+        ladmin = adm_sql.get_particular_admin(chat_id)
         if ladmin is not None and ladmin.ejections:
-            admin = get_admin_from_linked(chat_id)
+            admin = adm_sql.get_admin_from_linked(chat_id)
             if admin is not None and admin.ejections is True:
-                replace_pogo = replace(replied_user, name)
+                replace_pogo = support.replace(replied_user, name)
                 bot.sendMessage(
                     chat_id=admin.id,
                     text="ℹ️ {}\n👤 {} ha sido desbaneado".format(message.chat.title, replace_pogo),
@@ -986,7 +988,7 @@ def unban_cmd(bot, update, args=None):
             chat_id = group.linked_id
             try:
                 bot.unbanChatMember(chat_id, replied_user)
-                output = "👌 Entrenador {} desbaneado correctamente!".format(name)
+                output = "👌 Mago {} desbaneado correctamente!".format(name)
                 if reason is not "":
                     output = output + "\nMotivo: {}".format(reason)
                 bot.sendMessage(
@@ -996,15 +998,15 @@ def unban_cmd(bot, update, args=None):
             except:
                 bot.sendMessage(
                     chat_id=chat_id,
-                    text="❌ No he podido desbanear al entrenador",
+                    text="❌ No he podido desbanear al Mago",
                     parse_mode=telegram.ParseMode.MARKDOWN)
                 return
 
-            ladmin = get_particular_admin(chat_id)
+            ladmin = adm_sql.get_particular_admin(chat_id)
             if ladmin is not None and ladmin.ejections:
-                admin = get_admin_from_linked(chat_id)
+                admin = adm_sql.get_admin_from_linked(chat_id)
                 if admin is not None and admin.ejections is True:
-                    replace_pogo = replace(replied_user, name)
+                    replace_pogo = support.replace(replied_user, name)
                     bot.sendMessage(
                         chat_id=admin.id,
                         text="ℹ️ {}\n👤 {} ha sido desbaneado".format(message.chat.title, replace_pogo),

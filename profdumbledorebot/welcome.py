@@ -25,12 +25,12 @@ import os
 import logging
 import telegram
 
-import profdumbledorebot.sql.rules as rules
-import profdumbledorebot.sql.welcome as welcome
+import profdumbledorebot.sql.welcome as welcome_sql
 import profdumbledorebot.supportmethods as support
 
 from telegram.error import BadRequest
 from profdumbledorebot.config import get_config
+from profdumbledorebot.sql.rules import has_rules
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.utils.helpers import mention_markdown, escape_markdown
 
@@ -85,7 +85,7 @@ def send_welcome(bot, update):
                                           count=count, title=escape_markdown(chat.title), id=new_mem.id)
                 buttons = welcome.get_welc_buttons(chat.id)
                 keyb = support.build_keyboard(buttons)
-                if rules.has_rules(chat.id):
+                if has_rules(chat.id):
                     config = get_config()
                     url = "t.me/{}?start={}".format(
                         config["telegram"]["bot_alias"],
@@ -102,7 +102,7 @@ def send_welcome(bot, update):
 
 def send(bot, chat_id, message, keyboard):
     try:
-        msg = bot.send_message(
+        msg = bot.sendMessage(
             chat_id=chat_id,
             text=message, 
             parse_mode=telegram.ParseMode.MARKDOWN,

@@ -36,7 +36,7 @@ LOCK = threading.RLock()
 def get_group(group_id):
     try:
         session = get_session()
-        group = get_unique_from_query(session.query(Group).filter(Group.id == group_id))
+        group = get_unique_from_query(session.query(model.Group).filter(model.Group.id == group_id))
         return group
     finally:
         session.close()
@@ -45,13 +45,13 @@ def get_group(group_id):
 def set_group(group_id, group_title):
     with LOCK:
         session = get_session()
-        group = Group(id=group_id, title=group_title)
+        group = model.Group(id=group_id, title=group_title)
         session.add(group)
         session.commit()
-        set_j = SettingsJoin(id=group_id)
-        set_w = Welcome(chat_id=group_id)
-        set_adm = SettingsAdmin(id=group_id)
-        set_group = SettingsGroup(id=group_id)
+        set_j = model.SettingsJoin(id=group_id)
+        set_w = model.Welcome(chat_id=group_id)
+        set_adm = model.SettingsAdmin(id=group_id)
+        set_group = model.SettingsGroup(id=group_id)
         session.add(set_j)
         session.add(set_w)
         session.add(set_adm)
@@ -63,7 +63,7 @@ def set_group(group_id, group_title):
 def commit_group(user_id, title=None, language=None, timezone=None):
     with LOCK:
         session = get_session()
-        group = get_unique_from_query(session.query(Group).filter(Group.id == chat_id))
+        group = get_unique_from_query(session.query(model.Group).filter(model.Group.id == chat_id))
         if title:
             group.title = title
         if language:

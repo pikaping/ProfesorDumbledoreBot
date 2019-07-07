@@ -26,20 +26,25 @@ import re
 import time
 import logging
 import telegram
+
+import profdumbledorebot.sql.user as user_sql
+import profdumbledorebot.sql.group as group_sql
+import profdumbledorebot.supportmethods as support
+import profdumbledorebot.sql.settings as settings_sql
+import profdumbledorebot.sql.usergroup as usergroup_sql
+
 from threading import Thread
 from Levenshtein import distance
-
-from nursejoybot.config import get_config
 from telegram.ext.dispatcher import run_async
+from profdumbledorebot.config import get_config
+from profdumbledorebot.welcome import send_welcome
+from profdumbledorebot.sql.support import are_banned
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-
-from nursejoybot.welcome import send_welcome
 
 
 @run_async
 def joined_chat(bot, update, job_queue):
-    logging.debug("%s %s", bot, update)
-    chat_id, chat_type, user_id, text, message = extract_update_info(update)
+    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
     new_chat_member = message.new_chat_members[0] if message.new_chat_members else None
 
     config = get_config()
@@ -52,9 +57,9 @@ def joined_chat(bot, update, job_queue):
 
         chat_title = message.chat.title
         chat_id = message.chat.id
-        group = get_group(chat_id)
+        group = group_sql.get_group(chat_id)
         if group is None:
-            set_group(chat_id, message.chat.title)
+            group_sql.set_group(chat_id, message.chat.title)
 
         message_text = (
             "Si necesitais ayuda podéis lanzar chispas rojas c"
@@ -63,6 +68,7 @@ def joined_chat(bot, update, job_queue):
             "er la ayuda para prefectos de los grupos, donde s"
             "e explica en detalle todos los pasos que se deben"
             " seguir.".format(ensure_escaped(chat_title)))
+
         bot.sendMessage(
             chat_id=chat_id, 
             text=message_text, 
@@ -72,37 +78,36 @@ def joined_chat(bot, update, job_queue):
         chat_id = message.chat.id
         user_id = update.effective_message.new_chat_members[0].id
 
-        group = get_join_settings(chat_id)
+        group = settings_sql.get_join_settings(chat_id)
         if group is not None:
-            if group.silence:
+            if group.delete_header:
                 delete_message(chat_id, message.message_id, bot)
 
             if are_banned(user_id, user_id):
                 bot.kickChatMember(chat_id, user_id)
-                good_luck(bot, update, "Banned")
                 return
 
             user = get_user(user_id)       
-            if user is None and group.validationrequired is not ValidationRequiered.NO_VALIDATION:
+            if user is None and group.requirment is not ValidationRequiered.NO_VALIDATION:
                 bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
                 if group.mute is False:
-                    output = "👌 Entrenador sin registrarse expulsado!"
+                    output = "👌 Mago sin registrarse expulsado!"
                     bot.sendMessage(
                         chat_id=chat_id, 
                         text=output, 
                         parse_mode=telegram.ParseMode.MARKDOWN)
-                good_luck(bot, update, "Not registered")
+                good_luck(bot, update, "El usuario no está registrado")
                 return
 
             if group.validationrequired is ValidationRequiered.VALIDATION and user.validation_type is ValidationType.NONE:
                 bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
                 if group.mute is False:
-                    output = "👌 Entrenador sin validarse expulsado!"
+                    output = "👌 Mago sin validarse expulsado!"
                     bot.sendMessage(
                         chat_id=chat_id, 
                         text=output, 
                         parse_mode=telegram.ParseMode.MARKDOWN)           
-                good_luck(bot, update, "Not registered")
+                good_luck(bot, update, "El usuario no está registrado")
                 try:
                     bot.sendMessage(
                         chat_id=user_id, 
@@ -119,9 +124,9 @@ def joined_chat(bot, update, job_queue):
                         chat_id=chat_id, 
                         text=output, 
                         parse_mode=telegram.ParseMode.MARKDOWN)
-                    delete_object = DeleteContext(chat_id, sent.message_id)
+                    delete_object = support.DeleteContext(chat_id, sent.message_id)
                     job_queue.run_once(
-                        callback_delete, 
+                        support.callback_delete, 
                         10,
                         context=delete_object
                     )
@@ -155,16 +160,6 @@ def joined_chat(bot, update, job_queue):
                         group.delete_cooldown,
                         context=delete_object
                     )
-
-            if group.joy and (user is None or user.level is None):
-                sent_message = alert_joy(bot, chat_id, user_id)
-                if sent_message is not None:
-                    delete_object = DeleteContext(chat_id, sent_message.message_id)
-                    job_queue.run_once(
-                        callback_delete, 
-                        30,
-                        context=delete_object
-                    )
             
             ladmin = get_particular_admin(chat_id)
             if ladmin is not None and ladmin.welcome:
@@ -175,43 +170,21 @@ def joined_chat(bot, update, job_queue):
                     bot.sendMessage(chat_id=admin.id, text=message_text,
                                     parse_mode=telegram.ParseMode.MARKDOWN)
 
-        else:
-            logging.info("CREATING GROUP")
-            set_group(chat_id, message.chat.title)
-
-            message_text = (
-                "Entrenadores de *{}*, sed bienvenidos al Centro P"
-                "okémon de la región de Telegram.\nAntes de poder "
-                "utilizarme, un administrador tiene que configurar"
-                " algunas cosas. Comenzad viendo la ayuda con el c"
-                "omando `/help` para conocer todas las funciones. "
-                "Aseguraos de ver la *ayuda para administradores*,"
-                " donde se explica en detalle todos los pasos que "
-                "se deben seguir.\n\n <Si este mensaje ha aparecido"
-                "y no has promocionado el grupo a supergrupo, pide "
-                "ayuda en @enfermerajoyayuda >".format(ensure_escaped(chat_title))
-            )
-            bot.sendMessage(
-                chat_id=chat_id, 
-                text=message_text, 
-                parse_mode=telegram.ParseMode.MARKDOWN)
 
 
 @run_async
 def process_group_message(bot, update):
-    chat_id, chat_type, user_id, text, message = extract_update_info(update)
+    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
     msg = update.effective_message
     
     if are_banned(user_id, chat_id):
         return
   
-    group = get_group(chat_id)
+    group = group_sql.get_group(chat_id)
     if group is None:
-        set_group(chat_id, message.chat.title)
-        logging.debug("GROUP created")
-    if (not exists_user_group(user_id, chat_id)):
+        group_sql.set_group(chat_id, message.chat.title)
+    if not exists_user_group(user_id, chat_id):
         set_user_group(user_id, chat_id)
-        logging.debug("USER GROUP created")
         
     message_counter(user_id, chat_id)
     if text is None or msg.photo is None:
@@ -271,7 +244,7 @@ def process_group_message(bot, update):
                     parse_mode=telegram.ParseMode.MARKDOWN
                 )
                 return
-
+'''
     if text and len(text) < 31:
         commands = get_commands(chat_id)
         if commands is None:
@@ -322,20 +295,20 @@ def process_group_message(bot, update):
                                 "las llaves, revisalo y configuralo de nuevo."),
                         parse_mode=telegram.ParseMode.MARKDOWN)
                 return
+'''
 
 
-def alert_joy(bot, chat_id, user_id):
+def send_alert(bot, chat_id, user_id):
     button_list = [[
-        InlineKeyboardButton(text="Empezar!", url="https://t.me/NurseJoyBot")
+        InlineKeyboardButton(text="Empezar!", url="https://t.me/ProfDumbledoreBot")
     ]]
     reply_markup = InlineKeyboardMarkup(button_list)
-    sent_message = bot.send_message(
+    sent_message = bot.sendMessage(
         chat_id=chat_id,
         text=(
-            "¡Hola entrenador/a!\n\nPara permanecer en este grupo, debes registra"
-            "rte conmigo: @NurseJoyBot.\nPara hacerlo, pulsa *Empezar*, inicia el"
-            " chat privado y escríbeme `/register`.\n\n👉 Siguiendo esos sencillo"
-            "s pasos estarás validado/a."
+            "¡Hola mago/a!\n\nPara permanecer en este grupo, debes registra"
+            "rte conmigo: @ProfDumbledoreBot.\nPara hacerlo, pulsa *Empezar*, inicia el"
+            " chat privado y sigue los pasos."
         ),
         parse_mode=telegram.ParseMode.MARKDOWN,
         reply_markup=reply_markup
