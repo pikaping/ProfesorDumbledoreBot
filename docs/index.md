@@ -97,9 +97,9 @@ En **grupos** el bot ya se puede utilizar tan pronto entra al grupo y envía un 
 
 1. Dirígete al perfil del bot. En el menú, selecciona la opción *Añadir a un grupo* y escoge el grupo de la lista.
 
-2. Pulsa en [este enlace](https://telegram.me/ProfDumbledoreBot?startgroup=true) en un dispositivo donde tengas Telegram instalado.
+2. Pulsa en [este enlace](https://telegram.me/ProfesorDumbledoreBot?startgroup=true) en un dispositivo donde tengas Telegram instalado.
 
-3. Puedes intentar añadirlo como un contacto más desde el grupo con su alias `@ProfDumbledoreBot`.
+3. Puedes intentar añadirlo como un contacto más desde el grupo con su alias `@ProfesorDumbledoreBot`.
 
 ### a ###
 
