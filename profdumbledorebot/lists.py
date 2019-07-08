@@ -31,7 +31,7 @@ from telegram.ext.dispatcher import run_async
 from profdumbledorebot.sql.user import get_user
 from telegram.utils.helpers import escape_markdown
 from profdumbledorebot.sql.support import are_banned
-from profdumbledorebot.model import Houses, ValidationType
+from profdumbledorebot.model import Houses
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
 REGLIST = re.compile(
@@ -76,7 +76,7 @@ def list_btn(bot, update):
 
     user = get_user(user_id)
 
-    if user is None or user.validation_type == ValidationType.NONE:
+    if user is None or not user.validated:
         return
 
     if user.house is Houses.GRYFFINDOR:

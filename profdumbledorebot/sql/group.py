@@ -25,6 +25,8 @@ import logging
 import threading
 import profdumbledorebot.model as model
 
+
+from profdumbledorebot.mwt import MWT
 from profdumbledorebot.db import get_session
 from sqlalchemy.sql.expression import and_, or_
 from profdumbledorebot.sql.support import get_unique_from_query

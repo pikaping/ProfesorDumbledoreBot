@@ -26,7 +26,6 @@ import logging
 import telegram
 
 import profdumbledorebot.supportmethods as support
-import profdumbledorebot.sql.support as sql_support
 
 from pytz import timezone
 from datetime import datetime
@@ -34,13 +33,20 @@ from nursejoybot.db import get_session
 from telegram.ext.dispatcher import run_async
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
+from profdumbledorebot.sql.group import get_group
+from profdumbledorebot.sql.usergroup import remove_warn
+from profdumbledorebot.sql.admin import set_admin_settings, set_ladmin_settings
+from profdumbledorebot.sql.news import is_news_subscribed, rm_news_subscription, set_news_subscription
+from profdumbledorebot.sql.welcome import set_welc_preference, set_custom_welcome, set_welcome_settings
+from profdumbledorebot.sql.settings import set_max_members, set_general_settings, set_join_settings, set_nanny_settings
+
 
 @run_async
 def settings(bot, update, args=None):
     chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.is_admin(chat_id, user_id, bot) or sql_support.are_banned(user_id, chat_id):
+    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
 
     group = get_group(chat_id)
@@ -61,7 +67,7 @@ def set_welcome(bot, update):
     chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
     text, data_type, content, buttons = support.get_welcome_type(message)
 
-    if not support.is_admin(chat_id, user_id, bot) or sql_support.are_banned(user_id, chat_id):
+    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
 
     group = get_group(chat_id)
@@ -88,7 +94,7 @@ def set_zone(bot, update, args=None):
     chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not sql_support.is_admin(chat_id, user_id, bot) or support.are_banned(user_id, chat_id):
+    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
 
     group = get_group(chat_id)
@@ -134,10 +140,10 @@ def set_zone(bot, update, args=None):
 
 @run_async
 def set_maxmembers(bot, update, args=None):
-    chat_id, chat_type, user_id, text, message = extract_update_info(update)
-    delete_message(chat_id, message.message_id, bot)
+    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    support.delete_message(chat_id, message.message_id, bot)
 
-    if not is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
+    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
 
     group = get_group(chat_id)
@@ -170,10 +176,10 @@ def set_maxmembers(bot, update, args=None):
 
 @run_async
 def set_cooldown(bot, update, args=None):
-    chat_id, chat_type, user_id, text, message = extract_update_info(update)
-    delete_message(chat_id, message.message_id, bot)
+    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    support.delete_message(chat_id, message.message_id, bot)
 
-    if not is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
+    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
 
     group = get_group(chat_id)
@@ -207,7 +213,6 @@ def set_cooldown(bot, update, args=None):
 @run_async
 def settingsbutton(bot, update):
     logging.debug("%s %s", bot, update)
-    
     query = update.callback_query
     data = query.data
     user = update.effective_user
@@ -283,7 +288,7 @@ def settingsbutton(bot, update):
 
     if re.match("^settings_.+$", data) is not None:
         match = re.match(r"settings_news_([-0-9]*)", query.data)
-        if not is_admin(chat_id, user_id, bot):
+        if not support.is_admin(chat_id, user_id, bot):
             bot.answerCallbackQuery(
                 text="Solo los administradores del grupo pueden configurar el bot.",
                 callback_query_id=update.callback_query.id,
@@ -292,34 +297,34 @@ def settingsbutton(bot, update):
             return
 
         if data in settings_goto:
-            update_settings_message(chat_id, bot, message_id, keyboard=settings_goto[data])
+            support.update_settings_message(chat_id, bot, message_id, keyboard=settings_goto[data])
         elif data == "settings_done":
-            delete_message(chat_id, message_id, bot)
+            support.delete_message(chat_id, message_id, bot)
         elif data in settings_general:
             set_general_settings(chat_id, settings_general[data])
-            update_settings_message(chat_id, bot, message_id, keyboard="general")          
+            support.update_settings_message(chat_id, bot, message_id, keyboard="general")          
         elif data in settings_join:
             set_join_settings(chat_id, settings_join[data])
-            update_settings_message(chat_id, bot, message_id, keyboard="join")
+            support.update_settings_message(chat_id, bot, message_id, keyboard="join")
         elif data in settings_welcome:
             set_welcome_settings(chat_id, settings_welcome[data])
-            update_settings_message(chat_id, bot, message_id, keyboard="welcome")
+            support.update_settings_message(chat_id, bot, message_id, keyboard="welcome")
         elif data in settings_nanny:
             set_nanny_settings(chat_id, settings_nanny[data])
-            update_settings_message(chat_id, bot, message_id, keyboard="nanny")
+            support.update_settings_message(chat_id, bot, message_id, keyboard="nanny")
         elif data in settings_admin:
             set_admin_settings(chat_id, settings_admin[data])
-            update_settings_message(chat_id, bot, message_id, keyboard="admin")
+            support.update_settings_message(chat_id, bot, message_id, keyboard="admin")
         elif data in settings_ladmin:
             set_ladmin_settings(chat_id, settings_ladmin[data])
-            update_settings_message(chat_id, bot, message_id, keyboard="ladmin")
+            support.update_settings_message(chat_id, bot, message_id, keyboard="ladmin")
         elif match:
             news_id = match.group(1)
             if is_news_subscribed(chat_id, news_id):
                 rm_news_subscription(chat_id, news_id)
             else:
                 set_news_subscription(chat_id, news_id)
-            update_settings_message(chat_id, bot, message_id, keyboard="news")
+            support.update_settings_message(chat_id, bot, message_id, keyboard="news")
 
         bot.answerCallbackQuery(
             text="Estás editando los ajustes del grupo.", callback_query_id=update.callback_query.id, show_alert="true")
@@ -327,7 +332,7 @@ def settingsbutton(bot, update):
 
     match = re.match(r"rm_warn\((.+?)\)", query.data)
     if match:
-        if not is_admin(chat_id, user_id, bot):
+        if not support.is_admin(chat_id, user_id, bot):
             bot.answerCallbackQuery(
                 text="Solo los administradores del grupo pueden retirar warns.",
                 callback_query_id=update.callback_query.id,
@@ -360,7 +365,7 @@ def settingsbutton(bot, update):
 
     match = re.match(r"rm_ban\((.+?)\)", query.data)
     if match:
-        if not is_admin(chat_id, user_id, bot):
+        if not support.is_admin(chat_id, user_id, bot):
             bot.answerCallbackQuery(
                 text="Solo los administradores del grupo pueden retirar bans.",
                 callback_query_id=update.callback_query.id,
@@ -383,3 +388,4 @@ def settingsbutton(bot, update):
 
     else:
         logging.error('settingsbutton:%s is not a expected settings command', data)
+

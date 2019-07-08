@@ -26,14 +26,14 @@ import os
 import logging
 import telegram
 
-import profdumbledorebot.support as support
+import profdumbledorebot.supportmethods as support
 import profdumbledorebot.sql.rules as rul_sql
 
 from telegram.error import BadRequest
 from telegram.ext.dispatcher import run_async
 from telegram.utils.helpers import escape_markdown
 from profdumbledorebot.sql.support import are_banned
-from profdumbledorebot.settings import get_group_settings
+from profdumbledorebot.sql.settings import get_group_settings
 
 def send_rules(bot, update, group_id=None):
     chat_id, chat_type, user_id, text, message = support.extract_update_info(update)

@@ -27,6 +27,7 @@ import sys
 import logging
 import telegram
 
+import profdumbledorebot.supportmethods as support
 import profdumbledorebot.sql.user as user_sql
 
 from threading import Thread
@@ -36,6 +37,7 @@ from profdumbledorebot.config import get_config
 from profdumbledorebot.sql.support import are_banned
 from profdumbledorebot.sql.settings import get_group_settings
 from telegram.ext.dispatcher import run_async
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
 
 @run_async
@@ -61,7 +63,7 @@ def start_cmd(bot, update, args=None):
     else:
         dest_id = user_id
 
-    output
+    output = "📖 Bienvenido al mundo mágico del profesor Dumbledore. Tómate tu tiempo en leer la guía para magos.\n\n💙💛❤️💚 Registrar pasaporte del Ministerio\nEscríbeme por privado la contraseña /cucuruchodecucarachas y responde a mis preguntas.\n\n🔔 Editar pasaporte del Ministerio\nPara subir de nivel, únicamente debes enviarme /pasaporte y el número de nivel actual."
 
     sent_message = bot.sendMessage(
         chat_id=dest_id,
@@ -78,35 +80,35 @@ def start_cmd(bot, update, args=None):
 
 @run_async
 def register_cmd(bot, update, args=None):
-    chat_id, chat_type, user_id, text, message = extract_update_info(update)
+    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
 
     if are_banned(user_id, chat_id):
         return
 
-    user = get_user(user_id)
+    user = user_sql.get_user(user_id)
     if user is None:
-        set_user(user_id)
+        user_sql.set_user(user_id)
 
     text = "Son nuestras elecciones las que muestran lo que somos, mucho más que nuestras habilidades, así pues elige bien y dime, ¿Cual es tu nivel?"
     button_list = [
-        [InlineKeyboardButton("1-10", callback_data='reg_btn_1'),
-        InlineKeyboardButton("11-20", callback_data='reg_btn_2'),
-        InlineKeyboardButton("21-30", callback_data='reg_btn_3')],
-        [InlineKeyboardButton("31-40", callback_data='reg_btn_4'),
-        InlineKeyboardButton("41-50", callback_data='reg_btn_5'),
-        InlineKeyboardButton("51-60", callback_data='reg_btn_6')]]
+        [InlineKeyboardButton("1-10", callback_data='reg_btn_0'),
+        InlineKeyboardButton("11-20", callback_data='reg_btn_10'),
+        InlineKeyboardButton("21-30", callback_data='reg_btn_20')],
+        [InlineKeyboardButton("31-40", callback_data='reg_btn_30'),
+        InlineKeyboardButton("41-50", callback_data='reg_btn_40'),
+        InlineKeyboardButton("51-60", callback_data='reg_btn_50')]]
 
     reply_markup = InlineKeyboardMarkup(button_list)
     bot.sendMessage(
         chat_id=chat_id,
-        text=output,
+        text=text,
         parse_mode=telegram.ParseMode.MARKDOWN,
         reply_markup=reply_markup)
 
 
 @run_async
 def ping_cmd(bot, update):
-    chat_id, chat_type, user_id, text, message = extract_update_info(update)
+    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
 
     sent_dt = message.date
     now_dt = datetime.now()
@@ -146,24 +148,24 @@ def ping_cmd(bot, update):
 
 @run_async
 def whois_cmd(bot, update, args=None):
-    chat_id, chat_type, user_id, text, message = extract_update_info(update)
-    delete_message(chat_id, message.message_id, bot)
+    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    support.delete_message(chat_id, message.message_id, bot)
 
     if are_banned(user_id, chat_id):
         return
 
     if message.reply_to_message is not None:
         if message.reply_to_message.forward_from is not None:
-            user = get_user(message.reply_to_message.forward_from.id)
+            user = user_sql.get_user(message.reply_to_message.forward_from.id)
             if user is not None:
                 replied_id = user.id
         elif message.reply_to_message.from_user is not None:
-            user = get_user(message.reply_to_message.from_user.id)
+            user = user_sql.get_user(message.reply_to_message.from_user.id)
             if user is not None:
                 replied_id = user.id
 
     elif args is not None and len(args)== 1:
-        user = get_user_by_name(args[0])
+        user = user_sql.get_user_by_name(args[0])
         if user is not None:
             replied_id = user.id
         elif args[0].isDigit():
@@ -581,16 +583,16 @@ def passport_btn(bot, update):
 
     if par == "btn":
         button_list = [
-            [InlineKeyboardButton("{}".format(1*int(val)), callback_data='profile_edit_lvl_{}'.format(1*int(val))),
-            InlineKeyboardButton("{}".format(2*int(val)), callback_data='profile_edit_lvl_{}'.format(2*int(val))),
-            InlineKeyboardButton("{}".format(3*int(val)), callback_data='profile_edit_lvl_{}'.format(3*int(val))),
-            InlineKeyboardButton("{}".format(4*int(val)), callback_data='profile_edit_lvl_{}'.format(4*int(val))),
-            InlineKeyboardButton("{}".format(5*int(val)), callback_data='profile_edit_lvl_{}'.format(5*int(val)))],
-            [InlineKeyboardButton("{}".format(6*int(val)), callback_data='profile_edit_lvl_{}'.format(1*int(val))),
-            InlineKeyboardButton("{}".format(7*int(val)), callback_data='profile_edit_lvl_{}'.format(2*int(val))),
-            InlineKeyboardButton("{}".format(8*int(val)), callback_data='profile_edit_lvl_{}'.format(8*int(val))),
-            InlineKeyboardButton("{}".format(9*int(val)), callback_data='profile_edit_lvl_{}'.format(9*int(val))),
-            InlineKeyboardButton("{}".format(10*int(val)), callback_data='profile_edit_lvl_{}'.format(10*int(val)))]]
+            [InlineKeyboardButton("{}".format(1+int(val)), callback_data='profile_edit_lvl_{}'.format(1+int(val))),
+            InlineKeyboardButton("{}".format(2+int(val)), callback_data='profile_edit_lvl_{}'.format(2+int(val))),
+            InlineKeyboardButton("{}".format(3+int(val)), callback_data='profile_edit_lvl_{}'.format(3+int(val))),
+            InlineKeyboardButton("{}".format(4+int(val)), callback_data='profile_edit_lvl_{}'.format(4+int(val))),
+            InlineKeyboardButton("{}".format(5+int(val)), callback_data='profile_edit_lvl_{}'.format(5+int(val)))],
+            [InlineKeyboardButton("{}".format(6+int(val)), callback_data='profile_edit_lvl_{}'.format(6+int(val))),
+            InlineKeyboardButton("{}".format(7+int(val)), callback_data='profile_edit_lvl_{}'.format(7+int(val))),
+            InlineKeyboardButton("{}".format(8+int(val)), callback_data='profile_edit_lvl_{}'.format(8+int(val))),
+            InlineKeyboardButton("{}".format(9+int(val)), callback_data='profile_edit_lvl_{}'.format(9+int(val))),
+            InlineKeyboardButton("{}".format(10+int(val)), callback_data='profile_edit_lvl_{}'.format(10+int(val)))]]
 
         bot.edit_message_reply_markup(
             chat_id=chat_id,
@@ -678,7 +680,7 @@ def register_btn(bot, update):
     if are_banned(user_id, chat_id):
         return
 
-    match = REGPRIV.match(query.data)
+    match = REGREG.match(query.data)
     if match:
         par = match.group(1)
         val = match.group(3)        
@@ -687,16 +689,16 @@ def register_btn(bot, update):
 
     if par == "btn":
         button_list = [
-            [InlineKeyboardButton("{}".format(1*int(val)), callback_data='reg_lvl_{}'.format(1*int(val))),
-            InlineKeyboardButton("{}".format(2*int(val)), callback_data='reg_lvl_{}'.format(2*int(val))),
-            InlineKeyboardButton("{}".format(3*int(val)), callback_data='reg_lvl_{}'.format(3*int(val))),
-            InlineKeyboardButton("{}".format(4*int(val)), callback_data='reg_lvl_{}'.format(4*int(val))),
-            InlineKeyboardButton("{}".format(5*int(val)), callback_data='reg_lvl_{}'.format(5*int(val)))],
-            [InlineKeyboardButton("{}".format(6*int(val)), callback_data='reg_lvl_{}'.format(1*int(val))),
-            InlineKeyboardButton("{}".format(7*int(val)), callback_data='reg_lvl_{}'.format(2*int(val))),
-            InlineKeyboardButton("{}".format(8*int(val)), callback_data='reg_lvl_{}'.format(8*int(val))),
-            InlineKeyboardButton("{}".format(9*int(val)), callback_data='reg_lvl_{}'.format(9*int(val))),
-            InlineKeyboardButton("{}".format(10*int(val)), callback_data='reg_lvl_{}'.format(10*int(val)))]]
+            [InlineKeyboardButton("{}".format(1+int(val)), callback_data='reg_lvl_{}'.format(1+int(val))),
+            InlineKeyboardButton("{}".format(2+int(val)), callback_data='reg_lvl_{}'.format(2+int(val))),
+            InlineKeyboardButton("{}".format(3+int(val)), callback_data='reg_lvl_{}'.format(3+int(val))),
+            InlineKeyboardButton("{}".format(4+int(val)), callback_data='reg_lvl_{}'.format(4+int(val))),
+            InlineKeyboardButton("{}".format(5+int(val)), callback_data='reg_lvl_{}'.format(5+int(val)))],
+            [InlineKeyboardButton("{}".format(6+int(val)), callback_data='reg_lvl_{}'.format(6+int(val))),
+            InlineKeyboardButton("{}".format(7+int(val)), callback_data='reg_lvl_{}'.format(7+int(val))),
+            InlineKeyboardButton("{}".format(8+int(val)), callback_data='reg_lvl_{}'.format(8+int(val))),
+            InlineKeyboardButton("{}".format(9+int(val)), callback_data='reg_lvl_{}'.format(9+int(val))),
+            InlineKeyboardButton("{}".format(10+int(val)), callback_data='reg_lvl_{}'.format(10+int(val)))]]
 
         bot.edit_message_reply_markup(
             chat_id=chat_id,
@@ -705,7 +707,7 @@ def register_btn(bot, update):
         return
 
     elif par == "lvl":
-        commit_user(user_id, level=val)
+        user_sql.commit_user(user_id, level=val)
         button_list = [
             [InlineKeyboardButton("❤️🦁 Gryffindor", callback_data='reg_hse_1')],
             [InlineKeyboardButton("💛🦡 Hufflepuff", callback_data='reg_hse_2')],
@@ -723,7 +725,7 @@ def register_btn(bot, update):
         return
 
     elif par == "hse":
-        commit_user(user_id, house=val)
+        user_sql.commit_user(user_id, house=val)
         button_list = [
             [InlineKeyboardButton("⚔ Auror", callback_data='reg_prf_3')],
             [InlineKeyboardButton("🐾 Magizoologo", callback_data='reg_prf_2')],
@@ -738,8 +740,8 @@ def register_btn(bot, update):
         )
 
     elif par == "prf":
-        commit_user(user_id, profession=val)
-        commit_user(user_id, validation=True)
+        user_sql.commit_user(user_id, profession=val)
+        user_sql.commit_user(user_id, validation=True)
         bot.edit_message_text(
             text="Felicidades, has completado el proceso de validación.",
             chat_id=chat_id,

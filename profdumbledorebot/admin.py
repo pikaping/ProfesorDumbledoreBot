@@ -34,7 +34,7 @@ from datetime import datetime
 from telegram.ext.dispatcher import run_async
 from telegram.utils.helpers import escape_markdown
 from profdumbledorebot.sql.support import are_banned
-from profdumbledorebot.settings import get_group_settings
+from profdumbledorebot.sql.settings import get_group_settings
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from profdumbledorebot.sql.user import get_user, get_user_by_name
 from profdumbledorebot.sql.usergroup import exists_user_group, set_user_group, warn_user

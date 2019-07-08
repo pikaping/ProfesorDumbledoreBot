@@ -25,11 +25,11 @@ import re
 import logging
 import telegram
 
-import profdumbledorebot.support as support
+import profdumbledorebot.supportmethods as support
 
 from telegram.ext.dispatcher import run_async
-from profdumbledorebot.sql usergroup import warn_user
 from profdumbledorebot.news import init_news, stop_news
+from profdumbledorebot.sql.usergroup import warn_user
 from profdumbledorebot.sql.settings import get_nanny_settings, get_group_settings, set_nanny_reply
 
 

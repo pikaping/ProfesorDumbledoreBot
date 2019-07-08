@@ -30,21 +30,22 @@ import signal
 import logging
 import argparse
 
-import profumbledorebot.news as news
-import profumbledorebot.admin as admin
-import profumbledorebot.group as group
-import profumbledorebot.rules as rules
-import profumbledorebot.lists as lists
-import profumbledorebot.model as model
-import profumbledorebot.tablas as tablas
-import profumbledorebot.config as config
-import profumbledorebot.settings as settings
-import profumbledorebot.supportmethods as support
-import profumbledorebot.profumbledorebot as profumbledorebot
+import profdumbledorebot.news as news
+import profdumbledorebot.admin as admin
+import profdumbledorebot.nanny as nanny
+import profdumbledorebot.group as group
+import profdumbledorebot.rules as rules
+import profdumbledorebot.lists as lists
+import profdumbledorebot.model as model
+import profdumbledorebot.tablas as tablas
+import profdumbledorebot.config as config_file
+import profdumbledorebot.settings as settings
+import profdumbledorebot.supportmethods as support
+import profdumbledorebot.profdumbledorebot as profdumbledorebot
 
 
 from logging.handlers import  TimedRotatingFileHandler
-from profumbledorebot.nanny import process_cmd, set_nanny
+from profdumbledorebot.nanny import process_cmd, set_nanny
 from telegram.ext import Updater, CommandHandler, MessageHandler, InlineQueryHandler, CallbackQueryHandler, Filters
 
 
@@ -53,7 +54,7 @@ def start_bot():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        '-c', '--cfg', default=config.get_default_config_path(),
+        '-c', '--cfg', default=config_file.get_default_config_path(),
         type=str,
         help='path to the Dumbledore bot config file (Default: %(default)s'
     )
@@ -67,10 +68,10 @@ def start_bot():
     args = parser.parse_args()
 
     if args.create_config:
-        config.create_default_config(args.cfg)
+        config_file.create_default_config(args.cfg)
         sys.exit(0)
 
-    config = config.get_config(args.cfg)
+    config = config_file.get_config(args.cfg)
     support.create_needed_paths()
     model.create_databases()
 
@@ -101,15 +102,17 @@ def start_bot():
 
     dispatcher.add_error_handler(support.error_callback)
 
-    dispatcher.add_handler(CommandHandler('ping', ping_cmd))
-    dispatcher.add_handler(CommandHandler(['fclist','fc'], fclist_cmd, Filters.group))
-    dispatcher.add_handler(CommandHandler(['help','start'], start_cmd, pass_args=True))
-    dispatcher.add_handler(CommandHandler(['quienes','whois'], whois_cmd, pass_args=True))
+    
+    dispatcher.add_handler(CommandHandler('ping', profdumbledorebot. ping_cmd))
+    dispatcher.add_handler(CommandHandler(['fclist','fc'], profdumbledorebot.fclist_cmd, Filters.group))
+    dispatcher.add_handler(CommandHandler(['help','start'], profdumbledorebot.start_cmd, pass_args=True))
+    dispatcher.add_handler(CommandHandler(['quienes','whois'], profdumbledorebot.whois_cmd, pass_args=True))
 
-    dispatcher.add_handler(CallbackQueryHandler(profile_btn, pattern=r"^profile_"))
-    dispatcher.add_handler(CommandHandler(['profile','perfil'], profile_cmd, Filters.private))
-    dispatcher.add_handler(CommandHandler('set_friendid', set_friendid_cmd, Filters.private, pass_args=True))
-    dispatcher.add_handler(CommandHandler(['register','registro',''], register_cmd, Filters.private))
+    dispatcher.add_handler(CallbackQueryHandler(profdumbledorebot.register_btn, pattern=r"^reg_"))
+    dispatcher.add_handler(CallbackQueryHandler(profdumbledorebot.passport_btn, pattern=r"^profile_"))
+    dispatcher.add_handler(CommandHandler(['passport','pasaporte'], profdumbledorebot.passport_cmd, Filters.private))
+    dispatcher.add_handler(CommandHandler('set_friendid', profdumbledorebot.set_friendid_cmd, Filters.private, pass_args=True))
+    dispatcher.add_handler(CommandHandler(['register','registro','cucuruchodecucarachas'], profdumbledorebot.register_cmd, Filters.private))
     '''
     dispatcher.add_handler(CommandHandler('rm_cmd', rm_cmd_cmd, Filters.group))
     dispatcher.add_handler(CommandHandler('new_cmd', new_cmd_cmd, Filters.group))
@@ -137,9 +140,9 @@ def start_bot():
     dispatcher.add_handler(CommandHandler('kickmsg', admin.kickmsg_cmd, Filters.group, pass_args=True))
     dispatcher.add_handler(CommandHandler('kickold', admin.kickold_cmd, Filters.group, pass_args=True))
 
-    dispatcher.add_handler(CommandHandler('rules', rules.rules_cmd, Filters.group))   
-    dispatcher.add_handler(CommandHandler('set_rules', rules.set_rules_cmd, Filters.group))  
-    dispatcher.add_handler(CommandHandler('clear_rules', rules.clear_rules_cmd, Filters.group))
+    dispatcher.add_handler(CommandHandler('rules', rules.rules, Filters.group))   
+    dispatcher.add_handler(CommandHandler('set_rules', rules.set_rules, Filters.group))  
+    dispatcher.add_handler(CommandHandler('clear_rules', rules.clear_rules, Filters.group))
 
     dispatcher.add_handler(CommandHandler('list', lists.list_cmd, Filters.group))  
     dispatcher.add_handler(CallbackQueryHandler(lists.list_btn, pattern=r"^list_"))
@@ -147,12 +150,12 @@ def start_bot():
     dispatcher.add_handler(CommandHandler('listclose', lists.listclose_cmd, Filters.group)) 
     dispatcher.add_handler(CommandHandler('listrefloat', lists.listrefloat_cmd, Filters.group)) 
 
-    dispatcher.add_handler(CommandHandler('settings', settings_cmd, Filters.group))
-    dispatcher.add_handler(CommandHandler('set_nanny', set_nanny_cmd, Filters.group)) 
-    dispatcher.add_handler(CommandHandler('set_welcome', set_welcome_cmd, Filters.group))
-    dispatcher.add_handler(CommandHandler('set_zone', set_zone_cmd, Filters.group, pass_args=True))
-    dispatcher.add_handler(CommandHandler('set_cooldown', set_cooldown_cmd, Filters.group, pass_args=True))
-    dispatcher.add_handler(CommandHandler('set_maxmembers', set_maxmembers_cmd, Filters.group, pass_args=True))
+    dispatcher.add_handler(CommandHandler('settings', settings.settings, Filters.group))
+    dispatcher.add_handler(CommandHandler('set_nanny', nanny.set_nanny, Filters.group)) 
+    dispatcher.add_handler(CommandHandler('set_welcome', settings.set_welcome, Filters.group))
+    dispatcher.add_handler(CommandHandler('set_zone', settings.set_zone, Filters.group, pass_args=True))
+    dispatcher.add_handler(CommandHandler('set_cooldown', settings.set_cooldown, Filters.group, pass_args=True))
+    dispatcher.add_handler(CommandHandler('set_maxmembers', settings.set_maxmembers, Filters.group, pass_args=True))
 
     dispatcher.add_handler(InlineQueryHandler(tablas.inline_tablas))
     dispatcher.add_handler(CallbackQueryHandler(tablas.tablas_btn, pattern=r"^tabla_"))
@@ -161,17 +164,17 @@ def start_bot():
     dispatcher.add_handler(CommandHandler('borrar_tabla', tablas.rm_pic, Filters.chat(config["telegram"]["staff_id"]),pass_args=True))
     dispatcher.add_handler(CommandHandler('editar_tabla', tablas.edit_pic, Filters.chat(config["telegram"]["staff_id"]),pass_args=True))
 
-    dispatcher.add_handler(CommandHandler('list_news', news.list_news_cmds, Filters.group))
-    dispatcher.add_handler(CommandHandler('rm_news', news.rm_news_cmd, Filters.group, pass_args=True))
-    dispatcher.add_handler(CommandHandler('add_news', news.add_news_cmd, Filters.group, pass_args=True))
+    dispatcher.add_handler(CommandHandler('list_news', news.list_news, Filters.group))
+    dispatcher.add_handler(CommandHandler('rm_news', news.rm_news, Filters.group, pass_args=True))
+    dispatcher.add_handler(CommandHandler('add_news', news.add_news, Filters.group, pass_args=True))
 
-    dispatcher.add_handler(MessageHandler(Filters.group & Filters.status_update.new_chat_members, joined_chat, pass_job_queue=True)) 
+    dispatcher.add_handler(MessageHandler(Filters.group & Filters.status_update.new_chat_members, group.joined_chat, pass_job_queue=True)) 
  
-    dispatcher.add_handler(MessageHandler(Filters.command, process_cmd))
-    dispatcher.add_handler(MessageHandler(Filters.group & Filters.all, process_group_message))
+    dispatcher.add_handler(MessageHandler(Filters.command, nanny.process_cmd))
+    dispatcher.add_handler(MessageHandler(Filters.group & Filters.all, group.process_group_message))
 
-    dispatcher.add_handler(MessageHandler(Filters.all, send_news))
-    dispatcher.add_handler(CallbackQueryHandler(settingsbutton))
+    dispatcher.add_handler(MessageHandler(Filters.all, news.send_news))
+    dispatcher.add_handler(CallbackQueryHandler(settings.settingsbutton))
     
     job_queue = updater.job_queue
     updater.start_polling(timeout=25)
