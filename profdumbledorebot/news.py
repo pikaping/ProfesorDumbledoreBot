@@ -151,7 +151,7 @@ def list_news(bot, update):
 
 @run_async
 def send_news(bot, update):
-    chat_id, chat_type, user_id, text, message = extract_update_info(update)
+    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
 
     if chat_type != "channel":
         return

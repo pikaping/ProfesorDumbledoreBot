@@ -42,6 +42,14 @@ def get_user(user_id):
         session.close()
 
 
+def get_real_user(user_id):
+    try:
+        session = get_session()
+        return get_unique_from_query(session.query(User).filter(User.id == user_id))
+    finally:
+        session.close()
+
+
 @MWT(timeout=60*60)
 def get_user_by_name(username):
     try:    
@@ -51,7 +59,7 @@ def get_user_by_name(username):
         session.close()
 
 
-@MWT(timeout=60*60)
+@MWT(timeout=60)
 def has_fc(user_id):
     try:
         session = get_session()

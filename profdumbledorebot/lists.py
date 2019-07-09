@@ -27,11 +27,11 @@ import logging
 import telegram
 import profdumbledorebot.supportmethods as support
 
+from profdumbledorebot.model import Houses
 from telegram.ext.dispatcher import run_async
 from profdumbledorebot.sql.user import get_user
 from telegram.utils.helpers import escape_markdown
 from profdumbledorebot.sql.support import are_banned
-from profdumbledorebot.model import Houses
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
 REGLIST = re.compile(
@@ -79,16 +79,18 @@ def list_btn(bot, update):
     if user is None or not user.validated:
         return
 
-    if user.house is Houses.GRYFFINDOR:
+    if user.house is Houses.GRYFFINDOR.value:
         text_team = "❤️🦁"
-    elif user.house is Houses.HUFFLEPUFF:
+    elif user.house is Houses.HUFFLEPUFF.value:
         text_team = "💛🦡"
-    elif user.house is Houses.RAVENCLAW:
+    elif user.house is Houses.RAVENCLAW.value:
         text_team = "💙🦅"
-    elif user.house is Houses.SLYTHERIN:
+    elif user.house is Houses.SLYTHERIN.value:
         text_team = "💚🐍"
+    elif user.house is Houses.NONE.value:
+        text_team = "💜🙈"
 
-    string = r'\n(.|❤️🦁|💙🦅|💛🦡|💚🐍)(\d\d|\d) - @{}'.format(username)
+    string = r'\n(.|❤️🦁|💙🦅|💛🦡|💚🐍|💜🙈)(\d\d|\d) - @{}'.format(username)
     text = re.sub(string, "", text)
 
     if data == "list_join":

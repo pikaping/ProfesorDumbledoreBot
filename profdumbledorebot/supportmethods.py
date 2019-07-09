@@ -64,7 +64,8 @@ def replace(user_id, name=None, admin=True):
         text_house = "💙🦅"
     elif user.house is model.Houses.SLYTHERIN.value:
         text_house = "💚🐍"
-
+    elif user.house is model.Houses.NONE.value:
+        text_house = "💜🙈"
 
     if user is None or user.profession is model.Professions.NONE.value:
         text_prof = "_Desconocido_"
@@ -83,13 +84,10 @@ def replace(user_id, name=None, admin=True):
         text_alias = "_Desconocido_"
 
     text_level = ("*{}*".format(user.level) if user and user.level else "*??*")
-
+    
+    text_validationstatus = "✅"
     if user and user.banned:
         text_validationstatus = "⛔️"
-    elif user and user.validation_type == ValidationType.NONE:
-        text_validationstatus = "✅"
-    else:
-        text_validationstatus = "⚠️"
 
     replace_pogo = "{0} - *L*{1} {2} {3}  {4} {5}".format(
         text_alias,

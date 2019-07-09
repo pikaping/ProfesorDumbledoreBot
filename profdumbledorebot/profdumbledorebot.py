@@ -27,17 +27,19 @@ import sys
 import logging
 import telegram
 
-import profdumbledorebot.supportmethods as support
 import profdumbledorebot.sql.user as user_sql
+import profdumbledorebot.supportmethods as support
 
 from threading import Thread
 from datetime import datetime
+from profdumbledorebot.model import Houses
+from telegram.ext.dispatcher import run_async
 from profdumbledorebot.rules import send_rules
 from profdumbledorebot.config import get_config
 from profdumbledorebot.sql.support import are_banned
 from profdumbledorebot.sql.settings import get_group_settings
-from telegram.ext.dispatcher import run_async
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from profdumbledorebot.sql.usergroup import get_users_from_group
 
 
 @run_async
@@ -174,19 +176,11 @@ def whois_cmd(bot, update, args=None):
     else:
         return
 
+    text_friend_id = ("\nSu Clave de Amigo: `{}`".format(user.friend_id)
+                      if has_fc(user_id) and user.friend_id is not None
+                      else "")
 
-    output = "[{0}](tg://user?id={1}), es {2} nivel {3} {4} {5} {7}\n{6}{8}{9}".format(
-        text_trainername, 
-        replied_id,
-        text_team,
-        text_level,
-        text_validationstatus,
-        text_admin,
-        text_friend_id,
-        flag_text,
-        text_ds_id,
-        text_switch_id
-    )
+    output = support.replace(user_id) + text_friend_id
 
     if chat_type != "private":
         group = get_group_settings(chat_id)
@@ -206,13 +200,13 @@ def whois_cmd(bot, update, args=None):
 
 @run_async
 def fclist_cmd(bot, update):
-    chat_id, chat_type, user_id, text, message = extract_update_info(update)
-    delete_message(chat_id, message.message_id, bot)
+    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    support.delete_message(chat_id, message.message_id, bot)
 
-    if are_banned(user_id, chat_id) or chat_type == "private":
+    if are_banned(user_id, chat_id):
         return
 
-    main = get_user(user_id)
+    main = user_sql.get_user(user_id)
     count = 0
     text = "**Listado de Friend Codes:**"
 
@@ -233,18 +227,22 @@ def fclist_cmd(bot, update):
             data = None
             pass
         if data is None or (data and data.status not in ['kicked','left'] and not data.user.is_bot):
-            user = get_user(user_data.user_id)
+            user = user_sql.get_user(user_data.user_id)
             if user and not user.banned and user.friend_id and user.fclists:
-                if user.team is Team.BLUE:
-                    text_team = "💙"
-                elif user.team is Team.RED:
-                    text_team = "❤️"
-                elif user.team is Team.YELLOW:
-                    text_team = "💛"
+                if user.house is Houses.GRYFFINDOR.value:
+                    text_team = "❤️🦁"
+                elif user.house is Houses.HUFFLEPUFF.value:
+                    text_team = "💛🦡"
+                elif user.house is Houses.RAVENCLAW.value:
+                    text_team = "💙🦅"
+                elif user.house is Houses.SLYTHERIN.value:
+                    text_team = "💚🐍"
+                elif user.house is Houses.NONE.value:
+                    text_team = "💜🙈"
 
                 text = text + "\n{0}[{1}](tg://user?id={2}) `{3}`".format(
                     text_team,
-                    user.trainer_name,
+                    user.alias,
                     user.id,
                     user.friend_id
                 )
@@ -266,58 +264,36 @@ def fclist_cmd(bot, update):
 
 @run_async
 def set_friendid_cmd(bot, update, args=None):
-    logging.debug("%s", update)
-    chat_id, chat_type, user_id, text, message = extract_update_info(update)
+    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
 
     if are_banned(chat_id, user_id):
         return
 
-    user = get_user(user_id)
-    if user is None or not user.validated:
-        bot.sendMessage(
-            chat_id=chat_id,
-            text="❌ Debes registrarte para usar este comando.",
-            parse_mode=telegram.ParseMode.MARKDOWN
-        )
-        return
-
     fc = None
-
     if len(args) == 3:
         fc = ''.join(args)
-
     elif len(args) == 1:
         fc = args[0]
 
-    logging.debug("FC:%s",fc)
-    user = get_user(user_id)
-
+    user = user_sql.get_user(user_id)
     if user is None:
         bot.sendMessage(
             chat_id=chat_id,
-            text=(
-                "❌ Esto… no encuentro tu Ficha de Entrenador.¿Qu"
-                "ién eres? ¿Te has registrado conmigo? En caso "
-                "afirmativo, pide ayuda en @enfermerajoyayuda. "
-                "De no ser así, registrate antes de usar este comando"
-            ),
-            parse_mode=telegram.ParseMode.MARKDOWN
-        )
+            text="❌ Debes registrarte para usar este comando.")
         return
 
     if fc is None and user.friend_id is None:
         bot.sendMessage(
             chat_id=chat_id,
-            text="❌ Vaya, no he reconocido ese ID de entrenador... "
-        )
+            text="❌ Vaya, no he reconocido esta Clave de Amigo... ")
         return
 
     elif fc is None and user.friend_id is not None:
         bot.sendMessage(
             chat_id=chat_id,
-            text="❌ ID de entrenador eliminado correctamente"
+            text="❌ Clave de Amigo eliminada correctamente"
         )
-        set_fc(None, user_id)
+        user_sql.set_fc(None, user_id)
         return
 
     friendcode = re.match(r'^[0-9]{12}$', fc)
@@ -325,35 +301,27 @@ def set_friendid_cmd(bot, update, args=None):
     if friendcode is None and user.friend_id is None:
         bot.sendMessage(
             chat_id=chat_id,
-            text="❌ Vaya, no he reconocido ese ID de entrenador... {}".format(fc)
-        )
+            text="❌ Vaya, no he reconocido ese Clave de Amigo... {}".format(fc))
         return
 
     else:
-        set_fc(fc, user_id)
+        user_sql.set_fc(fc, user_id)
         bot.sendMessage(
             chat_id=chat_id,
-            text=(
-                "👌 Ya he registrado tu ID de entrenador como ‘{}’. "
-                "\n Disfruta ahora interactuando con tus compañeros "
-                "de grupo, mandándo regalos e intercambiando Pokémon"
-                " por todo el mundo. \n\n *Y recuerda, la suplantac"
-                "ión de entrenadores es motivo de baneo*".format(fc)
-            ),
-            parse_mode=telegram.ParseMode.MARKDOWN
-        )
+            text="👌 He registrado tu Clave de Amigo como ‘{}’.".format(fc),
+            parse_mode=telegram.ParseMode.MARKDOWN)
 
 
 @run_async
 def passport_cmd(bot, update):
     logging.debug("%s", update)
-    chat_id, chat_type, user_id, text, message = extract_update_info(update)
+    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
 
     if are_banned(chat_id, user_id):
         return
 
-    user = get_user(user_id)
-    if user is None or not user.validated:
+    user = user_sql.get_real_user(user_id)
+    if user is None:
         bot.sendMessage(
             chat_id=chat_id,
             text="❌ Debes registrarte para usar este comando.",
@@ -370,7 +338,7 @@ def passport_cmd(bot, update):
         [InlineKeyboardButton("🗣 Menciones", callback_data='profile_ment')]
     ]
 
-    if has_fc(user_id):
+    if user_sql.has_fc(user_id):
         button_list.append([InlineKeyboardButton("👥 Clave Amigo", callback_data='profile_code')])
 
     button_list.append([InlineKeyboardButton("Salir", callback_data='profile_end')])
@@ -399,14 +367,14 @@ def passport_btn(bot, update):
         return
 
     if data == "profile_end":
-        delete_message(chat_id, message_id, bot)
+        support.delete_message(chat_id, message_id, bot)
         return
 
     elif data == "profile_back":
         button_list = [
             [InlineKeyboardButton("👤 Perfil", callback_data='profile_edit')],
             [InlineKeyboardButton("🗣 Menciones", callback_data='profile_ment')]]
-        if has_fc(user_id):
+        if user_sql.has_fc(user_id):
             button_list.append([InlineKeyboardButton("👥 Clave Amigo", callback_data='profile_code')])
         button_list.append([InlineKeyboardButton("Salir", callback_data='profile_end')])
 
@@ -432,7 +400,7 @@ def passport_btn(bot, update):
         return
 
     elif data == "profile_ment":
-        user = get_user(user_id)
+        user = user_sql.get_user(user_id)
         text = "▪️ Listados de codigos"
         if user.fclists:
             text = "✅ Listados de codigos"
@@ -448,7 +416,7 @@ def passport_btn(bot, update):
         return
         
     elif data == "profile_code":
-        user = get_user(user_id)
+        user = user_sql.get_user(user_id)
         text = "🔒 Clave de amigo"
         if user.alerts:
             text = "🔓 Clave de amigo"
@@ -531,8 +499,8 @@ def passport_btn(bot, update):
         return
 
     elif data == "profile_code_1":
-        update_fclist(user_id)
-        user = get_user(user_id)
+        user_sql.update_fclist(user_id)
+        user = user_sql.get_user(user_id)
         text = "🔒 Clave de amigo"
         if user.alerts:
             text = "🔓 Clave de amigo"
@@ -548,8 +516,8 @@ def passport_btn(bot, update):
         return
 
     elif data == "profile_ment_1":
-        update_mentions(user_id)
-        user = get_user(user_id)
+        user_sql.update_mentions(user_id)
+        user = user_sql.get_user(user_id)
         text = "▪️ Listados de codigos"
         if user.fclists:
             text = "✅ Listados de codigos"
@@ -565,8 +533,8 @@ def passport_btn(bot, update):
         return
 
     elif data == "profile_del_1":
-        del_user(user_id)
-        delete_message(chat_id, message_id, bot)
+        user_sql.del_user(user_id)
+        support.delete_message(chat_id, message_id, bot)
         bot.sendMessage(
             chat_id=dest_id,
             text="Tu perfil ha sido eliminado.",
@@ -601,7 +569,7 @@ def passport_btn(bot, update):
         return
 
     elif par == "hse":
-        commit_user(user_id, house=val)
+        user_sql.commit_user(user_id, house=val)
         button_list = [
             [InlineKeyboardButton("🏘 Casa Hogwarts", callback_data='profile_edit_hse')],
             [InlineKeyboardButton("👨‍👩‍👧‍👦 Equipo", callback_data='profile_edit_tea')],
@@ -617,7 +585,7 @@ def passport_btn(bot, update):
         return
 
     elif par == "tea":
-        commit_user(user_id, team=val)
+        user_sql.commit_user(user_id, team=val)
         button_list = [
             [InlineKeyboardButton("🏘 Casa Hogwarts", callback_data='profile_edit_hse')],
             [InlineKeyboardButton("👨‍👩‍👧‍👦 Equipo", callback_data='profile_edit_tea')],
@@ -633,7 +601,7 @@ def passport_btn(bot, update):
         return
 
     elif par == "prf":
-        commit_user(user_id, profession=val)
+        user_sql.commit_user(user_id, profession=val)
         button_list = [
             [InlineKeyboardButton("🏘 Casa Hogwarts", callback_data='profile_edit_hse')],
             [InlineKeyboardButton("👨‍👩‍👧‍👦 Equipo", callback_data='profile_edit_tea')],
@@ -649,7 +617,7 @@ def passport_btn(bot, update):
         return
 
     elif par == "lvl":
-        commit_user(user_id, level=val)
+        user_sql.commit_user(user_id, level=val)
         button_list = [
             [InlineKeyboardButton("🏘 Casa Hogwarts", callback_data='profile_edit_hse')],
             [InlineKeyboardButton("👨‍👩‍👧‍👦 Equipo", callback_data='profile_edit_tea')],
@@ -712,7 +680,8 @@ def register_btn(bot, update):
             [InlineKeyboardButton("❤️🦁 Gryffindor", callback_data='reg_hse_1')],
             [InlineKeyboardButton("💛🦡 Hufflepuff", callback_data='reg_hse_2')],
             [InlineKeyboardButton("💙🦅 Ravenclaw", callback_data='reg_hse_3')],
-            [InlineKeyboardButton("💚🐍 Slytherin", callback_data='reg_hse_4')]]
+            [InlineKeyboardButton("💚🐍 Slytherin", callback_data='reg_hse_4')],
+            [InlineKeyboardButton("💜🙈 Sin casa", callback_data='reg_hse_0')]]
 
         bot.edit_message_text(
             text="¿Cual es tu casa de hogwarts?",
@@ -779,9 +748,4 @@ def register_btn(bot, update):
         )
         return
         '''
-
-
-
-
-
 
