@@ -34,7 +34,7 @@ from threading import Thread
 from pytz import all_timezones
 from profdumbledorebot.mwt import MWT
 from datetime import datetime, timedelta
-from profdumbledorebot.sql.user import get_user
+from profdumbledorebot.sql.user import get_user, get_real_user
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from profdumbledorebot.config import ConfigurationNotLoaded, get_config
 from telegram.utils.helpers import mention_markdown, mention_html, escape_markdown
@@ -52,8 +52,11 @@ LINK_REGEX = re.compile(r'(?<!\\)\[.+?\]\((.*?)\)')
 BTN_URL_REGEX = re.compile(r"(\[([^\[]+?)\]\(buttonurl:(?:/{0,2})(.+?)(:same)?\))")
 
 
-def replace(user_id, name=None, admin=False):
-    user = get_user(user_id)
+def replace(user_id, name=None, admin=False, frce=False):
+    if frce:
+        user = get_real_user(user_id)
+    else:
+        user = get_user(user_id)
 
     if user is None or user.house is model.Houses.NONE.value:
         text_house = "💜🙈"
