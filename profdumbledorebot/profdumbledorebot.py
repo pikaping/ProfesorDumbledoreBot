@@ -582,14 +582,13 @@ def passport_btn(bot, update):
             [InlineKeyboardButton("🗑 Eliminar perfil", callback_data='profile_edit_del')],
             [InlineKeyboardButton("« Guardar y salir", callback_data='profile_end')]]
        
-       bot.edit_message_text(
+        bot.edit_message_text(
             text=output,
             chat_id=chat_id,
             message_id=message_id,
             reply_markup=InlineKeyboardMarkup(button_list),
             parse_mode=telegram.ParseMode.MARKDOWN,
-            disable_web_page_preview=True
-        )
+            disable_web_page_preview=True)
         return
 
     elif par == "tea":
@@ -606,7 +605,7 @@ def passport_btn(bot, update):
             [InlineKeyboardButton("🗑 Eliminar perfil", callback_data='profile_edit_del')],
             [InlineKeyboardButton("« Guardar y salir", callback_data='profile_end')]]
        
-       bot.edit_message_text(
+        bot.edit_message_text(
             text=output,
             chat_id=chat_id,
             message_id=message_id,
@@ -630,7 +629,7 @@ def passport_btn(bot, update):
             [InlineKeyboardButton("🗑 Eliminar perfil", callback_data='profile_edit_del')],
             [InlineKeyboardButton("« Guardar y salir", callback_data='profile_end')]]
        
-       bot.edit_message_text(
+        bot.edit_message_text(
             text=output,
             chat_id=chat_id,
             message_id=message_id,
@@ -654,7 +653,7 @@ def passport_btn(bot, update):
             [InlineKeyboardButton("🗑 Eliminar perfil", callback_data='profile_edit_del')],
             [InlineKeyboardButton("« Guardar y salir", callback_data='profile_end')]]
        
-       bot.edit_message_text(
+        bot.edit_message_text(
             text=output,
             chat_id=chat_id,
             message_id=message_id,
