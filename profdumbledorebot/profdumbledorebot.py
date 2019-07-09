@@ -613,7 +613,7 @@ def passport_btn(bot, update):
             parse_mode=telegram.ParseMode.MARKDOWN,
             disable_web_page_preview=True
         )
-       return
+        return
 
     elif par == "prf":
         user_sql.commit_user(user_id, profession=val)
@@ -637,7 +637,7 @@ def passport_btn(bot, update):
             parse_mode=telegram.ParseMode.MARKDOWN,
             disable_web_page_preview=True
         )
-       return
+        return
 
     elif par == "lvl":
         user_sql.commit_user(user_id, level=val)
@@ -661,7 +661,7 @@ def passport_btn(bot, update):
             parse_mode=telegram.ParseMode.MARKDOWN,
             disable_web_page_preview=True
         )
-       return
+        return
 
 
 REGREG = re.compile(r'^reg_([a-z0-9]{1,3})(_([0-9]{1,2})|)')
