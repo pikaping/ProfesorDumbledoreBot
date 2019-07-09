@@ -91,7 +91,7 @@ def replace(user_id, name=None, admin=False, frce=False):
     if user and user.banned:
         text_validationstatus = "⛔️"
 
-    if user.flag is not None:
+    if user and user.flag is not None:
         text_flag = user.flag
     else:
         text_flag = ""
