@@ -56,7 +56,7 @@ def replace(user_id, name=None, admin=True):
     user = get_user(user_id)
 
     if user is None or user.house is model.Houses.NONE.value:
-        text_house = "_Desconocido_"
+        text_house = "💜🙈"
     elif user.house is model.Houses.GRYFFINDOR.value:
         text_house = "❤️🦁"
     elif user.house is model.Houses.HUFFLEPUFF.value:
@@ -65,8 +65,6 @@ def replace(user_id, name=None, admin=True):
         text_house = "💙🦅"
     elif user.house is model.Houses.SLYTHERIN.value:
         text_house = "💚🐍"
-    elif user.house is model.Houses.NONE.value:
-        text_house = "💜🙈"
 
     if user is None or user.profession is model.Professions.NONE.value:
         text_prof = "_Desconocido_"
@@ -77,7 +75,7 @@ def replace(user_id, name=None, admin=True):
     elif user.profession is model.Professions.PROFESSOR.value:
         text_prof = "📚"
 
-    if user and user.alias:
+    if user and user.alias is not None:
         text_alias = escape_markdown("@{}".format(user.alias))
     elif name is not None:
         text_alias = escape_markdown(name)
@@ -90,13 +88,19 @@ def replace(user_id, name=None, admin=True):
     if user and user.banned:
         text_validationstatus = "⛔️"
 
+    if user.flag is not None:
+        text_flag = user.flag
+    else:
+        text_flag = ""
+
+
     replace_pogo = "{0} - *L*{1} {2} {3}  {4} {5}".format(
         text_alias,
         text_level,
         text_house,
         text_prof,
         text_validationstatus,
-        user.flag)
+        text_flag)
 
     if admin:
         replace_pogo = replace_pogo + " `{1}`"

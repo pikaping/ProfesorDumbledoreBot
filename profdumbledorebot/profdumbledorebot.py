@@ -83,29 +83,13 @@ def start_cmd(bot, update, args=None):
 @run_async
 def register_cmd(bot, update, args=None):
     chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
-    user_username = message.from_user.username
 
     if are_banned(user_id, chat_id):
-        return
-    try:
-        if user_username is None:
-            bot.sendMessage(
-                chat_id=chat_id,
-                text="❌ Es necesario que configures un alias en Telegram antes de registrarte.",
-                parse_mode=telegram.ParseMode.MARKDOWN)
-            return
-    except:
-        bot.sendMessage(
-            chat_id=chat_id,
-            text="❌ Es necesario que configures un alias en Telegram antes de registrarte.",
-            parse_mode=telegram.ParseMode.MARKDOWN)
         return
 
     user = user_sql.get_user(user_id)
     if user is None:
         user_sql.set_user(user_id)
-
-    user_sql.commit_user(user_id, alias=user_username)
 
     text = "Son nuestras elecciones las que muestran lo que somos, mucho más que nuestras habilidades, así pues elige bien y dime, ¿Cual es tu nivel?"
     button_list = [
@@ -330,24 +314,10 @@ def set_friendid_cmd(bot, update, args=None):
 
 @run_async
 def passport_cmd(bot, update):
+    logging.debug("%s", update)
     chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
-    user_username = message.from_user.username
-    
-    if are_banned(chat_id, user_id):
-        return
 
-    try:
-        if user_username is None:
-            bot.sendMessage(
-                chat_id=chat_id,
-                text="❌ Es necesario que configures un alias en Telegram para seguir usando el bot.",
-                parse_mode=telegram.ParseMode.MARKDOWN)
-            return
-    except:
-        bot.sendMessage(
-            chat_id=chat_id,
-            text="❌ Es necesario que configures un alias en Telegram para seguir usando el bot.",
-            parse_mode=telegram.ParseMode.MARKDOWN)
+    if are_banned(chat_id, user_id):
         return
 
     user = user_sql.get_real_user(user_id)
@@ -358,12 +328,6 @@ def passport_cmd(bot, update):
             parse_mode=telegram.ParseMode.MARKDOWN
         )
         return
-
-    user = user_sql.get_user(user_id)
-    if user is None:
-        user_sql.set_user(user_id)
-
-    user_sql.commit_user(user_id, alias=user_username)
 
     output = (
         "Bienvenido {}, este es tu pasaporte del ministerio, aquí podrás editar "
@@ -536,7 +500,7 @@ def passport_btn(bot, update):
 
     elif data == "profile_code_1":
         user_sql.update_fclist(user_id)
-        user = user_sql.get_user(user_id)
+        user = user_sql.get_real_user(user_id)
         text = "🔒 Clave de amigo"
         if user.alerts:
             text = "🔓 Clave de amigo"
@@ -553,7 +517,7 @@ def passport_btn(bot, update):
 
     elif data == "profile_ment_1":
         user_sql.update_mentions(user_id)
-        user = user_sql.get_user(user_id)
+        user = user_sql.get_real_user(user_id)
         text = "▪️ Listados de codigos"
         if user.fclists:
             text = "✅ Listados de codigos"
@@ -606,6 +570,10 @@ def passport_btn(bot, update):
 
     elif par == "hse":
         user_sql.commit_user(user_id, house=val)
+        user = user_sql.get_real_user(user_id)
+        output = (
+        "Bienvenido {}, este es tu pasaporte del ministerio, aquí podrás editar "
+        "tu información de perfil y los ajustes con Dumbledore entre otras funciones.".format(support.replace(user_id)))
         button_list = [
             [InlineKeyboardButton("🏘 Casa Hogwarts", callback_data='profile_edit_hse')],
             [InlineKeyboardButton("👨‍👩‍👧‍👦 Equipo", callback_data='profile_edit_tea')],
@@ -622,6 +590,10 @@ def passport_btn(bot, update):
 
     elif par == "tea":
         user_sql.commit_user(user_id, team=val)
+        user = user_sql.get_real_user(user_id)
+        output = (
+        "Bienvenido {}, este es tu pasaporte del ministerio, aquí podrás editar "
+        "tu información de perfil y los ajustes con Dumbledore entre otras funciones.".format(support.replace(user_id)))
         button_list = [
             [InlineKeyboardButton("🏘 Casa Hogwarts", callback_data='profile_edit_hse')],
             [InlineKeyboardButton("👨‍👩‍👧‍👦 Equipo", callback_data='profile_edit_tea')],
@@ -638,6 +610,10 @@ def passport_btn(bot, update):
 
     elif par == "prf":
         user_sql.commit_user(user_id, profession=val)
+        user = user_sql.get_real_user(user_id)
+        output = (
+        "Bienvenido {}, este es tu pasaporte del ministerio, aquí podrás editar "
+        "tu información de perfil y los ajustes con Dumbledore entre otras funciones.".format(support.replace(user_id)))
         button_list = [
             [InlineKeyboardButton("🏘 Casa Hogwarts", callback_data='profile_edit_hse')],
             [InlineKeyboardButton("👨‍👩‍👧‍👦 Equipo", callback_data='profile_edit_tea')],
@@ -654,6 +630,10 @@ def passport_btn(bot, update):
 
     elif par == "lvl":
         user_sql.commit_user(user_id, level=val)
+        user = user_sql.get_real_user(user_id)
+        output = (
+        "Bienvenido {}, este es tu pasaporte del ministerio, aquí podrás editar "
+        "tu información de perfil y los ajustes con Dumbledore entre otras funciones.".format(support.replace(user_id)))
         button_list = [
             [InlineKeyboardButton("🏘 Casa Hogwarts", callback_data='profile_edit_hse')],
             [InlineKeyboardButton("👨‍👩‍👧‍👦 Equipo", callback_data='profile_edit_tea')],

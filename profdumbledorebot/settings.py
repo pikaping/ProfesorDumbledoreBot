@@ -34,6 +34,7 @@ from telegram.ext.dispatcher import run_async
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
 from profdumbledorebot.sql.group import get_group
+from profdumbledorebot.sql.support import are_banned
 from profdumbledorebot.sql.usergroup import remove_warn
 from profdumbledorebot.sql.admin import set_admin_settings, set_ladmin_settings
 from profdumbledorebot.sql.news import is_news_subscribed, rm_news_subscription, set_news_subscription

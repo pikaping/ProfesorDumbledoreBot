@@ -44,7 +44,7 @@ from profdumbledorebot.sql.welcome import get_welc_pref
 from profdumbledorebot.sql.settings import get_join_settings
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from profdumbledorebot.sql.admin import get_particular_admin, get_admin_from_linked
-from profdumbledorebot.sql.usergroup import exists_user_group, set_user_group, join_group
+from profdumbledorebot.sql.usergroup import exists_user_group, set_user_group, join_group, message_counter
 
 @run_async
 def joined_chat(bot, update, job_queue):
