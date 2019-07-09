@@ -27,20 +27,24 @@ import time
 import logging
 import telegram
 
-import profdumbledorebot.sql.user as user_sql
+import profdumbledorebot.nanny as nanny
 import profdumbledorebot.sql.group as group_sql
 import profdumbledorebot.supportmethods as support
-import profdumbledorebot.sql.settings as settings_sql
-import profdumbledorebot.sql.usergroup as usergroup_sql
 
 from threading import Thread
 from Levenshtein import distance
 from telegram.ext.dispatcher import run_async
+from profdumbledorebot.sql.user import get_user
 from profdumbledorebot.config import get_config
+from profdumbledorebot.sql.rules import has_rules
 from profdumbledorebot.welcome import send_welcome
+from telegram.utils.helpers import escape_markdown
 from profdumbledorebot.sql.support import are_banned
+from profdumbledorebot.sql.welcome import get_welc_pref
+from profdumbledorebot.sql.settings import get_join_settings
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-
+from profdumbledorebot.sql.admin import get_particular_admin, get_admin_from_linked
+from profdumbledorebot.sql.usergroup import exists_user_group, set_user_group, join_group
 
 @run_async
 def joined_chat(bot, update, job_queue):
@@ -78,10 +82,10 @@ def joined_chat(bot, update, job_queue):
         chat_id = message.chat.id
         user_id = update.effective_message.new_chat_members[0].id
 
-        group = settings_sql.get_join_settings(chat_id)
+        group = get_join_settings(chat_id)
         if group is not None:
             if group.delete_header:
-                delete_message(chat_id, message.message_id, bot)
+                support.delete_message(chat_id, message.message_id, bot)
 
             if are_banned(user_id, user_id):
                 bot.kickChatMember(chat_id, user_id)
@@ -96,10 +100,10 @@ def joined_chat(bot, update, job_queue):
                         chat_id=chat_id, 
                         text=output, 
                         parse_mode=telegram.ParseMode.MARKDOWN)
-                good_luck(bot, update, "El usuario no está registrado")
+                good_luck(chat_id, message, "El usuario no está registrado")
                 return
 
-            if group.validationrequired is ValidationRequiered.VALIDATION and user.validation_type is ValidationType.NONE:
+            if group.validationrequired is ValidationRequiered.VALIDATION and user.level is not None:
                 bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
                 if group.mute is False:
                     output = "👌 Mago sin validarse expulsado!"
@@ -107,7 +111,7 @@ def joined_chat(bot, update, job_queue):
                         chat_id=chat_id, 
                         text=output, 
                         parse_mode=telegram.ParseMode.MARKDOWN)           
-                good_luck(bot, update, "El usuario no está registrado")
+                good_luck(chat_id, message, "El usuario no está registrado")
                 try:
                     bot.sendMessage(
                         chat_id=user_id, 
@@ -139,7 +143,6 @@ def joined_chat(bot, update, job_queue):
             else:
                 join_group(user_id, chat_id, False)
 
-            logging.debug("HAS RULES %s", has_rules(chat_id))
             if has_rules(chat_id):
                 bot.restrict_chat_member(
                     chat_id,
@@ -148,15 +151,14 @@ def joined_chat(bot, update, job_queue):
                     can_send_messages=False,
                     can_send_media_messages=False,
                     can_send_other_messages=False,
-                    can_add_web_page_previews=False
-                )
+                    can_add_web_page_previews=False)
 
             if get_welc_pref(chat_id):
                 sent = send_welcome(bot, update)
                 if sent is not None and group.delete_cooldown is not None and group.delete_cooldown > 0:
-                    delete_object = DeleteContext(chat_id, sent.message_id)
+                    delete_object = support.DeleteContext(chat_id, sent.message_id)
                     job_queue.run_once(
-                        callback_delete, 
+                        support.callback_delete, 
                         group.delete_cooldown,
                         context=delete_object
                     )
@@ -165,11 +167,21 @@ def joined_chat(bot, update, job_queue):
             if ladmin is not None and ladmin.welcome:
                 admin = get_admin_from_linked(chat_id)
                 if admin is not None and admin.welcome is True:
-                    replace_pogo = replace(user_id, message.from_user.first_name)
+                    replace_pogo = support.replace(user_id, message.from_user.first_name)
                     message_text = ("ℹ️ {}\n👤 {} ha entrado en el grupo").format(message.chat.title, replace_pogo)
                     bot.sendMessage(chat_id=admin.id, text=message_text,
                                     parse_mode=telegram.ParseMode.MARKDOWN)
 
+
+def good_luck(chat_id, message, text):
+    ladmin = get_particular_admin(chat_id)
+    if ladmin is not None and ladmin.welcome:
+        admin = get_admin_from_linked(chat_id)
+        if admin is not None and admin.welcome is True:
+            replace_pogo = support.replace(user_id, message.from_user.first_name)
+            message_text = ("ℹ️ {}\n👤 {} {}").format(message.chat.title, replace_pogo, text)
+            bot.sendMessage(chat_id=admin.id, text=message_text,
+                            parse_mode=telegram.ParseMode.MARKDOWN)
 
 
 @run_async
@@ -189,38 +201,38 @@ def process_group_message(bot, update):
     message_counter(user_id, chat_id)
     if text is None or msg.photo is None:
         if msg and msg.document:
-            process_gif(bot, update)
+            nanny.process_gif(bot, update)
             return
         elif msg and msg.contact:
-            process_contact(bot, update)
+            nanny.process_contact(bot, update)
             return
         elif msg and msg.game:
-            process_game(bot, update)
+            nanny.process_game(bot, update)
             return
         elif msg and msg.location or msg.venue:
-            process_ubi(bot, update)
+            nanny.process_ubi(bot, update)
             return
         elif msg and msg.photo:
-            process_pic(bot, update)
+            nanny.process_pic(bot, update)
             return
         elif msg and msg.sticker:
-            process_sticker(bot, update)
+            nanny.process_sticker(bot, update)
             return
         elif msg and msg.voice or msg.audio:
-            process_voice(bot, update)
+            nanny.process_voice(bot, update)
             return
         elif msg and msg.video or msg.video_note:
-            process_video(bot, update)
+            nanny.process_video(bot, update)
             return
 
-    if msg and msg.entities and process_url(bot, update):
+    if msg and msg.entities and nanny.process_url(bot, update):
         return
 
-    if nanny_text(bot, user_id, chat_id, message):
+    if nanny.nanny_text(bot, user_id, chat_id, message):
         return
 
     if text is not None and re.search("@admin(?!\w)", text) is not None:
-        replace_pogo = replace(user_id, message.from_user.first_name)
+        replace_pogo = support.replace(user_id, message.from_user.first_name)
         message_text=("ℹ️ {}\n👤 {} ha enviado una alerta a los administradores\n\nMensaje: {}").format(
             message.chat.title,
             replace_pogo,

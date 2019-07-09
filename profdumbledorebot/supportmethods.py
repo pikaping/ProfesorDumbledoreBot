@@ -34,6 +34,7 @@ from threading import Thread
 from pytz import all_timezones
 from profdumbledorebot.mwt import MWT
 from datetime import datetime, timedelta
+from profdumbledorebot.sql.user import get_user
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from profdumbledorebot.config import ConfigurationNotLoaded, get_config
 from telegram.utils.helpers import mention_markdown, mention_html, escape_markdown
