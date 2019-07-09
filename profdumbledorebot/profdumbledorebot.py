@@ -83,13 +83,29 @@ def start_cmd(bot, update, args=None):
 @run_async
 def register_cmd(bot, update, args=None):
     chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    user_username = message.from_user.username
 
     if are_banned(user_id, chat_id):
+        return
+    try:
+        if user_username is None:
+            bot.sendMessage(
+                chat_id=chat_id,
+                text="❌ Es necesario que configures un alias en Telegram antes de registrarte.",
+                parse_mode=telegram.ParseMode.MARKDOWN)
+            return
+    except:
+        bot.sendMessage(
+            chat_id=chat_id,
+            text="❌ Es necesario que configures un alias en Telegram antes de registrarte.",
+            parse_mode=telegram.ParseMode.MARKDOWN)
         return
 
     user = user_sql.get_user(user_id)
     if user is None:
         user_sql.set_user(user_id)
+
+    user_sql.commit_user(user_id, alias=user_username)
 
     text = "Son nuestras elecciones las que muestran lo que somos, mucho más que nuestras habilidades, así pues elige bien y dime, ¿Cual es tu nivel?"
     button_list = [
@@ -314,10 +330,24 @@ def set_friendid_cmd(bot, update, args=None):
 
 @run_async
 def passport_cmd(bot, update):
-    logging.debug("%s", update)
     chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
-
+    user_username = message.from_user.username
+    
     if are_banned(chat_id, user_id):
+        return
+
+    try:
+        if user_username is None:
+            bot.sendMessage(
+                chat_id=chat_id,
+                text="❌ Es necesario que configures un alias en Telegram para seguir usando el bot.",
+                parse_mode=telegram.ParseMode.MARKDOWN)
+            return
+    except:
+        bot.sendMessage(
+            chat_id=chat_id,
+            text="❌ Es necesario que configures un alias en Telegram para seguir usando el bot.",
+            parse_mode=telegram.ParseMode.MARKDOWN)
         return
 
     user = user_sql.get_real_user(user_id)
@@ -328,6 +358,12 @@ def passport_cmd(bot, update):
             parse_mode=telegram.ParseMode.MARKDOWN
         )
         return
+
+    user = user_sql.get_user(user_id)
+    if user is None:
+        user_sql.set_user(user_id)
+
+    user_sql.commit_user(user_id, alias=user_username)
 
     output = (
         "Bienvenido {}, este es tu pasaporte del ministerio, aquí podrás editar "

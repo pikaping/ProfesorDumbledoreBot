@@ -71,7 +71,7 @@ def joined_chat(bot, update, job_queue):
             " para conocer todas las funciones. Aseguraos de v"
             "er la ayuda para prefectos de los grupos, donde s"
             "e explica en detalle todos los pasos que se deben"
-            " seguir.".format(ensure_escaped(chat_title)))
+            " seguir.".format(escape_markdown(chat_title)))
 
         bot.sendMessage(
             chat_id=chat_id, 
