@@ -111,7 +111,7 @@ def register_cmd(bot, update, args=None):
     user = user_sql.get_user(user_id)
     if user is None:
         user_sql.set_user(user_id)
-        
+
     user_sql.commit_user(user_id, alias=user_username)
 
     text = "Son nuestras elecciones las que muestran lo que somos, mucho más que nuestras habilidades, así pues elige bien y dime, ¿Cual es tu nivel?"
@@ -233,7 +233,7 @@ def fclist_cmd(bot, update):
     count = 0
     text = "**Listado de Friend Codes:**"
 
-    if main is None or not main.fclists or main.friend_id is None or not main.validated:
+    if main is None or not main.fclists or not main.friend_id:
         text = "❌ No cumples los requisitos para solicitar el listado."
         bot.sendMessage(
             chat_id=user_id,
