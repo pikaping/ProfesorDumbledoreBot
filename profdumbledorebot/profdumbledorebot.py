@@ -570,10 +570,9 @@ def passport_btn(bot, update):
 
     elif par == "hse":
         user_sql.commit_user(user_id, house=val)
-        user = user_sql.get_real_user(user_id)
         output = (
         "Bienvenido {}, este es tu pasaporte del ministerio, aquí podrás editar "
-        "tu información de perfil y los ajustes con Dumbledore entre otras funciones.".format(support.replace(user_id)))
+        "tu información de perfil y los ajustes con Dumbledore entre otras funciones.".format(support.replace(user_id, frce=True)))
         button_list = [
             [InlineKeyboardButton("🏘 Casa Hogwarts", callback_data='profile_edit_hse')],
             [InlineKeyboardButton("👨‍👩‍👧‍👦 Equipo", callback_data='profile_edit_tea')],
@@ -652,7 +651,6 @@ def passport_btn(bot, update):
             [InlineKeyboardButton("🛡 Profesion", callback_data='profile_edit_prf')],
             [InlineKeyboardButton("🗑 Eliminar perfil", callback_data='profile_edit_del')],
             [InlineKeyboardButton("« Guardar y salir", callback_data='profile_end')]]
-       
         bot.edit_message_text(
             text=output,
             chat_id=chat_id,
