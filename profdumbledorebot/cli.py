@@ -106,7 +106,7 @@ def start_bot():
     dispatcher.add_handler(CommandHandler('ping', profdumbledorebot. ping_cmd))
     dispatcher.add_handler(CommandHandler(['fclist','fc'], profdumbledorebot.fclist_cmd, Filters.group))
     dispatcher.add_handler(CommandHandler(['help','start'], profdumbledorebot.start_cmd, pass_args=True))
-    dispatcher.add_handler(CommandHandler(['quienes','whois'], profdumbledorebot.whois_cmd, pass_args=True))
+    dispatcher.add_handler(CommandHandler(['informe','info'], profdumbledorebot.whois_cmd, pass_args=True))
 
     dispatcher.add_handler(CallbackQueryHandler(profdumbledorebot.register_btn, pattern=r"^reg_"))
     dispatcher.add_handler(CallbackQueryHandler(profdumbledorebot.passport_btn, pattern=r"^profile_"))

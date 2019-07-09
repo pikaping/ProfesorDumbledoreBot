@@ -233,13 +233,12 @@ def fclist_cmd(bot, update):
     count = 0
     text = "**Listado de Friend Codes:**"
 
-    if main is None or not main.fclists or not main.friend_id:
+    if main is None or not main.fclists or main.friend_id is None:
         text = "❌ No cumples los requisitos para solicitar el listado."
         bot.sendMessage(
             chat_id=user_id,
             text=text,
-            parse_mode=telegram.ParseMode.MARKDOWN
-        )
+            parse_mode=telegram.ParseMode.MARKDOWN)
         return
 
     users = get_users_from_group(chat_id)
