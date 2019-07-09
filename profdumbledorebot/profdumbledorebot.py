@@ -401,9 +401,9 @@ def passport_btn(bot, update):
 
     elif data == "profile_ment":
         user = user_sql.get_user(user_id)
-        text = "▪️ Listados de codigos"
-        if user.fclists:
-            text = "✅ Listados de codigos"
+        text = "🔕 Menciones desactivadas"
+        if user.alerts:
+            text = "🔔 Menciones activas"
 
         button_list = [
             [InlineKeyboardButton(text, callback_data='profile_ment_1')],
@@ -418,7 +418,7 @@ def passport_btn(bot, update):
     elif data == "profile_code":
         user = user_sql.get_user(user_id)
         text = "🔒 Clave de amigo"
-        if user.alerts:
+        if user.fclists:
             text = "🔓 Clave de amigo"
 
         button_list = [
@@ -502,7 +502,7 @@ def passport_btn(bot, update):
         user_sql.update_fclist(user_id)
         user = user_sql.get_real_user(user_id)
         text = "🔒 Clave de amigo"
-        if user.alerts:
+        if user.fclists:
             text = "🔓 Clave de amigo"
 
         button_list = [
@@ -518,9 +518,9 @@ def passport_btn(bot, update):
     elif data == "profile_ment_1":
         user_sql.update_mentions(user_id)
         user = user_sql.get_real_user(user_id)
-        text = "▪️ Listados de codigos"
-        if user.fclists:
-            text = "✅ Listados de codigos"
+        text = "🔕 Menciones desactivadas"
+        if user.alerts:
+            text = "🔔 Menciones activas"
 
         button_list = [
             [InlineKeyboardButton(text, callback_data='profile_ment_1')],
