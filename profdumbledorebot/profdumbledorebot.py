@@ -433,12 +433,12 @@ def passport_btn(bot, update):
 
     elif data == "profile_edit_lvl":
         button_list = [
-            [InlineKeyboardButton("1-10", callback_data='profile_edit_btn_1'),
-            InlineKeyboardButton("11-20", callback_data='profile_edit_btn_2'),
-            InlineKeyboardButton("21-30", callback_data='profile_edit_btn_3')],
-            [InlineKeyboardButton("31-40", callback_data='profile_edit_btn_4'),
-            InlineKeyboardButton("41-50", callback_data='profile_edit_btn_5'),
-            InlineKeyboardButton("51-60", callback_data='profile_edit_btn_6')],
+            [InlineKeyboardButton("1-10", callback_data='profile_edit_btn_0'),
+            InlineKeyboardButton("11-20", callback_data='profile_edit_btn_10'),
+            InlineKeyboardButton("21-30", callback_data='profile_edit_btn_20')],
+            [InlineKeyboardButton("31-40", callback_data='profile_edit_btn_30'),
+            InlineKeyboardButton("41-50", callback_data='profile_edit_btn_40'),
+            InlineKeyboardButton("51-60", callback_data='profile_edit_btn_50')],
             [InlineKeyboardButton("« Volver", callback_data='profile_back')]]
 
         bot.edit_message_reply_markup(
@@ -581,11 +581,15 @@ def passport_btn(bot, update):
             [InlineKeyboardButton("🛡 Profesion", callback_data='profile_edit_prf')],
             [InlineKeyboardButton("🗑 Eliminar perfil", callback_data='profile_edit_del')],
             [InlineKeyboardButton("« Guardar y salir", callback_data='profile_end')]]
-
-        bot.edit_message_reply_markup(
+       
+       bot.edit_message_text(
+            text=output,
             chat_id=chat_id,
             message_id=message_id,
-            reply_markup=InlineKeyboardMarkup(button_list))
+            reply_markup=InlineKeyboardMarkup(button_list),
+            parse_mode=telegram.ParseMode.MARKDOWN,
+            disable_web_page_preview=True
+        )
         return
 
     elif par == "tea":
@@ -601,12 +605,16 @@ def passport_btn(bot, update):
             [InlineKeyboardButton("🛡 Profesion", callback_data='profile_edit_prf')],
             [InlineKeyboardButton("🗑 Eliminar perfil", callback_data='profile_edit_del')],
             [InlineKeyboardButton("« Guardar y salir", callback_data='profile_end')]]
-
-        bot.edit_message_reply_markup(
+       
+       bot.edit_message_text(
+            text=output,
             chat_id=chat_id,
             message_id=message_id,
-            reply_markup=InlineKeyboardMarkup(button_list))
-        return
+            reply_markup=InlineKeyboardMarkup(button_list),
+            parse_mode=telegram.ParseMode.MARKDOWN,
+            disable_web_page_preview=True
+        )
+       return
 
     elif par == "prf":
         user_sql.commit_user(user_id, profession=val)
@@ -621,12 +629,16 @@ def passport_btn(bot, update):
             [InlineKeyboardButton("🛡 Profesion", callback_data='profile_edit_prf')],
             [InlineKeyboardButton("🗑 Eliminar perfil", callback_data='profile_edit_del')],
             [InlineKeyboardButton("« Guardar y salir", callback_data='profile_end')]]
-
-        bot.edit_message_reply_markup(
+       
+       bot.edit_message_text(
+            text=output,
             chat_id=chat_id,
             message_id=message_id,
-            reply_markup=InlineKeyboardMarkup(button_list))
-        return
+            reply_markup=InlineKeyboardMarkup(button_list),
+            parse_mode=telegram.ParseMode.MARKDOWN,
+            disable_web_page_preview=True
+        )
+       return
 
     elif par == "lvl":
         user_sql.commit_user(user_id, level=val)
@@ -641,12 +653,16 @@ def passport_btn(bot, update):
             [InlineKeyboardButton("🛡 Profesion", callback_data='profile_edit_prf')],
             [InlineKeyboardButton("🗑 Eliminar perfil", callback_data='profile_edit_del')],
             [InlineKeyboardButton("« Guardar y salir", callback_data='profile_end')]]
-
-        bot.edit_message_reply_markup(
+       
+       bot.edit_message_text(
+            text=output,
             chat_id=chat_id,
             message_id=message_id,
-            reply_markup=InlineKeyboardMarkup(button_list))
-        return
+            reply_markup=InlineKeyboardMarkup(button_list),
+            parse_mode=telegram.ParseMode.MARKDOWN,
+            disable_web_page_preview=True
+        )
+       return
 
 
 REGREG = re.compile(r'^reg_([a-z0-9]{1,3})(_([0-9]{1,2})|)')

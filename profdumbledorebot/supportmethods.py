@@ -52,7 +52,7 @@ LINK_REGEX = re.compile(r'(?<!\\)\[.+?\]\((.*?)\)')
 BTN_URL_REGEX = re.compile(r"(\[([^\[]+?)\]\(buttonurl:(?:/{0,2})(.+?)(:same)?\))")
 
 
-def replace(user_id, name=None, admin=True):
+def replace(user_id, name=None, admin=False):
     user = get_user(user_id)
 
     if user is None or user.house is model.Houses.NONE.value:
@@ -103,7 +103,7 @@ def replace(user_id, name=None, admin=True):
         text_flag)
 
     if admin:
-        replace_pogo = replace_pogo + " `{1}`"
+        replace_pogo = replace_pogo + " `{1}`".format(user_id)
 
     return replace_pogo
 
