@@ -34,8 +34,16 @@ from profdumbledorebot.sql.support import get_unique_from_query
 LOCK = threading.RLock()
 
 
-@MWT(timeout=60*60)
+@MWT(timeout=60)
 def get_group(group_id):
+    try:
+        session = get_session()
+        group = get_unique_from_query(session.query(model.Group).filter(model.Group.id == group_id))
+        return group
+    finally:
+        session.close()
+
+def get_real_group(group_id):
     try:
         session = get_session()
         group = get_unique_from_query(session.query(model.Group).filter(model.Group.id == group_id))

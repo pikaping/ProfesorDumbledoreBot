@@ -177,7 +177,7 @@ def whois_cmd(bot, update, args=None):
         return
 
     text_friend_id = ("\nSu Clave de Amigo: `{}`".format(user.friend_id)
-                      if has_fc(user_id) and user.friend_id is not None
+                      if user_sql.has_fc(user_id) and user.friend_id is not None
                       else "")
 
     output = support.replace(user_id) + text_friend_id
@@ -308,7 +308,7 @@ def set_friendid_cmd(bot, update, args=None):
         user_sql.set_fc(fc, user_id)
         bot.sendMessage(
             chat_id=chat_id,
-            text="👌 He registrado tu Clave de Amigo como ‘{}’.".format(fc),
+            text="👌 He registrado tu Clave de Amigo como `{}`.".format(fc),
             parse_mode=telegram.ParseMode.MARKDOWN)
 
 

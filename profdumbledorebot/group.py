@@ -48,7 +48,7 @@ def joined_chat(bot, update, job_queue):
     new_chat_member = message.new_chat_members[0] if message.new_chat_members else None
 
     config = get_config()
-    bot_alias = config['telegram']['botalias']
+    bot_alias = config['telegram']['bot_alias']
 
     if new_chat_member.username == bot_alias:
         if are_banned(user_id, chat_id):
@@ -57,7 +57,7 @@ def joined_chat(bot, update, job_queue):
 
         chat_title = message.chat.title
         chat_id = message.chat.id
-        group = group_sql.get_group(chat_id)
+        group = group_sql.get_real_group(chat_id)
         if group is None:
             group_sql.set_group(chat_id, message.chat.title)
 

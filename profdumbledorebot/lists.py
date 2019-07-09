@@ -47,8 +47,8 @@ def list_cmd(bot, update):
         return
 
     button_list = [[
-        InlineKeyboardButton(text="Me apunto!", callback_data='list_join'),
-        InlineKeyboardButton(text="Paso...", callback_data='list_left')
+        InlineKeyboardButton(text="🙋‍♀️ Me apunto!", callback_data='list_join'),
+        InlineKeyboardButton(text="🙅‍♀️ Paso...", callback_data='list_left')
     ]]
 
     output = text.split(None, 1)
@@ -76,7 +76,7 @@ def list_btn(bot, update):
 
     user = get_user(user_id)
 
-    if user is None or not user.validated:
+    if user is None:
         return
 
     if user.house is Houses.GRYFFINDOR.value:
@@ -101,8 +101,8 @@ def list_btn(bot, update):
         )
 
     button_list = [[
-        InlineKeyboardButton(text="Me apunto!", callback_data='list_join'),
-        InlineKeyboardButton(text="Paso...", callback_data='list_left')
+        InlineKeyboardButton(text="🙋‍♀️ Me apunto!", callback_data='list_join'),
+        InlineKeyboardButton(text="🙅‍♀️ Paso...", callback_data='list_left')
     ]]
     bot.edit_message_text(
         text=text,
@@ -156,8 +156,8 @@ def listopen_cmd(bot, update):
         return
 
     button_list = [[
-        InlineKeyboardButton(text="Me apunto!", callback_data='list_join'),
-        InlineKeyboardButton(text="Paso...", callback_data='list_left')
+        InlineKeyboardButton(text="🙋‍♀️ Me apunto!", callback_data='list_join'),
+        InlineKeyboardButton(text="🙅‍♀️ Paso...", callback_data='list_left')
     ]]
 
     bot.edit_message_reply_markup(
@@ -187,8 +187,8 @@ def listrefloat_cmd(bot, update):
 
     text = message.reply_to_message.text
     button_list = [[
-        InlineKeyboardButton(text="Me apunto!", callback_data='list_join'),
-        InlineKeyboardButton(text="Paso...", callback_data='list_left')
+        InlineKeyboardButton(text="🙋‍♀️ Me apunto!", callback_data='list_join'),
+        InlineKeyboardButton(text="🙅‍♀️ Paso...", callback_data='list_left')
     ]]
 
     bot.sendMessage(
