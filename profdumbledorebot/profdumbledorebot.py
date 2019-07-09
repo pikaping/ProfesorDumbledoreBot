@@ -180,7 +180,7 @@ def whois_cmd(bot, update, args=None):
                       if user_sql.has_fc(user_id) and user.friend_id is not None
                       else "")
 
-    output = support.replace(user_id) + text_friend_id
+    output = support.replace(replied_id) + text_friend_id
 
     if chat_type != "private":
         group = get_group_settings(chat_id)
