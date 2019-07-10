@@ -159,10 +159,10 @@ def start_bot():
 
     dispatcher.add_handler(InlineQueryHandler(tablas.inline_tablas))
     dispatcher.add_handler(CallbackQueryHandler(tablas.tablas_btn, pattern=r"^tabla_"))
-    dispatcher.add_handler(CommandHandler('tablas', tablas.list_pics, Filters.chat(config["telegram"]["staff_id"])))
-    dispatcher.add_handler(CommandHandler('nueva_tabla', tablas.new_pic, Filters.chat(config["telegram"]["staff_id"]),pass_args=True))
-    dispatcher.add_handler(CommandHandler('borrar_tabla', tablas.rm_pic, Filters.chat(config["telegram"]["staff_id"]),pass_args=True))
-    dispatcher.add_handler(CommandHandler('editar_tabla', tablas.edit_pic, Filters.chat(config["telegram"]["staff_id"]),pass_args=True))
+    dispatcher.add_handler(CommandHandler('tablas', tablas.list_pics, Filters.chat(int(config["telegram"]["staff_id"]))))
+    dispatcher.add_handler(CommandHandler('nueva_tabla', tablas.new_pic, Filters.chat(int(config["telegram"]["staff_id"])),pass_args=True))
+    dispatcher.add_handler(CommandHandler('borrar_tabla', tablas.rm_pic, Filters.chat(int(config["telegram"]["staff_id"])),pass_args=True))
+    dispatcher.add_handler(CommandHandler('editar_tabla', tablas.edit_pic, Filters.chat(int(config["telegram"]["staff_id"])),pass_args=True))
 
     dispatcher.add_handler(CommandHandler('list_news', news.list_news, Filters.group))
     dispatcher.add_handler(CommandHandler('rm_news', news.rm_news, Filters.group, pass_args=True))
