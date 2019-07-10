@@ -41,7 +41,7 @@ Puedes pedir ayuda en el grupo @ProfesorDumbledoreAyuda y estar informado de las
     5. [Normas del grupo Admins](#normas-del-grupo-admins)  
     6. [Gestión de usuarios](#gestión-de-usuarios)  
     7. [Id](#id)  
-    8. [Reales decretos (comandos personalizados)](#reales-decretos-comandos-personalizados-)  
+    8. [Reales decretos (comandos personalizados)](#reales-decretos-comandos-personalizados)  
     9. [Otros comandos exclusivos para administradores](#otros-comandos-exclusivos-para-administradores)  
          1. [Comandos de expulsiones individuales](#comandos-de-expulsiones-individuales)  
          2. [Comandos de expulsiones masivas](#comandos-de-expulsiones-masivas)  
