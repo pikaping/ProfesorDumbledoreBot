@@ -57,7 +57,7 @@ def init_news(bot, update, args=None):
         news_sql.set_news_provider(chat_id, alias)
 
     output = (
-        "📰 Bienvenido al sistema de noticias de @ProfDumbledoreBot.\nYa tan solo "
+        "📰 Bienvenido al sistema de noticias de @ProfesorDumbledoreBot.\nYa tan solo "
         "queda el último paso. Ejecuta `/add_news {}` en los grupos que quie"
         "ras recibir las noticias de este canal.".format(chat_id)
     )
