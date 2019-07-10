@@ -29,6 +29,7 @@ import telegram
 
 from uuid import uuid4
 from telegram.ext.dispatcher import run_async
+from profdumbledorebot.config import get_config
 from profdumbledorebot.supportmethods import extract_update_info
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, InlineQueryResultCachedPhoto
 
@@ -251,7 +252,8 @@ def tablas_btn(bot, update):
     query = update.callback_query
     data = query.data
     chat_id = query.message.chat.id
-    news_id = int(-1001290515565)
+    config = get_config()
+    news_id = int(config["telegram"]["news_id"])
     message_id = query.message.message_id
     
     match_new = re.match(r"tabla_new_(.*)", query.data)
