@@ -116,7 +116,7 @@ Estos son las infografías de las que se dispone en la actualidad:
 •	xpNiveles
 
 
-### Registrar invernaderos⠀[⤴](#content) ###
+### Registrar cultivos en invernaderos⠀[⤴](#content) ###
 El bot dispone de registro de cultivos en invernadero, para ello debe tener el grupo en el que se utilice la opción habilitada. Esta configuración únicamente la puede realizar un administrador de dicho grupo.
 Para registrar un cultivo se debe enviar la ubicación del invernadero y el bot comenzará el registro.
 
