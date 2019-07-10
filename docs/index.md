@@ -149,7 +149,7 @@ Si se quiere borrar una lista bastará con eliminar el mensaje que sea la lista.
 ### Glosario de comandos para magos⠀[⤴](#content) ###
 
 | Comando | Descripción |
-|:--------|:------------|
+|---------|-------------|
 | /cucuruchodecucarachas | Registrarse en el bot |
 | /profile | Perfil, datos de tu pasaporte |
 | /ping | Comprueba el “ping” del bot, si tarda en contestar o está “caído” |
@@ -213,8 +213,9 @@ ID -123456.
 ```
 
 3. Una vez puesto el comando en el primer grupo, hay que volver al grupo de administradores e indicar, en la botonera, de qué trata el grupo que se acaba de vincular. Las opciones de las que dispones son las siguientes:  
+
 | Icono | Nombre | Descripción |
-|:------|:-------|:------------|
+|-------|--------|-------------|
 | 🗣 | Charla | Grupo general para charlar |
 | 🌿 | Invernaderos | Grupo para avisos de cultivos |
 | 👊🏼💢 | Fortalezas | Grupo de quedadas para fortalezas |
@@ -288,8 +289,9 @@ El nivel mínimo para entrar en el grupo se puede configurar, clicando en el bot
 #### Tipo de grupo⠀[⤴](#content) ####
 
 Por defecto al añadir al Profesor, se establece el grupo como grupo abierto normal.
+
 | Identificador | Definición |
-|:--------------|:-----------|
+|---------------|------------|
 | ▪️ | Grupo abierto, sin requisitos |
 | ✅ | Grupo con validación obligatoria |
 | ❤️🦁 | Grupo exclusivo Gryffindor |
@@ -343,9 +345,10 @@ Para activar la Bienvenida es necesario activarla en `/settings` (clickando sobr
 /set_welcome Bienvenidos al grupo.
 ```
 
-Además el bot dispone de “inclusiones” que se pueden introducir en el texto de bienvenida para conocer más información del entrenador que acaba de entrar. Por ejemplo:  
+Además el bot dispone de “inclusiones” que se pueden introducir en el texto de bienvenida para conocer más información del entrenador que acaba de entrar. Por ejemplo:
+
 | Strings | Texto mostrado | Definición |
-|:--------|:---------------|:-----------|
+|---------|----------------|------------|
 | {hpwu} | Nelu 23 Auror 💛 | Nick + Nivel + Profesion + Casa |
 | {usuario} | Nelu | Nick |
 | {title} | HPWUEspaña | Nombre del grupo |
@@ -435,43 +438,48 @@ Los @ concretos de los entrenadores de una de las casas se pueden ver mediante:
 No Validados -> `/Dumbleuv U`  
 Para que muestre una lista con todos -> `/dumbleuv R all`  
 
-El comando `/dumblekickuv` sirve para expulsar a todos aquellos No Validados con el Profesor. El Profesor con ese comando no puede expulsar a los que no conoce, pero si a los que no están validados y conoce.
-Cosas a tener en cuenta:
-AVISO: antes de usar el comando /dumblekickuv ten en cuenta que no hay ningún bot validado y puede expulsarlos.
-El comando /dumblekickuv y /dumbleuv, ambos con sus variantes, está restringido a una vez al día por grupo (independientemente de si este está vinculado o no). A las 00.00 se reinicia y se puede volver a utilizar.
+El comando `/dumblekickuv` sirve para expulsar a todos aquellos No Validados con el Profesor. El Profesor con ese comando no puede expulsar a los que no conoce, pero si a los que no están validados y conoce.  
+**Cosas a tener en cuenta:**  
+**AVISO:** antes de usar el comando `/dumblekickuv` ten en cuenta que no hay ningún bot validado y puede expulsarlos.  
+El comando `/dumblekickuv` y `/dumbleuv`, ambos con sus variantes, está restringido a una vez al día por grupo (independientemente de si este está vinculado o no). A las 00:00 se reinicia y se puede volver a utilizar.
 
 ### Id⠀[⤴](#content) ###
 
-Saber el Id de un entrenador es posible gracias al comando /id. Este comando no és exclusivo para administradores, pero está orientado y pensado principalmente para a estos.
-El comando, al igual que el /informe, se puede emplear:
-•	Citando un mensaje del mago.
-•	Citando un reenviado de un mensaje del mago.
-•	Con el @ (alias de telegram) del mago pero sin poner el @ solo el texto.
-La respuesta será enviada al chat privado con el Profesor y el comando será borrado (siempre que el Profesor tenga los permisos necesarios).
-Ejemplo de respuesta enviado al privado al emplear el comando /id sobre un mago:
+Saber el Id de un entrenador es posible gracias al comando `/id`. Este comando no és exclusivo para administradores, pero está orientado y pensado principalmente para a estos.  
+El comando, al igual que el /informe, se puede emplear:  
+* Citando un mensaje del mago.  
+* Citando un reenviado de un mensaje del mago.  
+* Con el @ (alias de telegram) del mago pero sin poner el @ solo el texto.  
+La respuesta será enviada al chat privado con el Profesor y el comando será borrado (siempre que el Profesor tenga los permisos necesarios).  
+Ejemplo de respuesta enviado al privado al emplear el comando `/id` sobre un mago:  
+
+```
 ID: 123456789
 Alias: @nelulita
 Nick: Nelulita
 Nivel: 23
 Casa: Gryffindor
 Profesion: Auror
+```
 
 ### Reales decretos (Comandos personalizados)⠀[⤴](#content) ###
 
-Al igual que Dolores Umbridge nuestros Administradores (Prefectos) pueden crear sus propios Decretos o comandos personalizados. Estos comandos personalizados harán que el bot responda con una frase, imagen, link, fichero, video, audio, nota de voz o gif.
-Los magos miembros del grupo pueden emplearlos y hacer que el Profesor responda con los reales decretos personalizados que hayan creado los administradores del grupo. Son una información propia de cada grupo, es por ello que los decretos cambiarán según en el grupo en el que te encuentres.
-Pasos para crear comandos:
-1.	Para crear un real decreto personalizado se debe enviar cual será la respuesta del decreto.
-2.	Seguidamente respondiendo (y citando) la futura respuesta, el administrador debe poner /nuevo_decreto (nombre) con un máximo de 30 caracteres. Hay que tener en cuenta que cada vez que el Profesor lea ese decreto responderá automáticamente con la respuesta que se le ha dado..
-Por ejemplo, podría haber un decreto personalizado que se llame "ojoloco" y que el bot responderá a este con un gif sobre ojoloco.
-Para hacerlo, se envía el gif de ojoloco, se responde con /nuevo_decreto ojoloco y cada vez que un usuario diga “ojoloco” el profesor mandará el gif.
-Ten en cuenta que el Profesor responderá únicamente si la frase que se escribas es el decreto personalizado, sin importar las mayúsculas o minúsculas, y borrará el decreto personalizado dejando únicamente su respuesta.
+Al igual que Dolores Umbridge nuestros Administradores (Prefectos) pueden crear sus propios Decretos o comandos personalizados. Estos comandos personalizados harán que el bot responda con una frase, imagen, link, fichero, video, audio, nota de voz o gif.  
+Los magos miembros del grupo pueden emplearlos y hacer que el Profesor responda con los reales decretos personalizados que hayan creado los administradores del grupo. Son una información propia de cada grupo, es por ello que los decretos cambiarán según en el grupo en el que te encuentres.  
+Pasos para crear comandos:  
+1. Para crear un real decreto personalizado se debe enviar cual será la respuesta del decreto.  
+2. Seguidamente respondiendo (y citando) la futura respuesta, el administrador debe poner `/nuevo_decreto (nombre)` con un máximo de 30 caracteres. Hay que tener en cuenta que cada vez que el Profesor lea ese decreto responderá automáticamente con la respuesta que se le ha dado..  
+Por ejemplo, podría haber un decreto personalizado que se llame `"ojoloco"` y que el bot responderá a este con un gif sobre ojoloco.  
+Para hacerlo, se envía el gif de ojoloco, se responde con `/nuevo_decreto ojoloco` y cada vez que un usuario diga `“ojoloco”` el profesor mandará el gif.  
+Ten en cuenta que el Profesor responderá únicamente si la frase que se escribas es el decreto personalizado, sin importar las mayúsculas o minúsculas, y borrará el decreto personalizado dejando únicamente su respuesta.  
 Para solicitar el listado de reales decretos personalizados de un grupo debes escribir en dicho grupo la frase: Listado de decretos. 
-La lista de decretos será mandada al privado que tienes con el Profesor y podrás ver todos los decretos personalizados que tiene ese grupo en concreto.
-Si deseas borrar un decreto puedes hacerlo con "eliminar decreto {número del decreto}", substituyendo la variable {número del decreto} por el número del real decreto personalizado que tenga en el “Listado de decretos”. Por ejemplo:
+La lista de decretos será mandada al privado que tienes con el Profesor y podrás ver todos los decretos personalizados que tiene ese grupo en concreto.  
+Si deseas borrar un decreto puedes hacerlo con `eliminar decreto {número del decreto}`, substituyendo la variable `{número del decreto}` por el número del real decreto personalizado que tenga en el “Listado de decretos”. Por ejemplo:  
+```
 Eliminar decreto 55
-En este caso el decreto que se borraría sería el comando que corresponda al número 55.
-Si al intentar borrar un real decreto personalizado el Profesor te responde que este no existe te recomiendo que le solicites al Profesor el listado (está explicado más arriba) para que te asegures de cual quieres eliminar.
+```
+En este caso el decreto que se borraría sería el comando que corresponda al número 55.  
+Si al intentar borrar un real decreto personalizado el Profesor te responde que este no existe te recomiendo que le solicites al Profesor el listado (está explicado más arriba) para que te asegures de cual quieres eliminar.  
 Si en vez de borrar un decreto lo que se quiere es únicamente modificar la respuesta del Profesor, entonces bastará con crear de nuevo un decreto con el mismo nombre.
 
 ### Otros comandos exclusivos para administradores⠀[⤴](#content) ###
@@ -480,14 +488,14 @@ Algunos de los comandos más importantes para un administrador son los de tipo �
 
 #### Comandos de expulsiones individuales⠀[⤴](#content) ####
 
-/warn - El Warn es un aviso o advertencia. Después de una determinada cantidad de avisos el usuario será expulsado del grupo por kick o ban (dependiendo de cómo esté configurado).
-/kick - El Kick es la expulsión del grupo a un usuario, pero este podrá volver a entrar al momento.
-/ban - El Ban es la expulsión del grupo a un usuario, y este no podrá volver a entrar al grupo hasta que un administrador le quite el ban.
-Para utilizar alguno de estos tres comandos se puede hacer mediante las siguientes opciones:
-1.	Citando el mensaje del usuario al que se quiere “castigar” y escribiendo el comando.
-2.	Escribiendo el comando seguido del alias de Telegram del usuario. Por ejemplo: /kick Nelulita
-3.	Escribiendo el comando seguido del ID del usuario. Por ejemplo: /warn 111111 Para conseguir el ID del usuario se puede hacer mediante el aviso del bot en el grupo de administración, si se tiene activado o mediante el comando /id.
-Los tres comandos permiten además, con todas sus opciones, añadir un mensaje con el motivo de dicho “castigo”. Por ejemplo: /kick Nelulita por no asistir a la fortaleza.
+`/warn` - El Warn es un aviso o advertencia. Después de una determinada cantidad de avisos el usuario será expulsado del grupo por kick o ban (dependiendo de cómo esté configurado).  
+`/kick` - El Kick es la expulsión del grupo a un usuario, pero este podrá volver a entrar al momento.  
+`/ban` - El Ban es la expulsión del grupo a un usuario, y este no podrá volver a entrar al grupo hasta que un administrador le quite el ban.  
+Para utilizar alguno de estos tres comandos se puede hacer mediante las siguientes opciones:  
+1. Citando el mensaje del usuario al que se quiere “castigar” y escribiendo el comando.  
+2. Escribiendo el comando seguido del alias de Telegram del usuario. Por ejemplo: `/kick Nelulita`.  
+3. Escribiendo el comando seguido del ID del usuario. Por ejemplo: `/warn 111111` Para conseguir el ID del usuario se puede hacer mediante el aviso del bot en el grupo de administración, si se tiene activado o mediante el comando `/id`.  
+Los tres comandos permiten además, con todas sus opciones, añadir un mensaje con el motivo de dicho “castigo”. Por ejemplo: `/kick Nelulita por no asistir a la fortaleza`.
 
 #### Comandos de expulsiones masivas⠀[⤴](#content) ####
 
@@ -499,38 +507,39 @@ En proceso de escritura
 
 ## Normas de uso del bot⠀[⤴](#content) ##
 
-El siguiente punto, detalla la normativa a cumplir en caso de registrarse en el bot. El desconocimiento de la misma no exime al usuario de su aplicación pues todas las normas aquí recogidas son de sentido común.
-Este bot no controlara de ninguna manera si es utilizado en grupos o canales que promueven el uso de trampas en el juego. Las opciones de baneo con el bot son personales de cada grupo y sus administradores, no baneamos ni bloqueamos usuarios por su modo de juego, si bien sí que se puede privar a alguien por su mal uso o mal trato hacia el staff.
-En caso de formar parte de un grupo en el cual se encuentre @profesordumbledorebot y conozcas a un usuario que no cumpla alguna de las normas será trabajo del administrador del grupo tomar medidas o no. No apoyamos las trampas pero no vamos a ser policías al servicio de los jugadores, queremos disfrutar del juego.
+El siguiente punto, detalla la normativa a cumplir en caso de registrarse en el bot. El desconocimiento de la misma no exime al usuario de su aplicación pues todas las normas aquí recogidas son de sentido común.  
+Este bot no controlara de ninguna manera si es utilizado en grupos o canales que promueven el uso de trampas en el juego. Las opciones de baneo con el bot son personales de cada grupo y sus administradores, no baneamos ni bloqueamos usuarios por su modo de juego, si bien sí que se puede privar a alguien por su mal uso o mal trato hacia el staff.  
+En caso de formar parte de un grupo en el cual se encuentre @profesordumbledorebot y conozcas a un usuario que no cumpla alguna de las normas será trabajo del administrador del grupo tomar medidas o no. No apoyamos las trampas pero no vamos a ser policías al servicio de los jugadores, queremos disfrutar del juego.  
 
 ### Normas del Profesor Dumbledore⠀[⤴](#content) ###
 
-🔞 Está totalmente prohibido enviar material sensible.
-⛔️ Está COMPLETAMENTE PROHIBIDO solicitar y/o aportar información relativa a otro jugador en cualquiera de los grupos oficiales del bot o bien por privado a cualquier miembro del staff. En caso de producirse esta situación, los administradores se reservan el derecho de banear definitivamente la cuenta del entrenador.
-😈 Nunca difames, abuses, hostigues, dañes, acoses, amenaces o violes de cualquier manera los derechos legales (incluidos los derechos de privacidad y publicidad) de los demás.
-👺 Se ruega evitar generar discusiones o debates interminables, o que no aporten información útil al grupo, incluyendo temas de hacks, trampas, emuladores o similares.
-📩 Se considera flood el hecho de repetir continuamente palabras, hacer cadenas de contenido multimedia o comandos (enviar muchas fotos o stickers seguidos), provocando molestias al grupo con contenido innecesario.
+* 🔞 Está totalmente prohibido enviar material sensible.  
+* ⛔️ Está COMPLETAMENTE PROHIBIDO solicitar y/o aportar información relativa a otro jugador en cualquiera de los grupos oficiales del bot o bien por privado a cualquier miembro del staff. En caso de producirse esta situación, los administradores se reservan el derecho de banear definitivamente la cuenta del entrenador.  
+* 😈 Nunca difames, abuses, hostigues, dañes, acoses, amenaces o violes de cualquier manera los derechos legales (incluidos los derechos de privacidad y publicidad) de los demás.  
+* 👺 Se ruega evitar generar discusiones o debates interminables, o que no aporten información útil al grupo, incluyendo temas de hacks, trampas, emuladores o similares.  
+* 📩 Se considera flood el hecho de repetir continuamente palabras, hacer cadenas de contenido multimedia o comandos (enviar muchas fotos o stickers seguidos), provocando molestias al grupo con contenido innecesario.  
 
 ## RGPD⠀[⤴](#content) ##
 
 ### Qué información recopilamos y sometemos a tratamiento⠀[⤴](#content) ###
 
-Este bot recoge la siguiente información sobre sus usuarios al interactuar con él en privado o a través de un grupo o canal de Telegram:
-Identificador numérico de Telegram
-Alias público de Telegram
-Estado de la cuenta (validada, no validada o baneada)
-Datos relacionados con la cuenta del juego, facilitados en el proceso de registro: casa, profesión y nivel
+Este bot recoge la siguiente información sobre sus usuarios al interactuar con él en privado o a través de un grupo o canal de Telegram:  
+* Identificador numérico de Telegram  
+* Alias público de Telegram  
+* Estado de la cuenta (validada, no validada o baneada)  
+* Datos relacionados con la cuenta del juego, facilitados en el proceso de registro: casa, profesión y nivel  
+
 El bot también almacena unos ficheros no ordenados con las interacciones en grupos y directas (logs), con el objetivo de poder trazar problemas técnicos y atender a las apelaciones de baneo.
 
 ### Cómo se utiliza la información⠀[⤴](#content) ###
 
-La información almacenada se utiliza para los siguientes fines:
+La información almacenada se utiliza para los siguientes fines:  
 Ofrecer el servicio de gestión de grupos de Wizards Unite en Telegram. La base legal para el tratamiento de datos mencionado en esta sección es la prestación del servicio que se solicita voluntariamente (artículo 6, párrafo 1 (b) del RGPD).
 
 ### Quién tiene acceso a la información⠀[⤴](#content) ###
 
-El alias público de Telegram y los datos relacionados con la cuenta de Wizards Unite podrán compartirse en grupos o canales en los que se mantenga actividad. Esta compartición puede ser pública, dependiendo de la configuración de cada grupo o canal.
-El identificador numérico y alias público de Telegram y el nombre de mago de Wizards Unite podrán compartirse con los administradores de los grupos o canales en los que se realice alguna actividad.
+El alias público de Telegram y los datos relacionados con la cuenta de Wizards Unite podrán compartirse en grupos o canales en los que se mantenga actividad. Esta compartición puede ser pública, dependiendo de la configuración de cada grupo o canal.  
+El identificador numérico y alias público de Telegram y el nombre de mago de Wizards Unite podrán compartirse con los administradores de los grupos o canales en los que se realice alguna actividad.  
 La base legal para compartir los datos proporcionados es la prestación del servicio que se solicita voluntariamente (artículo 6, párrafo 1 (b) del RGPD).
 
 ### Duración del almacenamiento⠀[⤴](#content) ###
@@ -543,8 +552,8 @@ Los derechos al olvido contemplados por la RGPD se ejercen mediante el comando /
 
 ### Agradecimientos y colaboraciones⠀[⤴](#content) ###
 
-Por último y no por ello menos importante, de manera personal y pública después de meses de trabajo me gustaría nombrar a las personas que están haciendo esto posible.
-Pikaping por ser el creador del alma del bot, a Gentakojima porque sin él, no estaríamos aquí. Ansett por ser la cabeza y mano derecha en los momentos clave. McFigue y Pilfer por mantener el merodeador en constante actualización mientras llegaba el Profesor.
-Al equipo de las tablas, Saray, Zetateck, Nicky y Ferran. A los youtuber que quieren colaborar con sus videos y que pronto se verán reflejados en la web y a todos los usuarios que habéis esperado estos meses con expectación.
+Por último y no por ello menos importante, de manera personal y pública después de meses de trabajo me gustaría nombrar a las personas que están haciendo esto posible.  
+Pikaping por ser el creador del alma del bot, a Gentakojima porque sin él, no estaríamos aquí. Ansett por ser la cabeza y mano derecha en los momentos clave. McFigue y Pilfer por mantener el merodeador en constante actualización mientras llegaba el Profesor.  
+Al equipo de las tablas, Saray, Zetateck, Nicky y Ferran. A los youtuber que quieren colaborar con sus videos y que pronto se verán reflejados en la web y a todos los usuarios que habéis esperado estos meses con expectación.  
 Salid a la calle, ¡el Ministerio de Magia os necesita!
 
