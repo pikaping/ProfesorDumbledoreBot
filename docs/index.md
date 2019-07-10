@@ -16,7 +16,7 @@ Puedes pedir ayuda en el grupo @ProfesorDumbledoreAyuda y estar informado de las
     2. [Configuración admins](#configuración-admins)  
          1. [Ajustes del grupo de Admins](#ajustes-del-grupo-de-admins)  
          2. [Vincular grupos al grupo de Admins](#vincular-grupos-al-grupo-de-admins)  
-    3. [Configuración básica](#configuración-básica)  
+    3. [Configuración básica de grupos](#configuración-básica-de-grupos)  
          1. [Ajustes generales](#ajustes-generales)  
                 1. [Juegos](#juegos)  
                 2. [Warn y tipos de expulsión](#warn-y-tipos-de-expulsión)  
