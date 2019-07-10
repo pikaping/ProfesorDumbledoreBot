@@ -56,7 +56,7 @@ Puedes pedir ayuda en el grupo @ProfesorDumbledoreAyuda y estar informado de las
     5. [Derechos contemplados en el RGPD](#derechos-contemplados-en-el-RGPD)  
 5. [Agradecimientos y colaboraciones](#agradecimientos-y-colaboraciones)  
 
-## Ayuda para magos y brujas [⤴](#content) ##
+## Ayuda para magos y brujas⠀[⤴](#content) ##
 
 ### Registrarse en el bot⠀[⤴](#content) ###
 
@@ -65,7 +65,7 @@ Para iniciar el registro debes abrir una conversación con el Profesor e iniciar
 
 Para poder utilizar todas las funciones del Profesor Dumbledore es necesario tener definido un alias en Telegram. Puede hacerse desde: Opciones de Telegram -> Ajustes -> Alias
 
-### Ficha del mago [⤴](#content) ###
+### Ficha del mago⠀[⤴](#content) ###
 Enviando el comando /perfil o /profile podrás acceder y editar toda la información sobre tu perfil en HPWU que has compartido con el Profesor. 
 Los dos emoticonos que siguen al nivel, representan la casa a la que pertenece el mago. Estos son los emoticonos seleccionados por nosotros.
 
@@ -86,7 +86,7 @@ Además, también contamos con otros emojis que nos servirán de flags.
 
   🧙 Staff del bot.
 
-### Código de Amigo [⤴](#content) ###
+### Código de Amigo⠀[⤴](#content) ###
 
 Para añadir tu clave de amigo de HPWU en este bot, es tan sencillo como enviar /set_friendid seguido de tu clave de amigo. 
 Aquí tienes un ejemplo:
@@ -96,11 +96,11 @@ Si deseas eliminar tu clave de amigo de tu perfil, simplemente envía /set_frien
 Además, si quieres aparecer en todas las listas de códigos de los grupos en los que formes parte, tan solo deberás activarlo desde tu perfil, pulsando sobre el botón 🔒 Clave de amigo. Cuando hayas pulsado el botón, el candado se abrirá y tu clave de amigo pasará a ser pública.
 Para retirar tu clave de amigo de todos los listados deberás hacer exactamente lo mismo que para publicarla. Pulsa sobre el botón 🔓 Clave de amigo en tu perfil.
 
-### Informe / ¿quién es? [⤴](#content) ###
+### Informe / ¿quién es?⠀[⤴](#content) ###
 
 Si quieres ver la ficha de otro mago, podrás usar el comando /informe o /whois respondiendo un mensaje del mago o seguido del alias o el ID en Telegram del mago en cuestión.
 
-### Infografías [⤴](#content) ###
+### Infografías⠀[⤴](#content) ###
 El Profesor dispone de una amplia biblioteca de infografías que se van ampliando a medida que conocemos más datos del juego. Las infografías están creadas por el equipo creativo del diario el profeta (@diarioelprofeta).
 Para solicitarlas se debe emplear el comando /tabla seguido de un espacio y el nombre de la tabla que se desea. El mensaje solicitando la tabla será eliminado por el Profesor de forma automática.
 Dependiendo de la configuración del grupo, las tablas se enviarán al chat privado del bot o al grupo, para eso es necesario tener abierta una conversación privada con el Profesor Dumbledore
@@ -116,11 +116,11 @@ Estos son las infografías de las que se dispone en la actualidad:
 •	xpNiveles
 
 
-### Registrar invernaderos [⤴](#content) ###
+### Registrar invernaderos⠀[⤴](#content) ###
 El bot dispone de registro de cultivos en invernadero, para ello debe tener el grupo en el que se utilice la opción habilitada. Esta configuración únicamente la puede realizar un administrador de dicho grupo.
 Para registrar un cultivo se debe enviar la ubicación del invernadero y el bot comenzará el registro.
 
-### Listas [⤴](#content) ###
+### Listas⠀[⤴](#content) ###
 El profesor dispone de la opción para hacer listas, útiles para quedadas, luchas en fortalezas... En estas listas únicamente se podrá indicar si vas a acudir (botón “Me apunto!”) o si una vez apuntado has decidido no ir (botón “Paso”).
 Para crear una lista se debe emplear el comando /list y añadir el título que tendrá la lista. Por ejemplo:
 /list FORTALEZA A LAS CINCO.
@@ -129,7 +129,7 @@ Con el comando /listrefloat puedes reflotar una lista si esta ha quedado perdida
 También se dispone de la posibilidad de cerrar una lista para que nadie más se pueda apuntar en ese momento. Esto es posible hacerlo con el comando /listclose. Al cerrar la lista los botones para apuntarse y desapuntarse desaparecerán. Para abrir de nuevo una lista cerrada será necesario utilizar el comando /listopen; los botones volverán a aparecer y los usuarios podrán volverse a apuntar y desapuntar. Al reflotar una lista, si esta está cerrada sucederá lo mismo y los botones volverán.
 Si se quiere borrar una lista bastará con eliminar el mensaje que sea la lista.
 
-### Glosario de comandos para entrenadores [⤴](#content) ###
+### Glosario de comandos para entrenadores⠀[⤴](#content) ###
 Comando	Descripción
 /cucuruchodecucarachas	Registrarse en el bot
 
@@ -164,12 +164,12 @@ Listado de grupos internacionales	Listado de grupos del @mapadelmerodeador
 
 /add_url	Grupos vinculados
 
-### Más ayuda [⤴](#content) ###
+### Más ayuda⠀[⤴](#content) ###
 Si tienes alguna duda y la información no se encuentre en esta guía, puedes preguntar en @profesordumbledoreayuda. Si eres Prefecto o Administrador de un grupo o canal a continuación está la ayuda para administradores.
 
-## Ayuda para administradores [⤴](#content) ##
+## Ayuda para administradores⠀[⤴](#content) ##
 
-### Añadir el bot a un grupo o canal [⤴](#content) ###
+### Añadir el bot a un grupo o canal⠀[⤴](#content) ###
 El soporte del bot, por el momento, solo está probado en grupos y supergrupos. El soporte de canales es únicamente por colaboración de canales de noticias y eso hay que comunicarlo en el grupo de ayuda.
 En grupos el bot ya se puede utilizar tan pronto entra al grupo y envía un saludo. No obstante necesita una configuración inicial. Hay que tener cuidado porque, si una vez que se añade el bot se convierte el grupo en supergrupo, hay que volver a configurarlo. Un supergrupo es la mejor opción en la mayoría de los casos.
 Para añadir el bot a un grupo hay tres alternativas:
@@ -177,11 +177,11 @@ Para añadir el bot a un grupo hay tres alternativas:
 2.	Pulsando en este enlace en un dispositivo donde esté Telegram instalado.
 3.	Otra opción es intentar añadirlo como un contacto más desde el grupo con su alias @ProfesorDumbledoreBot, en algunas versiones de Telegram hay problemas usando este método.
 
-### Configuración admins [⤴](#content) ###
+### Configuración admins⠀[⤴](#content) ###
 
 El bot es la mejor ayuda para la administración pero hay que distinguir entre los grupos con usuarios, general, de casas, charla, offtopic… y el grupo de administración, en este, solo los admins tendrán acceso y recibirán mensajes básicos como la entrada de usuarios, los avisos de @admin, los kickeados y los baneados. Es un grupo de control
 
-#### Ajustes del grupo de Admins [⤴](#content) ####
+#### Ajustes del grupo de Admins⠀[⤴](#content) ####
 En el grupo de administración hay que empezar por escribir el comando /settings_admin. Este comando permitirá activar distintas opciones de avisos que llegarán al grupo de administradores, del grupo principal y de los grupos que tenga vinculados. Siempre que se necesite se dispondrá de este comando y se podrán activar o desactivar las opciones.
 Opciones de las que se dispone (tanto si es un grupo como si son varios los vinculados):
 •	Mensaje de aviso de magos que entran al grupo, dónde se verá también si están validados, su id y en el caso de varios grupos vinculados, a cual entran.
@@ -189,7 +189,7 @@ Opciones de las que se dispone (tanto si es un grupo como si son varios los vinc
 •	Mensaje de aviso cuando un mago escribe @admin en el grupo.
 •	Mensaje de aviso de un warn (aviso) a un mago usuario.
 
-#### Vincular grupos al grupo de Admins [⤴](#content) ####
+#### Vincular grupos al grupo de Admins⠀[⤴](#content) ####
 Para vincular diferentes grupos se deben seguir los siguientes pasos:
 1.	Ejecutar el comando /create_admin en el grupo al cual irá la información, el que será el grupo de Administradores. 
 Es necesario guardar el ID que enviará el bot, lo solicitaremos más adelante. Por ejemplo:
@@ -217,53 +217,53 @@ Icono	Nombre	Descripción
 Si se necesita que el bot deje de considerar un grupo como el de administración se puede ejecutar el comando /rm_admin en el mismo. Ese comando desvinculará todos los grupos unidos. Si sólo se quiere desvincular un grupo hay que dirigirse al grupo concreto y ejecutar el comando /rm_link.
 Para saber cuáles son los grupos que están vinculados a uno de administración se puede solicitar con el comando /groups en cualquiera de ellos y el bot enviará una lista de los grupos vinculados, excepto el de administración por razones obvias.
 
-### Configuración básica de grupos [⤴](#content) ###
+### Configuración básica de grupos⠀[⤴](#content) ###
 Para hacer la configuración básica del bot se utiliza el comando /settings. Este comando puede usarse en cualquiera de los grupos que quieras configurar. La configuración está dividida en varios apartados y sub-apartados:
 
-#### Ajustes generales [⤴](#content) ####
+#### Ajustes generales⠀[⤴](#content) ####
 En este apartado dentro de /settings se encuentra la forma de configurar los ajustes básicos del grupo.
 
-#### Juegos [⤴](#content) ####
+#### Juegos⠀[⤴](#content) ####
 El bot contará con diferentes juegos, uno de ellos solo podrá ser activado por miembros del staff. Cuando se activen publicaremos más información
 
-#### Warn y tipos de expulsión [⤴](#content) ####
+#### Warn y tipos de expulsión⠀[⤴](#content) ####
 
 Este botón puede estar activado como Ban (Warn) o como Kick (Warn) y determina el tipo de expulsión que recibirá el usuario al llegar al máximo de Warns determinado por el grupo. Es decir si se activa a 5 warn un usuario con esos recibirá un kick (y podrá volver a entrar) o recibirá un baneo (y su expulsión será para siempre)
 
-#### Límite de warn [⤴](#content) ####
+#### Límite de warn⠀[⤴](#content) ####
 
 Este botón determinará la cantidad máxima de warn que recibirá un usuario antes de tomar la medida del punto anterior. Se puede configurar en 3, 5, 10, 25, 50 o 100.
 
-#### Respuestas [⤴](#content) ####
+#### Respuestas⠀[⤴](#content) ####
 
 Este botón determina si un grupo quiere recibir las respuestas a comandos por el mismo o que se envíe por privado a los magos.  Si un mago pide una tabla de “masternotes”  y el botón marca “respuestas al grupo” se enviará de manera pública. Por el contrario si se ponen en privado pero esa persona no ha iniciado una conversación previa con el bot, no recibirá nada. Si la tiene iniciada la recibirá de manera normal.
 Esto sucederá tanto con las tablas como con otros comandos comunes: informe, ping, groups…
 
 
-#### Ajustes de entrada [⤴](#content) ####
+#### Ajustes de entrada⠀[⤴](#content) ####
 En este apartado dentro de /settings se encuentra la forma de configurar los tipos de grupo y los requisitos para permanecer en ellos.
 
-#### Configurar ajustes de entrada [⤴](#content) ####
+#### Configurar ajustes de entrada⠀[⤴](#content) ####
 
 Además de las opciones configurables que se verán a continuación, está disponible el comando /set_maxmembers (seguido de un número entero y positivo) que establece el número máximo de miembros que puede haber en un grupo. Hay que tener en cuenta siempre que los bots y los administradores del grupo cuentan en esa suma de miembros.
 Para desactivar esta opción solo hay que escribir el comando /set_maxmembers 0.
 
 
-#### No registrados en el Profesor [⤴](#content) ####
+#### No registrados en el Profesor⠀[⤴](#content) ####
 Si se activa este botón (✅) el Profesor @ProfesorDumbledoreBot avisará si entra al grupo un mago que no tenga su pasaporte registrado con el Profesor. El aviso que mostrará consiste en un mensaje en el cual explicará cómo y dónde debe registrarse.
 
-#### Expulsiones silenciosas o notificadas [⤴](#content) ####
+#### Expulsiones silenciosas o notificadas⠀[⤴](#content) ####
 Si el botón de “expulsiones silenciosas” está activado entonces el Profesor no mostrará ningún mensaje por el grupo cuando expulse a alguien. Si por el contrario, está desactivado, cada vez que expulse a alguien el Profesor enviará al grupo un mensaje estándar.
 
-#### Borrar entradas [⤴](#content) ####
+#### Borrar entradas⠀[⤴](#content) ####
 
 Si este botón está activado el Profesor borrará aquellos mensajes automáticos de notificación que hace telegram cuando un mago entra al grupo
 
-#### Nivel mínimo [⤴](#content) ####
+#### Nivel mínimo⠀[⤴](#content) ####
 Determina un nivel mínimo como requisito para entrar al grupo. Esta opción viene activada por defecto (▪️) como 0, eso quiere decir que no hay nivel mínimo requerido.
 El nivel mínimo para entrar en el grupo se puede configurar, clicando en el botón hasta que salga la opción deseada, según: ▪️ (0, sin nivel requerido), 15, 20, 25, 30, 35 o 40. Si se vuelve a clicar encima entonces se desactiva volviendo a ser 0.
 
-#### Tipo de grupo [⤴](#content) ####
+#### Tipo de grupo⠀[⤴](#content) ####
 Por defecto al añadir al Profesor, se establece el grupo como grupo abierto normal.
 Identificador	Definición
 ▪️	Grupo abierto, sin requisitos
@@ -277,21 +277,21 @@ Identificador	Definición
 	Grupo exclusivo Magizoologos
 En el caso de que un mago intente acceder a un grupo en el cual no cumpla las condiciones de entrada, el Profesor (con los privilegios de admin pertinentes) le expulsará.
 
-#### Ajustes de administración [⤴](#content) ####
+#### Ajustes de administración⠀[⤴](#content) ####
 Las alertas de administración son individuales en cada grupo, pero deben estar configuradas tanto en el grupo de administración como en el grupo vinculado.
 El marcar como activado (✅) alguno de los botones que se explicarán a continuación, hará que el Profesor elimine ese tipo de formato cada vez que un mago lo envíe al grupo. Configurando así un grupo en el cual no estén permitidos determinados formatos. Eso no incluye los mensajes enviados por administradores y bots.
 Por ejemplo, si en un grupo se activa “✅ Gif”, cada vez que un usuario, no administrador, envíe un gif al grupo el bot lo eliminará automáticamente.
 
-#### Aviso admins [⤴](#content) ####
+#### Aviso admins⠀[⤴](#content) ####
 Al activar este botón, cada vez que un entrenador del grupo escriba el aviso a los administradores @admin el mensaje que lo contenga será notificado en el grupo de administración y eliminado del general.
 
-#### Entrada de usuarios [⤴](#content) ####
+#### Entrada de usuarios⠀[⤴](#content) ####
 La activación de este botón será necesaria para que el Profesor avise en el grupo de administración de la entrada de un nuevo mago a uno de sus grupos vinculados. 
 
-#### Noticias [⤴](#content) ####
+#### Noticias⠀[⤴](#content) ####
 El bot dispone de la opción de Noticias: Eso quiere decir que puede reenviar automáticamente las publicaciones que salgan en distintos canales.
 
-#### Canales de Noticias Oficiales del Bot [⤴](#content) ####
+#### Canales de Noticias Oficiales del Bot⠀[⤴](#content) ####
 Para poder ver este apartado es necesario haber escrito el comando /settings y haber accedido al apartado Noticias haciendo click sobre el botón.
 Los canales de los que se dispone Oficialmente son los siguientes:
 •	@profesordumbledore (noticias sobre el bot @ProfesorDumbledorebot, bot de gestión de grupos)
@@ -300,10 +300,10 @@ Los canales de los que se dispone Oficialmente son los siguientes:
 Cada uno de los siguientes canales tienen sus propias características por los cuales son importantes y seguidos: algunos son de noticias sobre bots, noticias sobre el juego o noticias de broma.
 Es decisión de cada grupo activar o no el reenvío de las noticias (y cuales) para mantenerse informados. Por defecto todas las noticias estarán desactivadas. Para activarlas se debe clickar encima del botón seleccionado.
 
-#### Canales de Noticias No-Oficiales [⤴](#content) ####
+#### Canales de Noticias No-Oficiales⠀[⤴](#content) ####
 Si quieres que las noticias de un canal (distinto a los mencionados en el apartado anterior) lleguen a un grupo en el cual seas administrador es necesario ponernos en contacto con ese canal, si se facilita toda la información necesaria en el grupo de ayuda podemos incluirlo.
 
-#### Bienvenida [⤴](#content) ####
+#### Bienvenida⠀[⤴](#content) ####
 El Profesor puede dar la bienvenida a los entrenadores que vayan entrando al grupo. Opción desactivada por defecto.
 Para activar la Bienvenida es necesario activarla en /settings (clickando sobre el botón) y después es necesario utilizar el comando /set_welcome para definir el mensaje de bienvenida que dará el bot. Por ejemplo, si se quiere poner el mensaje “Bienvenidos al grupo”, sería:
  /set_welcome Bienvenidos al grupo.
@@ -321,7 +321,7 @@ Si se quiere eliminar el mensaje de bienvenida, para que el bot deje de saludar 
 Para configurar la duración del mensaje de bienvenida se debe emplear el comando /set_cooldown seguido de un número entero y positivo que indicará la cantidad de segundos antes de que sea eliminado el mensaje. Por ejemplo: set_cooldown 15 En este ejemplo el bot mandaría el mensaje de bienvenida cuando entrase un entrenador al grupo, dejaría el mensaje durante 15 segundos y una vez terminada ese tiempo el mensaje del bot se borraría.
 Si se quiere desactivar esa opción y que el mensaje no sea eliminado entonces se deberá escribir /set_cooldown 0.
 
-#### Modo Biblioteca [⤴](#content) ####
+#### Modo Biblioteca⠀[⤴](#content) ####
 El modo biblioteca evita que la gente hable en un grupo, borrando todos los mensajes que pongan los usuarios (no los mensajes de los administradores ni de los bots). Opción desactivada por defecto.
 Con el comando /set_pince puedes definir el mensaje que dará el bot cada vez que un usuario hable. Por ejemplo: */set_pince Magos y brujas, para hablar debes acudir al grupo @harrypotterwizardsunitespain.
 Dentro del /settings del apartado del modo biblioteca encontrarás una gran cantidad de botones que puedes activar (✅). Si se activan serán los formatos que el bot no permitirá en el grupo.
@@ -342,7 +342,7 @@ Video
 Warns.
 Finalmente, también existe la opción de activar el botón Mensajes de administradores. Al activar esta opción el bot actuará también sobre los administradores con el modo biblioteca.
 
-### Botones y más botones [⤴](#content) ###
+### Botones y más botones⠀[⤴](#content) ###
 El Profesor también puede tener botones en el mensaje de bienvenida y en los comandos personalizados, para ello se debe escribir de la siguiente manera: 
 [Texto a mostrar en el botón](buttonurl://dirección.com). 
 Se debe escribir todo junto, sin espacios (entre los : y las // NO debe de haber espacio), y cambiar el texto del botón y el enlace. Como ejemplo:
@@ -354,7 +354,7 @@ Para escribir más de un botón en una misma línea se ha de escribir :same al f
 [Botón 4](buttonurl://google.es)
 [Botón 5](buttonurl://google.es:same)*
 
-### Normas del grupo Admins [⤴](#content) ###
+### Normas del grupo Admins⠀[⤴](#content) ###
 El Profesor puede guardar y enviar las normas del grupo por privado.
 Para registrar las normas del grupo se debe escribir el comando /set_rules seguido del texto que se quiera guardar como normas. Una vez enviado el bot responderá que se han establecido correctamente las normas del grupo.
 El comando /set_rules acepta únicamente el formato texto. También es posible añadir botones.
@@ -363,7 +363,7 @@ Si un usuario entra nuevo al grupo cuando están las normas activas entonces deb
 Cosas a tener en cuenta:
 No es recomendable tener las Normas del grupo activas junto a la Bienvenida con /set_cooldown. Si se activan las dos cosas es recomendable hacer un Comando personalizado en el cual puedan encontrar el botón con las Normas del grupo.
 
-### Gestión de usuarios [⤴](#content) ###
+### Gestión de usuarios⠀[⤴](#content) ###
 Para saber la cantidad de magos y brujas que hay de cada categoría en un grupo y saber los magos que no están validados, puedes emplear el comando /dumbleuv y el Profesor te mostrará un mensaje parecido a este:
 💙 Ravenclaw: 10
 💛 Hufflepuff: 3
@@ -385,7 +385,7 @@ Cosas a tener en cuenta:
 AVISO: antes de usar el comando /dumblekickuv ten en cuenta que no hay ningún bot validado y puede expulsarlos.
 El comando /dumblekickuv y /dumbleuv, ambos con sus variantes, está restringido a una vez al día por grupo (independientemente de si este está vinculado o no). A las 00.00 se reinicia y se puede volver a utilizar.
 
-### Id [⤴](#content) ###
+### Id⠀[⤴](#content) ###
 Saber el Id de un entrenador es posible gracias al comando /id. Este comando no és exclusivo para administradores, pero está orientado y pensado principalmente para a estos.
 El comando, al igual que el /informe, se puede emplear:
 •	Citando un mensaje del mago.
@@ -400,7 +400,7 @@ Nivel: 23
 Casa: Gryffindor
 Profesion: Auror
 
-### Reales decretos (Comandos personalizados) [⤴](#content) ###
+### Reales decretos (Comandos personalizados)⠀[⤴](#content) ###
 Al igual que Dolores Umbridge nuestros Administradores (Prefectos) pueden crear sus propios Decretos o comandos personalizados. Estos comandos personalizados harán que el bot responda con una frase, imagen, link, fichero, video, audio, nota de voz o gif.
 Los magos miembros del grupo pueden emplearlos y hacer que el Profesor responda con los reales decretos personalizados que hayan creado los administradores del grupo. Son una información propia de cada grupo, es por ello que los decretos cambiarán según en el grupo en el que te encuentres.
 Pasos para crear comandos:
@@ -417,10 +417,10 @@ En este caso el decreto que se borraría sería el comando que corresponda al n�
 Si al intentar borrar un real decreto personalizado el Profesor te responde que este no existe te recomiendo que le solicites al Profesor el listado (está explicado más arriba) para que te asegures de cual quieres eliminar.
 Si en vez de borrar un decreto lo que se quiere es únicamente modificar la respuesta del Profesor, entonces bastará con crear de nuevo un decreto con el mismo nombre.
 
-### Otros comandos exclusivos para administradores [⤴](#content) ###
+### Otros comandos exclusivos para administradores⠀[⤴](#content) ###
 Algunos de los comandos más importantes para un administrador son los de tipo “castigo”. Estos comandos únicamente pueden ser utilizados por los administradores, y si algún usuario lo escribiese el Profesor respondería que dicho usuario no tiene permisos para ello.
 
-#### Comandos de expulsiones individuales [⤴](#content) ####
+#### Comandos de expulsiones individuales⠀[⤴](#content) ####
 /warn - El Warn es un aviso o advertencia. Después de una determinada cantidad de avisos el usuario será expulsado del grupo por kick o ban (dependiendo de cómo esté configurado).
 /kick - El Kick es la expulsión del grupo a un usuario, pero este podrá volver a entrar al momento.
 /ban - El Ban es la expulsión del grupo a un usuario, y este no podrá volver a entrar al grupo hasta que un administrador le quite el ban.
@@ -430,27 +430,27 @@ Para utilizar alguno de estos tres comandos se puede hacer mediante las siguient
 3.	Escribiendo el comando seguido del ID del usuario. Por ejemplo: /warn 111111 Para conseguir el ID del usuario se puede hacer mediante el aviso del bot en el grupo de administración, si se tiene activado o mediante el comando /id.
 Los tres comandos permiten además, con todas sus opciones, añadir un mensaje con el motivo de dicho “castigo”. Por ejemplo: /kick Nelulita por no asistir a la fortaleza.
 
-#### Comandos de expulsiones masivas [⤴](#content) ####
+#### Comandos de expulsiones masivas⠀[⤴](#content) ####
 
 En proceso de escritura
 
-#### Glosario de comandos para administradores [⤴](#content) ####
+#### Glosario de comandos para administradores⠀[⤴](#content) ####
 En proceso de escritura
 
-## Normas de uso del bot [⤴](#content) ##
+## Normas de uso del bot⠀[⤴](#content) ##
 El siguiente punto, detalla la normativa a cumplir en caso de registrarse en el bot. El desconocimiento de la misma no exime al usuario de su aplicación pues todas las normas aquí recogidas son de sentido común.
 Este bot no controlara de ninguna manera si es utilizado en grupos o canales que promueven el uso de trampas en el juego. Las opciones de baneo con el bot son personales de cada grupo y sus administradores, no baneamos ni bloqueamos usuarios por su modo de juego, si bien sí que se puede privar a alguien por su mal uso o mal trato hacia el staff.
 En caso de formar parte de un grupo en el cual se encuentre @profesordumbledorebot y conozcas a un usuario que no cumpla alguna de las normas será trabajo del administrador del grupo tomar medidas o no. No apoyamos las trampas pero no vamos a ser policías al servicio de los jugadores, queremos disfrutar del juego.
 
-### Normas del Profesor Dumbledore [⤴](#content) ###
+### Normas del Profesor Dumbledore⠀[⤴](#content) ###
 🔞 Está totalmente prohibido enviar material sensible.
 ⛔️ Está COMPLETAMENTE PROHIBIDO solicitar y/o aportar información relativa a otro jugador en cualquiera de los grupos oficiales del bot o bien por privado a cualquier miembro del staff. En caso de producirse esta situación, los administradores se reservan el derecho de banear definitivamente la cuenta del entrenador.
 😈 Nunca difames, abuses, hostigues, dañes, acoses, amenaces o violes de cualquier manera los derechos legales (incluidos los derechos de privacidad y publicidad) de los demás.
 👺 Se ruega evitar generar discusiones o debates interminables, o que no aporten información útil al grupo, incluyendo temas de hacks, trampas, emuladores o similares.
 📩 Se considera flood el hecho de repetir continuamente palabras, hacer cadenas de contenido multimedia o comandos (enviar muchas fotos o stickers seguidos), provocando molestias al grupo con contenido innecesario.
 
-## RGPD [⤴](#content) ##
-### Qué información recopilamos y sometemos a tratamiento [⤴](#content) ###
+## RGPD⠀[⤴](#content) ##
+### Qué información recopilamos y sometemos a tratamiento⠀[⤴](#content) ###
 Este bot recoge la siguiente información sobre sus usuarios al interactuar con él en privado o a través de un grupo o canal de Telegram:
 Identificador numérico de Telegram
 Alias público de Telegram
@@ -458,22 +458,22 @@ Estado de la cuenta (validada, no validada o baneada)
 Datos relacionados con la cuenta del juego, facilitados en el proceso de registro: casa, profesión y nivel
 El bot también almacena unos ficheros no ordenados con las interacciones en grupos y directas (logs), con el objetivo de poder trazar problemas técnicos y atender a las apelaciones de baneo.
 
-### Cómo se utiliza la información [⤴](#content) ###
+### Cómo se utiliza la información⠀[⤴](#content) ###
 La información almacenada se utiliza para los siguientes fines:
 Ofrecer el servicio de gestión de grupos de Wizards Unite en Telegram. La base legal para el tratamiento de datos mencionado en esta sección es la prestación del servicio que se solicita voluntariamente (artículo 6, párrafo 1 (b) del RGPD).
 
-### Quién tiene acceso a la información [⤴](#content) ###
+### Quién tiene acceso a la información⠀[⤴](#content) ###
 El alias público de Telegram y los datos relacionados con la cuenta de Wizards Unite podrán compartirse en grupos o canales en los que se mantenga actividad. Esta compartición puede ser pública, dependiendo de la configuración de cada grupo o canal.
 El identificador numérico y alias público de Telegram y el nombre de mago de Wizards Unite podrán compartirse con los administradores de los grupos o canales en los que se realice alguna actividad.
 La base legal para compartir los datos proporcionados es la prestación del servicio que se solicita voluntariamente (artículo 6, párrafo 1 (b) del RGPD).
 
-### Duración del almacenamiento [⤴](#content) ###
+### Duración del almacenamiento⠀[⤴](#content) ###
 La información se almacena durante el tiempo necesario para cumplir con los fines para los que se recopila y las interacciones en grupos y directas con el bot (logs) se eliminan pasados una semana.
 
-### Derechos contemplados en el RGPD [⤴](#content) ###
+### Derechos contemplados en el RGPD⠀[⤴](#content) ###
 Los derechos al olvido contemplados por la RGPD se ejercen mediante el comando /profile. Desde ahí, se podrán editar y eliminar todos los datos de tu perfil.
 
-### Agradecimientos y colaboraciones [⤴](#content) ###
+### Agradecimientos y colaboraciones⠀[⤴](#content) ###
 Por último y no por ello menos importante, de manera personal y pública después de meses de trabajo me gustaría nombrar a las personas que están haciendo esto posible.
 Pikaping por ser el creador del alma del bot, a Gentakojima porque sin él, no estaríamos aquí. Ansett por ser la cabeza y mano derecha en los momentos clave. McFigue y Pilfer por mantener el merodeador en constante actualización mientras llegaba el Profesor.
 Al equipo de las tablas, Saray, Zetateck, Nicky y Ferran. A los youtuber que quieren colaborar con sus videos y que pronto se verán reflejados en la web y a todos los usuarios que habéis esperado estos meses con expectación.
