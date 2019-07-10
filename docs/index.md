@@ -1,4 +1,4 @@
-Bot para la gestión y dinamización de grupos en Telegram de Harry Potter Wizards Unite.
+Bot para la gestión y dinamización de grupos en Telegram de Harry Potter Wizards Unite.  
 Puedes pedir ayuda en el grupo @ProfesorDumbledoreAyuda y estar informado de las novedades en el canal de noticias @ProfesorDumbledore
 
 1. [Ayuda para magos y brujas](#ayuda-para-magos-y-brujas)  
@@ -7,7 +7,7 @@ Puedes pedir ayuda en el grupo @ProfesorDumbledoreAyuda y estar informado de las
     3. [Código de Amigo](#código-de-amigo)  
     4. [Informe / ¿Quién es?](#informe--quién-es)  
     5. [Infografías](#infografías)  
-    6. [Registrar cultivos en invernadero](#registrar-cultivos-en-invernadero)  
+    6. [Registrar cultivos en invernaderos](#registrar-cultivos-en-invernaderos)  
     7. [Listas](#listas)  
     8. [Glosario de comandos para entrenadores](#glosario-de-comandos-para-entrenadores)  
     9. [Más ayuda](#más-ayuda)  
