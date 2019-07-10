@@ -131,6 +131,7 @@ Estos son las infografías de las que se dispone en la actualidad:
 * Ingredientes
 * RecompensaRegistros
 * xpNiveles
+* incontratus
 
 
 ### Registrar cultivos en invernaderos⠀[⤴](#content) ###
