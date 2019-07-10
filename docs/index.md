@@ -326,9 +326,9 @@ El bot dispone de la opción de Noticias: Eso quiere decir que puede reenviar au
 
 Para poder ver este apartado es necesario haber escrito el comando `/settings` y haber accedido al apartado Noticias haciendo click sobre el botón.  
 Los canales de los que se dispone Oficialmente son los siguientes:  
-* @profesordumbledore (noticias sobre el bot @ProfesorDumbledorebot, bot de gestión de grupos)
-* @diarioelprofeta (noticias actualizadas sobre el juego)
-* @elquisquilloso (concursos, colaboraciones con tiendas, youtubers…)
+* [@ProfesorDumbledore](https://t.me/ProfesorDumbledore) (noticias sobre el bot [@ProfesorDumbledoreBot](https://t.me/ProfesorDumbledoreBot), bot de gestión de grupos)
+* [@DiarioElProfeta](https://t.me/DiarioElProfeta) (noticias actualizadas sobre el juego)
+* [@ElQuisquilloso](https://t.me/ElQuisquilloso) (concursos, colaboraciones con tiendas, youtubers…)
 
 Cada uno de los siguientes canales tienen sus propias características por los cuales son importantes y seguidos: algunos son de noticias sobre bots, noticias sobre el juego o noticias de broma.  
 Es decisión de cada grupo activar o no el reenvío de las noticias (y cuales) para mantenerse informados. Por defecto todas las noticias estarán desactivadas. Para activarlas se debe clickar encima del botón seleccionado.
