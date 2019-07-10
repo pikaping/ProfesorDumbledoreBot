@@ -53,7 +53,7 @@ Puedes pedir ayuda en el grupo @ProfesorDumbledoreAyuda y estar informado de las
     2. [Como se utiliza la información](#como-se-utiliza-la-información)  
     3. [Quien tiene acceso a la información](#quien-tiene-acceso-a-la-información)  
     4. [Duración del almacenamiento](#duración-del-almacenamiento)  
-    5. [Derechos contemplados en el RGPD](#derechos-contemplados-en-el-RGPD)  
+    5. [Derechos contemplados en el RGPD](#derechos-contemplados-en-el-rgpd)  
 5. [Agradecimientos y colaboraciones](#agradecimientos-y-colaboraciones)  
 
 ## Ayuda para magos y brujas⠀[⤴](#content) ##
