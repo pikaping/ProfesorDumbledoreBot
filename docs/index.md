@@ -96,7 +96,7 @@ Si deseas eliminar tu clave de amigo de tu perfil, simplemente envía /set_frien
 Además, si quieres aparecer en todas las listas de códigos de los grupos en los que formes parte, tan solo deberás activarlo desde tu perfil, pulsando sobre el botón 🔒 Clave de amigo. Cuando hayas pulsado el botón, el candado se abrirá y tu clave de amigo pasará a ser pública.
 Para retirar tu clave de amigo de todos los listados deberás hacer exactamente lo mismo que para publicarla. Pulsa sobre el botón 🔓 Clave de amigo en tu perfil.
 
-### Informe / ¿quién es?⠀[⤴](#content) ###
+### Informe / ¿Quién es?⠀[⤴](#content) ###
 
 Si quieres ver la ficha de otro mago, podrás usar el comando /informe o /whois respondiendo un mensaje del mago o seguido del alias o el ID en Telegram del mago en cuestión.
 
