@@ -1,51 +1,51 @@
 Bot para la gestión y dinamización de grupos en Telegram de Harry Potter Wizards Unite.
 Puedes pedir ayuda en el grupo @ProfesorDumbledoreAyuda y estar informado de las novedades en el canal de noticias @ProfesorDumbledore
 
-1.	Ayuda para magos
-1.1.	Registro en el bot
-1.2.	Ficha del Mago
-1.3.	Código de Amigo
-1.4.	Informe / ¿Quién es?
-1.5.	Infografías
-1.6.	Registrar cultivos en invernadero
-1.7.	Listas
-1.8.	Glosario de comandos para entrenadores
-1.9.	Más ayuda
-2.	Ayuda para administradores
-2.1.	Añadir el bot a un grupo o canal
-2.2.	Configuración admins
-2.2.1.	Ajustes del grupo de Admins
-2.2.2.	Vincular grupos al grupo de Admins
-2.3.	Configuración básica
-2.3.1.	Ajustes generales
-2.3.1.1.	Juegos
-2.3.1.2.	Warn y tipos de expulsión
-2.3.1.3.	Límite de warn
-2.3.1.4.	Respuestas
-2.3.2.	Ajustes de entrada
-2.3.2.1.	Configurar ajustes de entrada
-2.3.2.2.	No registrados con el profesor
-2.3.2.3.	Expulsiones silenciosas o notificadas
-2.3.2.4.	Borrar entradas
-2.3.2.5.	Nivel mínimo
-2.3.2.6.	Tipo de grupo
-2.3.3.	Ajustes de administración
-2.3.3.1.	Aviso de admins
-2.3.3.2.	Entrada de usuarios 
-2.3.4.	Noticias
-2.3.4.1.	Canales de noticias oficiales del bot
-2.3.4.2.	Canales de noticias  no oficiales
-2.3.5.	Bienvenida
-2.3.6.	Modo biblioteca
-2.4.	Botones y más botones
-2.5.	Normas del grupo Admins
-2.6.	Gestión de usuarios
-2.7.	Id
-2.8.	Reales decretos (comandos personalizados)
-2.9.	Otros comandos exclusivos para administradores
-2.9.1.	Comandos de expulsiones individuales
-2.9.2.	Comandos de expulsiones masivas
-2.9.3.	Glosario de comandos para administradores
+1. [Ayuda para magos](#ayuda-para-magos)
+1.1. [Registro en el bot](#registro-para-el-bot)
+1.2. [Ficha del Mago](#ficha-del-mago)
+1.3. [Código de Amigo](#código-de-amigo)
+1.4. [Informe / ¿Quién es?](#informe-/-¿quién-es?)
+1.5. [Infografías](#infografías)
+1.6. [Registrar cultivos en invernadero](#registrar-cultivos-en-invernadero)
+1.7. [Listas](#listas)
+1.8. [Glosario de comandos para entrenadores](#glosario-de-comandos-para-entrenadores)
+1.9. [Más ayuda](#más-ayuda)
+2. [Ayuda para administradores](#ayuda-para-administradores)  
+2.1. [Añadir el bot a un grupo o canal](#añadir-el-bot-a-un-grupo-o-canal)  
+2.2. [Configuración admins](#configuración-admins)  
+2.2.1. [Ajustes del grupo de Admins](#ajustes-del-grupo-de-admins)  
+2.2.2. [Vincular grupos al grupo de Admins](#vincular-grupos-al-grupo-de-admins)  
+2.3. [Configuración básica](#configuración-básica)  
+2.3.1. [Ajustes generales](#ajustes-generales)  
+2.3.1.1. [Juegos](#juegos)  
+2.3.1.2. [Warn y tipos de expulsión](#warn-y-tipos-de-expulsión)  
+2.3.1.3. [Límite de warn](#límite-de-warn)  
+2.3.1.4. [Respuestas](#respuestas)  
+2.3.2. [Ajustes de entrada](#ajustes-de-entrada)  
+2.3.2.1. [Configurar ajustes de entrada](#configurar-ajustes-de-entrada)  
+2.3.2.2. [No registrados con el profesor](#no-registrados-con-el-profesor)  
+2.3.2.3. [Expulsiones silenciosas o notificadas](#expulsiones-silenciosas-o-notificadas)  
+2.3.2.4. [Borrar entradas](#borrar-entradas)  
+2.3.2.5. [Nivel mínimo](#nivel-mínimo)  
+2.3.2.6. [Tipo de grupo](#tipo-de-grupo)  
+2.3.3. [Ajustes de administración](#ajustes-de-administración)  
+2.3.3.1. [Aviso de admins](#aviso-de-admins)  
+2.3.3.2. [Entrada de usuarios](#entrada-de-usuarios)  
+2.3.4. [Noticias](#noticias)  
+2.3.4.1. [Canales de noticias oficiales del bot](#canales-de-noticias-oficiales-del-bot)  
+2.3.4.2. [Canales de noticias no oficiales](#canales-de-noticias-no-oficiales)  
+2.3.5. [Bienvenida](#bienvenida)  
+2.3.6. [Modo biblioteca](#modo-biblioteca)  
+2.4. [Botones y más botones](#botones-y-más-botones)  
+2.5. [Normas del grupo Admins](#normas-del-grupo-admins)  
+2.6. [Gestión de usuarios](#gestión-de-usuarios)  
+2.7. [Id](#id)  
+2.8. [Reales decretos (comandos personalizados)](#reales-decretos-comandos-personalizados-)  
+2.9. [Otros comandos exclusivos para administradores](#otros-comandos-exclusivos-para-administradores)  
+2.9.1. [Comandos de expulsiones individuales](#comandos-de-expulsiones-individuales)  
+2.9.2. [Comandos de expulsiones masivas](#comandos-de-expulsiones-masivas)  
+2.9.3. [Glosario de comandos para administradores](#glosario-de-comandos-para-administradores)
 3.	Normas de uso del bot
 3.1.	Normas del profesor Dumbledore 
 4.	RGPD
