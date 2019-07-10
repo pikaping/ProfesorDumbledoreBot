@@ -166,8 +166,7 @@ Listado de grupos internacionales	Listado de grupos del @mapadelmerodeador
 
 ### 1.9. Más ayuda ###
 Si tienes alguna duda y la información no se encuentre en esta guía, puedes preguntar en @profesordumbledoreayuda. Si eres Prefecto o Administrador de un grupo o canal a continuación está la ayuda para administradores.
-________________________________________
-________________________________________
+
 ## 2. Ayuda para administradores ##
 
 ### 2.1. Añadir el bot a un grupo o canal ###
@@ -182,7 +181,7 @@ Para añadir el bot a un grupo hay tres alternativas:
 
 El bot es la mejor ayuda para la administración pero hay que distinguir entre los grupos con usuarios, general, de casas, charla, offtopic… y el grupo de administración, en este, solo los admins tendrán acceso y recibirán mensajes básicos como la entrada de usuarios, los avisos de @admin, los kickeados y los baneados. Es un grupo de control
 
-### 2.2.1. Ajustes del grupo de Admins ###
+#### 2.2.1. Ajustes del grupo de Admins ####
 En el grupo de administración hay que empezar por escribir el comando /settings_admin. Este comando permitirá activar distintas opciones de avisos que llegarán al grupo de administradores, del grupo principal y de los grupos que tenga vinculados. Siempre que se necesite se dispondrá de este comando y se podrán activar o desactivar las opciones.
 Opciones de las que se dispone (tanto si es un grupo como si son varios los vinculados):
 •	Mensaje de aviso de magos que entran al grupo, dónde se verá también si están validados, su id y en el caso de varios grupos vinculados, a cual entran.
@@ -190,7 +189,7 @@ Opciones de las que se dispone (tanto si es un grupo como si son varios los vinc
 •	Mensaje de aviso cuando un mago escribe @admin en el grupo.
 •	Mensaje de aviso de un warn (aviso) a un mago usuario.
 
-### 2.2.2. Vincular grupos al grupo de Admins ###
+#### 2.2.2. Vincular grupos al grupo de Admins ####
 Para vincular diferentes grupos se deben seguir los siguientes pasos:
 1.	Ejecutar el comando /create_admin en el grupo al cual irá la información, el que será el grupo de Administradores. 
 Es necesario guardar el ID que enviará el bot, lo solicitaremos más adelante. Por ejemplo:
@@ -221,50 +220,50 @@ Para saber cuáles son los grupos que están vinculados a uno de administración
 ### 2.3. Configuración básica de grupos ###
 Para hacer la configuración básica del bot se utiliza el comando /settings. Este comando puede usarse en cualquiera de los grupos que quieras configurar. La configuración está dividida en varios apartados y sub-apartados:
 
-### 2.3.1. Ajustes generales ###
+#### 2.3.1. Ajustes generales ####
 En este apartado dentro de /settings se encuentra la forma de configurar los ajustes básicos del grupo.
 
-### 2.3.1.1. Juegos ###
+#### 2.3.1.1. Juegos ####
 El bot contará con diferentes juegos, uno de ellos solo podrá ser activado por miembros del staff. Cuando se activen publicaremos más información
 
-### 2.3.1.2. Warn y tipos de expulsión ###
+#### 2.3.1.2. Warn y tipos de expulsión ####
 
 Este botón puede estar activado como Ban (Warn) o como Kick (Warn) y determina el tipo de expulsión que recibirá el usuario al llegar al máximo de Warns determinado por el grupo. Es decir si se activa a 5 warn un usuario con esos recibirá un kick (y podrá volver a entrar) o recibirá un baneo (y su expulsión será para siempre)
 
-### 2.3.1.3. Límite de warn ###
+#### 2.3.1.3. Límite de warn ####
 
 Este botón determinará la cantidad máxima de warn que recibirá un usuario antes de tomar la medida del punto anterior. Se puede configurar en 3, 5, 10, 25, 50 o 100.
 
-### 2.3.1.4. Respuestas ###
+#### 2.3.1.4. Respuestas ####
 
 Este botón determina si un grupo quiere recibir las respuestas a comandos por el mismo o que se envíe por privado a los magos.  Si un mago pide una tabla de “masternotes”  y el botón marca “respuestas al grupo” se enviará de manera pública. Por el contrario si se ponen en privado pero esa persona no ha iniciado una conversación previa con el bot, no recibirá nada. Si la tiene iniciada la recibirá de manera normal.
 Esto sucederá tanto con las tablas como con otros comandos comunes: informe, ping, groups…
 
 
-### 2.3.2. Ajustes de entrada ###
+#### 2.3.2. Ajustes de entrada ####
 En este apartado dentro de /settings se encuentra la forma de configurar los tipos de grupo y los requisitos para permanecer en ellos.
 
-### 2.3.2.1. Configurar ajustes de entrada ###
+#### 2.3.2.1. Configurar ajustes de entrada ####
 
 Además de las opciones configurables que se verán a continuación, está disponible el comando /set_maxmembers (seguido de un número entero y positivo) que establece el número máximo de miembros que puede haber en un grupo. Hay que tener en cuenta siempre que los bots y los administradores del grupo cuentan en esa suma de miembros.
 Para desactivar esta opción solo hay que escribir el comando /set_maxmembers 0.
 
 
-### 2.3.2.2. No registrados en el Profesor ###
+#### 2.3.2.2. No registrados en el Profesor ####
 Si se activa este botón (✅) el Profesor @ProfesorDumbledoreBot avisará si entra al grupo un mago que no tenga su pasaporte registrado con el Profesor. El aviso que mostrará consiste en un mensaje en el cual explicará cómo y dónde debe registrarse.
 
-### 2.3.2.3. Expulsiones silenciosas o notificadas ###
+#### 2.3.2.3. Expulsiones silenciosas o notificadas ####
 Si el botón de “expulsiones silenciosas” está activado entonces el Profesor no mostrará ningún mensaje por el grupo cuando expulse a alguien. Si por el contrario, está desactivado, cada vez que expulse a alguien el Profesor enviará al grupo un mensaje estándar.
 
-### 2.3.2.4. Borrar entradas ###
+#### 2.3.2.4. Borrar entradas ####
 
 Si este botón está activado el Profesor borrará aquellos mensajes automáticos de notificación que hace telegram cuando un mago entra al grupo
 
-### 2.3.2.5. Nivel mínimo ###
+#### 2.3.2.5. Nivel mínimo ####
 Determina un nivel mínimo como requisito para entrar al grupo. Esta opción viene activada por defecto (▪️) como 0, eso quiere decir que no hay nivel mínimo requerido.
 El nivel mínimo para entrar en el grupo se puede configurar, clicando en el botón hasta que salga la opción deseada, según: ▪️ (0, sin nivel requerido), 15, 20, 25, 30, 35 o 40. Si se vuelve a clicar encima entonces se desactiva volviendo a ser 0.
 
-### 2.3.2.6. Tipo de grupo ###
+#### 2.3.2.6. Tipo de grupo ####
 Por defecto al añadir al Profesor, se establece el grupo como grupo abierto normal.
 Identificador	Definición
 ▪️	Grupo abierto, sin requisitos
@@ -278,21 +277,21 @@ Identificador	Definición
 	Grupo exclusivo Magizoologos
 En el caso de que un mago intente acceder a un grupo en el cual no cumpla las condiciones de entrada, el Profesor (con los privilegios de admin pertinentes) le expulsará.
 
-### 2.3.3. Ajustes de administración ###
+#### 2.3.3. Ajustes de administración ####
 Las alertas de administración son individuales en cada grupo, pero deben estar configuradas tanto en el grupo de administración como en el grupo vinculado.
 El marcar como activado (✅) alguno de los botones que se explicarán a continuación, hará que el Profesor elimine ese tipo de formato cada vez que un mago lo envíe al grupo. Configurando así un grupo en el cual no estén permitidos determinados formatos. Eso no incluye los mensajes enviados por administradores y bots.
 Por ejemplo, si en un grupo se activa “✅ Gif”, cada vez que un usuario, no administrador, envíe un gif al grupo el bot lo eliminará automáticamente.
 
-### 2.3.3.1. Aviso admins ###
+#### 2.3.3.1. Aviso admins ####
 Al activar este botón, cada vez que un entrenador del grupo escriba el aviso a los administradores @admin el mensaje que lo contenga será notificado en el grupo de administración y eliminado del general.
 
-### 2.3.3.2. Entrada de usuarios ###
+#### 2.3.3.2. Entrada de usuarios ####
 La activación de este botón será necesaria para que el Profesor avise en el grupo de administración de la entrada de un nuevo mago a uno de sus grupos vinculados. 
 
-### 2.3.4. Noticias ###
+#### 2.3.4. Noticias ####
 El bot dispone de la opción de Noticias: Eso quiere decir que puede reenviar automáticamente las publicaciones que salgan en distintos canales.
 
-### 2.3.4.1. Canales de Noticias Oficiales del Bot ###
+#### 2.3.4.1. Canales de Noticias Oficiales del Bot ####
 Para poder ver este apartado es necesario haber escrito el comando /settings y haber accedido al apartado Noticias haciendo click sobre el botón.
 Los canales de los que se dispone Oficialmente son los siguientes:
 •	@profesordumbledore (noticias sobre el bot @ProfesorDumbledorebot, bot de gestión de grupos)
@@ -301,10 +300,10 @@ Los canales de los que se dispone Oficialmente son los siguientes:
 Cada uno de los siguientes canales tienen sus propias características por los cuales son importantes y seguidos: algunos son de noticias sobre bots, noticias sobre el juego o noticias de broma.
 Es decisión de cada grupo activar o no el reenvío de las noticias (y cuales) para mantenerse informados. Por defecto todas las noticias estarán desactivadas. Para activarlas se debe clickar encima del botón seleccionado.
 
-### 2.3.4.2. Canales de Noticias No-Oficiales ###
+#### 2.3.4.2. Canales de Noticias No-Oficiales ####
 Si quieres que las noticias de un canal (distinto a los mencionados en el apartado anterior) lleguen a un grupo en el cual seas administrador es necesario ponernos en contacto con ese canal, si se facilita toda la información necesaria en el grupo de ayuda podemos incluirlo.
 
-### 2.3.5. Bienvenida ###
+#### 2.3.5. Bienvenida ####
 El Profesor puede dar la bienvenida a los entrenadores que vayan entrando al grupo. Opción desactivada por defecto.
 Para activar la Bienvenida es necesario activarla en /settings (clickando sobre el botón) y después es necesario utilizar el comando /set_welcome para definir el mensaje de bienvenida que dará el bot. Por ejemplo, si se quiere poner el mensaje “Bienvenidos al grupo”, sería:
  /set_welcome Bienvenidos al grupo.
@@ -322,7 +321,7 @@ Si se quiere eliminar el mensaje de bienvenida, para que el bot deje de saludar 
 Para configurar la duración del mensaje de bienvenida se debe emplear el comando /set_cooldown seguido de un número entero y positivo que indicará la cantidad de segundos antes de que sea eliminado el mensaje. Por ejemplo: set_cooldown 15 En este ejemplo el bot mandaría el mensaje de bienvenida cuando entrase un entrenador al grupo, dejaría el mensaje durante 15 segundos y una vez terminada ese tiempo el mensaje del bot se borraría.
 Si se quiere desactivar esa opción y que el mensaje no sea eliminado entonces se deberá escribir /set_cooldown 0.
 
-### 2.3.6. Modo Biblioteca ###
+#### 2.3.6. Modo Biblioteca ####
 El modo biblioteca evita que la gente hable en un grupo, borrando todos los mensajes que pongan los usuarios (no los mensajes de los administradores ni de los bots). Opción desactivada por defecto.
 Con el comando /set_pince puedes definir el mensaje que dará el bot cada vez que un usuario hable. Por ejemplo: */set_pince Magos y brujas, para hablar debes acudir al grupo @harrypotterwizardsunitespain.
 Dentro del /settings del apartado del modo biblioteca encontrarás una gran cantidad de botones que puedes activar (✅). Si se activan serán los formatos que el bot no permitirá en el grupo.
@@ -342,7 +341,8 @@ URLs
 Video 
 Warns.
 Finalmente, también existe la opción de activar el botón Mensajes de administradores. Al activar esta opción el bot actuará también sobre los administradores con el modo biblioteca.
-2.4.	Botones y más botones⠀
+
+### 2.4. Botones y más botones ###
 El Profesor también puede tener botones en el mensaje de bienvenida y en los comandos personalizados, para ello se debe escribir de la siguiente manera: 
 [Texto a mostrar en el botón](buttonurl://dirección.com). 
 Se debe escribir todo junto, sin espacios (entre los : y las // NO debe de haber espacio), y cambiar el texto del botón y el enlace. Como ejemplo:
@@ -420,7 +420,7 @@ Si en vez de borrar un decreto lo que se quiere es únicamente modificar la resp
 ### 2.9. Otros comandos exclusivos para administradores ###
 Algunos de los comandos más importantes para un administrador son los de tipo “castigo”. Estos comandos únicamente pueden ser utilizados por los administradores, y si algún usuario lo escribiese el Profesor respondería que dicho usuario no tiene permisos para ello.
 
-### 2.9.1. Comandos de expulsiones individuales ###
+#### 2.9.1. Comandos de expulsiones individuales ####
 /warn - El Warn es un aviso o advertencia. Después de una determinada cantidad de avisos el usuario será expulsado del grupo por kick o ban (dependiendo de cómo esté configurado).
 /kick - El Kick es la expulsión del grupo a un usuario, pero este podrá volver a entrar al momento.
 /ban - El Ban es la expulsión del grupo a un usuario, y este no podrá volver a entrar al grupo hasta que un administrador le quite el ban.
@@ -430,11 +430,11 @@ Para utilizar alguno de estos tres comandos se puede hacer mediante las siguient
 3.	Escribiendo el comando seguido del ID del usuario. Por ejemplo: /warn 111111 Para conseguir el ID del usuario se puede hacer mediante el aviso del bot en el grupo de administración, si se tiene activado o mediante el comando /id.
 Los tres comandos permiten además, con todas sus opciones, añadir un mensaje con el motivo de dicho “castigo”. Por ejemplo: /kick Nelulita por no asistir a la fortaleza.
 
-### 2.9.2. Comandos de expulsiones masivas ###
+#### 2.9.2. Comandos de expulsiones masivas ####
 
 En proceso de escritura
 
-### 2.9.3. Glosario de comandos para administradores ###
+#### 2.9.3. Glosario de comandos para administradores ####
 En proceso de escritura
 
 ## 3. Normas de uso del bot ##
