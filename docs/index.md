@@ -5,7 +5,7 @@ Puedes pedir ayuda en el grupo @ProfesorDumbledoreAyuda y estar informado de las
     1. [Registro en el bot](#registro-para-el-bot)  
     2. [Ficha del Mago](#ficha-del-mago)  
     3. [Código de Amigo](#código-de-amigo)  
-    4. [Informe / ¿Quién es?](#informe-/-¿quién-es?)  
+    4. [Informe / ¿Quién es?](#informe--quién-es)  
     5. [Infografías](#infografías)  
     6. [Registrar cultivos en invernadero](#registrar-cultivos-en-invernadero)  
     7. [Listas](#listas)  
