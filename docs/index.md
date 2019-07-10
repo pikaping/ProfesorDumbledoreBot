@@ -282,7 +282,7 @@ Las alertas de administración son individuales en cada grupo, pero deben estar 
 El marcar como activado (✅) alguno de los botones que se explicarán a continuación, hará que el Profesor elimine ese tipo de formato cada vez que un mago lo envíe al grupo. Configurando así un grupo en el cual no estén permitidos determinados formatos. Eso no incluye los mensajes enviados por administradores y bots.
 Por ejemplo, si en un grupo se activa “✅ Gif”, cada vez que un usuario, no administrador, envíe un gif al grupo el bot lo eliminará automáticamente.
 
-#### Aviso admins⠀[⤴](#content) ####
+#### Aviso de admins⠀[⤴](#content) ####
 Al activar este botón, cada vez que un entrenador del grupo escriba el aviso a los administradores @admin el mensaje que lo contenga será notificado en el grupo de administración y eliminado del general.
 
 #### Entrada de usuarios⠀[⤴](#content) ####
