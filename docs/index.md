@@ -46,7 +46,7 @@ Puedes pedir ayuda en el grupo @ProfesorDumbledoreAyuda y estar informado de las
 2.9.1. [Comandos de expulsiones individuales](#comandos-de-expulsiones-individuales)  
 2.9.2. [Comandos de expulsiones masivas](#comandos-de-expulsiones-masivas)  
 2.9.3. [Glosario de comandos para administradores](#glosario-de-comandos-para-administradores)
-3 [Normas de uso del bot](#normas-de-uso-del-bot)  
+3. [Normas de uso del bot](#normas-de-uso-del-bot)  
 3.1. [Normas del profesor Dumbledore](#normas-del-profesor-dumbledore)  
 4. [RGPD](#rgpd)  
 4.1. [Que información recopilamos y sometemos a tratamiento](#que-información-recopilamos-y-sometemos-a-tratamiento)  
