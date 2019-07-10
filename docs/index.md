@@ -66,11 +66,12 @@ Para iniciar el registro debes abrir una conversación con el Profesor e iniciar
 Para poder utilizar todas las funciones del Profesor Dumbledore es necesario tener definido un alias en Telegram. Puede hacerse desde: Opciones de Telegram -> Ajustes -> Alias
 
 ### Ficha del Mago⠀[⤴](#content) ###
+
 Enviando el comando `/perfil` o `/profile` podrás acceder y editar toda la información sobre tu perfil en HPWU que has compartido con el Profesor.  
 Los dos emoticonos que siguen al nivel, representan la casa a la que pertenece el mago. Estos son los emoticonos seleccionados por nosotros.
 
 | Iconos | Definición |
-|:-------|:-----------|
+|--------|------------|
 | ❤️🦁 | Gryffindor |
 | 💛🦡 | Hufflepuff |
 | 💙🦅 | Ravenclaw |
@@ -80,7 +81,7 @@ Los dos emoticonos que siguen al nivel, representan la casa a la que pertenece e
 A continuación, encontraremos la profesión. Estos son los emoticonos seleccionados por nosotros.
 
 | Iconos | Definición |
-|:-------|:-----------|
+|--------|------------|
 | ⚔ | Auror |
 | 🐾 | Magizoologo |
 | 📚 | Profesor |
@@ -88,7 +89,7 @@ A continuación, encontraremos la profesión. Estos son los emoticonos seleccion
 Además, también contamos con otros emojis que nos servirán de flags.
 
 | Iconos | Definición |
-|:-------|:-----------|
+|--------|------------|
 | 🧝‍♀🧝‍♂ | Afiliado a P.E.D.D.O |
 | 🔰⚔ | Ejército de Dumbledore |
 | 🧙 | Staff del bot |
@@ -111,6 +112,7 @@ Para retirar tu clave de amigo de todos los listados deberás hacer exactamente 
 Si quieres ver la ficha de otro mago, podrás usar el comando `/informe` o `/whois` respondiendo un mensaje del mago o seguido del alias o el ID en Telegram del mago en cuestión.
 
 ### Infografías⠀[⤴](#content) ###
+
 El Profesor dispone de una amplia biblioteca de infografías que se van ampliando a medida que conocemos más datos del juego. Las infografías están creadas por el equipo creativo del diario el profeta (@diarioelprofeta).  
 Para solicitarlas se debe emplear el comando `/tabla` seguido de un espacio y el nombre de la tabla que se desea. El mensaje solicitando la tabla será eliminado por el Profesor de forma automática.  
 Dependiendo de la configuración del grupo, las tablas se enviarán al chat privado del bot o al grupo, para eso es necesario tener abierta una conversación privada con el Profesor Dumbledore  
@@ -127,10 +129,12 @@ Estos son las infografías de las que se dispone en la actualidad:
 
 
 ### Registrar cultivos en invernaderos⠀[⤴](#content) ###
+
 El bot dispone de registro de cultivos en invernadero, para ello debe tener el grupo en el que se utilice la opción habilitada. Esta configuración únicamente la puede realizar un administrador de dicho grupo.  
 Para registrar un cultivo se debe enviar la ubicación del invernadero y el bot comenzará el registro.  
 
 ### Listas⠀[⤴](#content) ###
+
 El profesor dispone de la opción para hacer listas, útiles para quedadas, luchas en fortalezas... En estas listas únicamente se podrá indicar si vas a acudir (botón “Me apunto!”) o si una vez apuntado has decidido no ir (botón “Paso”).  
 Para crear una lista se debe emplear el comando `/list` y añadir el título que tendrá la lista. Por ejemplo:  
 ```
@@ -143,6 +147,7 @@ También se dispone de la posibilidad de cerrar una lista para que nadie más se
 Si se quiere borrar una lista bastará con eliminar el mensaje que sea la lista.
 
 ### Glosario de comandos para magos⠀[⤴](#content) ###
+
 | Comando | Descripción |
 |:--------|:------------|
 | /cucuruchodecucarachas | Registrarse en el bot |
@@ -166,11 +171,13 @@ Si se quiere borrar una lista bastará con eliminar el mensaje que sea la lista.
 | /add_url | Grupos vinculados |
 
 ### Más ayuda⠀[⤴](#content) ###
+
 Si tienes alguna duda y la información no se encuentre en esta guía, puedes preguntar en [@ProfesorDumbledoreAyuda](https://t.me/ProfesorDumbledoreAyuda). Si eres Prefecto o Administrador de un grupo o canal a continuación está la ayuda para administradores.
 
 ## Ayuda para administradores⠀[⤴](#content) ##
 
 ### Añadir el bot a un grupo o canal⠀[⤴](#content) ###
+
 El soporte del bot, por el momento, solo está probado en grupos y supergrupos. El soporte de canales es únicamente por colaboración de canales de noticias y eso hay que comunicarlo en el grupo de ayuda.  
 En grupos el bot ya se puede utilizar tan pronto entra al grupo y envía un saludo. No obstante necesita una configuración inicial. Hay que tener cuidado porque, si una vez que se añade el bot se convierte el grupo en supergrupo, hay que volver a configurarlo. Un supergrupo es la mejor opción en la mayoría de los casos.  
 Para añadir el bot a un grupo hay tres alternativas:
@@ -183,6 +190,7 @@ Para añadir el bot a un grupo hay tres alternativas:
 El bot es la mejor ayuda para la administración, pero hay que distinguir entre los grupos con usuarios, general, de casas, charla, offtopic… y el grupo de administración, en este, solo los admins tendrán acceso y recibirán mensajes básicos como la entrada de usuarios, los avisos de @admin, los kickeados y los baneados. Es un grupo de control.
 
 #### Ajustes del grupo de Admins⠀[⤴](#content) ####
+
 En el grupo de administración hay que empezar por escribir el comando `/settings_admin`. Este comando permitirá activar distintas opciones de avisos que llegarán al grupo de administradores, del grupo principal y de los grupos que tenga vinculados. Siempre que se necesite se dispondrá de este comando y se podrán activar o desactivar las opciones.  
 Opciones de las que se dispone (tanto si es un grupo como si son varios los vinculados):  
 * Mensaje de aviso de magos que entran al grupo, dónde se verá también si están validados, su id y en el caso de varios grupos vinculados, a cual entran.  
@@ -191,6 +199,7 @@ Opciones de las que se dispone (tanto si es un grupo como si son varios los vinc
 * Mensaje de aviso de un warn (aviso) a un mago usuario.  
 
 #### Vincular grupos al grupo de Admins⠀[⤴](#content) ####
+
 Para vincular diferentes grupos se deben seguir los siguientes pasos:  
 1. Ejecutar el comando `/create_admin` en el grupo al cual irá la información, el que será el grupo de Administradores. 
 Es necesario guardar el ID que enviará el bot, lo solicitaremos más adelante. Por ejemplo:  
@@ -432,6 +441,7 @@ AVISO: antes de usar el comando /dumblekickuv ten en cuenta que no hay ningún b
 El comando /dumblekickuv y /dumbleuv, ambos con sus variantes, está restringido a una vez al día por grupo (independientemente de si este está vinculado o no). A las 00.00 se reinicia y se puede volver a utilizar.
 
 ### Id⠀[⤴](#content) ###
+
 Saber el Id de un entrenador es posible gracias al comando /id. Este comando no és exclusivo para administradores, pero está orientado y pensado principalmente para a estos.
 El comando, al igual que el /informe, se puede emplear:
 •	Citando un mensaje del mago.
@@ -447,6 +457,7 @@ Casa: Gryffindor
 Profesion: Auror
 
 ### Reales decretos (Comandos personalizados)⠀[⤴](#content) ###
+
 Al igual que Dolores Umbridge nuestros Administradores (Prefectos) pueden crear sus propios Decretos o comandos personalizados. Estos comandos personalizados harán que el bot responda con una frase, imagen, link, fichero, video, audio, nota de voz o gif.
 Los magos miembros del grupo pueden emplearlos y hacer que el Profesor responda con los reales decretos personalizados que hayan creado los administradores del grupo. Son una información propia de cada grupo, es por ello que los decretos cambiarán según en el grupo en el que te encuentres.
 Pasos para crear comandos:
@@ -464,9 +475,11 @@ Si al intentar borrar un real decreto personalizado el Profesor te responde que 
 Si en vez de borrar un decreto lo que se quiere es únicamente modificar la respuesta del Profesor, entonces bastará con crear de nuevo un decreto con el mismo nombre.
 
 ### Otros comandos exclusivos para administradores⠀[⤴](#content) ###
+
 Algunos de los comandos más importantes para un administrador son los de tipo “castigo”. Estos comandos únicamente pueden ser utilizados por los administradores, y si algún usuario lo escribiese el Profesor respondería que dicho usuario no tiene permisos para ello.
 
 #### Comandos de expulsiones individuales⠀[⤴](#content) ####
+
 /warn - El Warn es un aviso o advertencia. Después de una determinada cantidad de avisos el usuario será expulsado del grupo por kick o ban (dependiendo de cómo esté configurado).
 /kick - El Kick es la expulsión del grupo a un usuario, pero este podrá volver a entrar al momento.
 /ban - El Ban es la expulsión del grupo a un usuario, y este no podrá volver a entrar al grupo hasta que un administrador le quite el ban.
@@ -481,14 +494,17 @@ Los tres comandos permiten además, con todas sus opciones, añadir un mensaje c
 En proceso de escritura
 
 #### Glosario de comandos para administradores⠀[⤴](#content) ####
+
 En proceso de escritura
 
 ## Normas de uso del bot⠀[⤴](#content) ##
+
 El siguiente punto, detalla la normativa a cumplir en caso de registrarse en el bot. El desconocimiento de la misma no exime al usuario de su aplicación pues todas las normas aquí recogidas son de sentido común.
 Este bot no controlara de ninguna manera si es utilizado en grupos o canales que promueven el uso de trampas en el juego. Las opciones de baneo con el bot son personales de cada grupo y sus administradores, no baneamos ni bloqueamos usuarios por su modo de juego, si bien sí que se puede privar a alguien por su mal uso o mal trato hacia el staff.
 En caso de formar parte de un grupo en el cual se encuentre @profesordumbledorebot y conozcas a un usuario que no cumpla alguna de las normas será trabajo del administrador del grupo tomar medidas o no. No apoyamos las trampas pero no vamos a ser policías al servicio de los jugadores, queremos disfrutar del juego.
 
 ### Normas del Profesor Dumbledore⠀[⤴](#content) ###
+
 🔞 Está totalmente prohibido enviar material sensible.
 ⛔️ Está COMPLETAMENTE PROHIBIDO solicitar y/o aportar información relativa a otro jugador en cualquiera de los grupos oficiales del bot o bien por privado a cualquier miembro del staff. En caso de producirse esta situación, los administradores se reservan el derecho de banear definitivamente la cuenta del entrenador.
 😈 Nunca difames, abuses, hostigues, dañes, acoses, amenaces o violes de cualquier manera los derechos legales (incluidos los derechos de privacidad y publicidad) de los demás.
@@ -496,7 +512,9 @@ En caso de formar parte de un grupo en el cual se encuentre @profesordumbledoreb
 📩 Se considera flood el hecho de repetir continuamente palabras, hacer cadenas de contenido multimedia o comandos (enviar muchas fotos o stickers seguidos), provocando molestias al grupo con contenido innecesario.
 
 ## RGPD⠀[⤴](#content) ##
+
 ### Qué información recopilamos y sometemos a tratamiento⠀[⤴](#content) ###
+
 Este bot recoge la siguiente información sobre sus usuarios al interactuar con él en privado o a través de un grupo o canal de Telegram:
 Identificador numérico de Telegram
 Alias público de Telegram
@@ -505,21 +523,26 @@ Datos relacionados con la cuenta del juego, facilitados en el proceso de registr
 El bot también almacena unos ficheros no ordenados con las interacciones en grupos y directas (logs), con el objetivo de poder trazar problemas técnicos y atender a las apelaciones de baneo.
 
 ### Cómo se utiliza la información⠀[⤴](#content) ###
+
 La información almacenada se utiliza para los siguientes fines:
 Ofrecer el servicio de gestión de grupos de Wizards Unite en Telegram. La base legal para el tratamiento de datos mencionado en esta sección es la prestación del servicio que se solicita voluntariamente (artículo 6, párrafo 1 (b) del RGPD).
 
 ### Quién tiene acceso a la información⠀[⤴](#content) ###
+
 El alias público de Telegram y los datos relacionados con la cuenta de Wizards Unite podrán compartirse en grupos o canales en los que se mantenga actividad. Esta compartición puede ser pública, dependiendo de la configuración de cada grupo o canal.
 El identificador numérico y alias público de Telegram y el nombre de mago de Wizards Unite podrán compartirse con los administradores de los grupos o canales en los que se realice alguna actividad.
 La base legal para compartir los datos proporcionados es la prestación del servicio que se solicita voluntariamente (artículo 6, párrafo 1 (b) del RGPD).
 
 ### Duración del almacenamiento⠀[⤴](#content) ###
+
 La información se almacena durante el tiempo necesario para cumplir con los fines para los que se recopila y las interacciones en grupos y directas con el bot (logs) se eliminan pasados una semana.
 
 ### Derechos contemplados en el RGPD⠀[⤴](#content) ###
+
 Los derechos al olvido contemplados por la RGPD se ejercen mediante el comando /profile. Desde ahí, se podrán editar y eliminar todos los datos de tu perfil.
 
 ### Agradecimientos y colaboraciones⠀[⤴](#content) ###
+
 Por último y no por ello menos importante, de manera personal y pública después de meses de trabajo me gustaría nombrar a las personas que están haciendo esto posible.
 Pikaping por ser el creador del alma del bot, a Gentakojima porque sin él, no estaríamos aquí. Ansett por ser la cabeza y mano derecha en los momentos clave. McFigue y Pilfer por mantener el merodeador en constante actualización mientras llegaba el Profesor.
 Al equipo de las tablas, Saray, Zetateck, Nicky y Ferran. A los youtuber que quieren colaborar con sus videos y que pronto se verán reflejados en la web y a todos los usuarios que habéis esperado estos meses con expectación.
