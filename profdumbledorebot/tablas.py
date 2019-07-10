@@ -212,7 +212,7 @@ def inline_tablas(bot, update):
                     id=uuid4(),
                     photo_file_id=i["file_id"],
                     title=i["name"],
-                    caption="@ProfDumbledoreBot {}".format(i["name"]))
+                    caption="@ProfesorDumbledoreBot {}".format(i["name"]))
                 )
 
             if count == max_range:
@@ -229,7 +229,7 @@ def inline_tablas(bot, update):
                         id=uuid4(),
                         photo_file_id=i["file_id"],
                         title=i["name"],
-                        caption="@ProfDumbledoreBot {}".format(i["name"]))
+                        caption="@ProfesorDumbledoreBot {}".format(i["name"]))
                     )
                     break
 
@@ -241,7 +241,7 @@ def inline_tablas(bot, update):
                 id=uuid4(),
                 photo_file_id=__TABLAS_JSON["tablas"][i]["file_id"],
                 title=__TABLAS_JSON["tablas"][i]["name"],
-                caption="@ProfDumbledoreBot {}".format(__TABLAS_JSON["tablas"][i]["name"])))
+                caption="@ProfesorDumbledoreBot {}".format(__TABLAS_JSON["tablas"][i]["name"])))
 
         update.inline_query.answer(results=results, cache_time=0)
 
