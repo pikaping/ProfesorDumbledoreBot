@@ -67,7 +67,8 @@ Para poder utilizar todas las funciones del Profesor Dumbledore es necesario ten
 
 ### Ficha del Mago⠀[⤴](#content) ###
 Enviando el comando `/perfil` o `/profile` podrás acceder y editar toda la información sobre tu perfil en HPWU que has compartido con el Profesor.  
-Los dos emoticonos que siguen al nivel, representan la casa a la que pertenece el mago. Estos son los emoticonos seleccionados por nosotros.  
+Los dos emoticonos que siguen al nivel, representan la casa a la que pertenece el mago. Estos son los emoticonos seleccionados por nosotros.
+
 | Iconos | Definición |
 |:-------|:-----------|
 | ❤️🦁 | Gryffindor |
@@ -76,14 +77,16 @@ Los dos emoticonos que siguen al nivel, representan la casa a la que pertenece e
 | 💚🐍 | Slytherin |
 | 💜🙈 | Sin casa elegida |
 
-A continuación, encontraremos la profesión. Estos son los emoticonos seleccionados por nosotros.  
+A continuación, encontraremos la profesión. Estos son los emoticonos seleccionados por nosotros.
+
 | Iconos | Definición |
 |:-------|:-----------|
 | ⚔ | Auror |
 | 🐾 | Magizoologo |
 | 📚 | Profesor |
 
-Además, también contamos con otros emojis que nos servirán de flags.  
+Además, también contamos con otros emojis que nos servirán de flags.
+
 | Iconos | Definición |
 |:-------|:-----------|
 | 🧝‍♀🧝‍♂ | Afiliado a P.E.D.D.O |
