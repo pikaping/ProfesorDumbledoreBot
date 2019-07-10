@@ -179,7 +179,9 @@ Si tienes alguna duda y la información no se encuentre en esta guía, puedes pr
 ### Añadir el bot a un grupo o canal⠀[⤴](#content) ###
 
 El soporte del bot, por el momento, solo está probado en grupos y supergrupos. El soporte de canales es únicamente por colaboración de canales de noticias y eso hay que comunicarlo en el grupo de ayuda.  
+
 En grupos el bot ya se puede utilizar tan pronto entra al grupo y envía un saludo. No obstante necesita una configuración inicial. Hay que tener cuidado porque, si una vez que se añade el bot se convierte el grupo en supergrupo, hay que volver a configurarlo. Un supergrupo es la mejor opción en la mayoría de los casos.  
+
 Para añadir el bot a un grupo hay tres alternativas:
 1. En el perfil del bot, dentro del menú, hay que seleccionar la opción Añadir a un grupo y escoger el grupo de la lista de tus propios chats.  
 2. Pulsando en este enlace en un dispositivo donde esté Telegram instalado.  
@@ -192,10 +194,14 @@ El bot es la mejor ayuda para la administración, pero hay que distinguir entre 
 #### Ajustes del grupo de Admins⠀[⤴](#content) ####
 
 En el grupo de administración hay que empezar por escribir el comando `/settings_admin`. Este comando permitirá activar distintas opciones de avisos que llegarán al grupo de administradores, del grupo principal y de los grupos que tenga vinculados. Siempre que se necesite se dispondrá de este comando y se podrán activar o desactivar las opciones.  
-Opciones de las que se dispone (tanto si es un grupo como si son varios los vinculados):  
+
+Opciones de las que se dispone (tanto si es un grupo como si son varios los vinculados):
 * Mensaje de aviso de magos que entran al grupo, dónde se verá también si están validados, su id y en el caso de varios grupos vinculados, a cual entran.  
+
 * Mensaje de aviso de los magos que salen si han sido expulsados mediante ban o kick.  
+
 * Mensaje de aviso cuando un mago escribe `@admin` en el grupo.  
+
 * Mensaje de aviso de un warn (aviso) a un mago usuario.  
 
 #### Vincular grupos al grupo de Admins⠀[⤴](#content) ####
@@ -231,6 +237,7 @@ ID -123456.
 | 🎪 |Offtopic | Grupo que suele ser un desvarío pero muy común |
 
 Si se necesita que el bot deje de considerar un grupo como el de administración se puede ejecutar el comando `/rm_admin` en el mismo. Ese comando desvinculará todos los grupos unidos. Si sólo se quiere desvincular un grupo hay que dirigirse al grupo concreto y ejecutar el comando `/rm_link`.  
+
 Para saber cuáles son los grupos que están vinculados a uno de administración se puede solicitar con el comando `/groups` en cualquiera de ellos y el bot enviará una lista de los grupos vinculados, excepto el de administración por razones obvias.
 
 ### Configuración básica de grupos⠀[⤴](#content) ###
@@ -255,7 +262,10 @@ Este botón determinará la cantidad máxima de warn que recibirá un usuario an
 
 #### Respuestas⠀[⤴](#content) ####
 
-Este botón determina si un grupo quiere recibir las respuestas a comandos por el mismo o que se envíe por privado a los magos. Por ejemplo, si un mago pide una tabla de “masternotes” y el botón marca “respuestas al grupo” se enviará de manera pública. Por el contrario si se ponen en privado pero esa persona no ha iniciado una conversación previa con el bot, no recibirá nada. Si la tiene iniciada la recibirá de manera normal.  
+Este botón determina si un grupo quiere recibir las respuestas a comandos por el mismo o que se envíe por privado a los magos.  
+
+Por ejemplo, si un mago pide una tabla de “masternotes” y el botón marca “respuestas al grupo” se enviará de manera pública. Por el contrario si se ponen en privado pero esa persona no ha iniciado una conversación previa con el bot, no recibirá nada. Si la tiene iniciada la recibirá de manera normal.  
+
 Esto sucederá tanto con las tablas como con otros comandos comunes: informe, ping, groups…
 
 
@@ -266,6 +276,7 @@ En este apartado dentro de `/settings` se encuentra la forma de configurar los t
 #### Configurar ajustes de entrada⠀[⤴](#content) ####
 
 Además de las opciones configurables que se verán a continuación, está disponible el comando `/set_maxmembers` (seguido de un número entero y positivo) que establece el número máximo de miembros que puede haber en un grupo. Hay que tener en cuenta siempre que los bots y los administradores del grupo cuentan en esa suma de miembros.  
+
 Para desactivar esta opción solo hay que escribir el comando `/set_maxmembers 0`.
 
 
@@ -284,6 +295,7 @@ Si este botón está activado el Profesor borrará aquellos mensajes automático
 #### Nivel mínimo⠀[⤴](#content) ####
 
 Determina un nivel mínimo como requisito para entrar al grupo. Esta opción viene activada por defecto (▪️) como 0, eso quiere decir que no hay nivel mínimo requerido.  
+
 El nivel mínimo para entrar en el grupo se puede configurar, clicando en el botón hasta que salga la opción deseada, según: ▪️ (0, sin nivel requerido), 15, 20, 25, 30, 35 o 40. Si se vuelve a clicar encima entonces se desactiva volviendo a ser 0.
 
 #### Tipo de grupo⠀[⤴](#content) ####
@@ -307,7 +319,9 @@ En el caso de que un mago intente acceder a un grupo en el cual no cumpla las co
 #### Ajustes de administración⠀[⤴](#content) ####
 
 Las alertas de administración son individuales en cada grupo, pero deben estar configuradas tanto en el grupo de administración como en el grupo vinculado.  
+
 El marcar como activado (✅) alguno de los botones que se explicarán a continuación, hará que el Profesor elimine ese tipo de formato cada vez que un mago lo envíe al grupo. Configurando así un grupo en el cual no estén permitidos determinados formatos. Eso no incluye los mensajes enviados por administradores y bots.  
+
 Por ejemplo, si en un grupo se activa “✅ Gif”, cada vez que un usuario, no administrador, envíe un gif al grupo el bot lo eliminará automáticamente.
 
 #### Aviso de admins⠀[⤴](#content) ####
@@ -325,12 +339,14 @@ El bot dispone de la opción de Noticias: Eso quiere decir que puede reenviar au
 #### Canales de Noticias Oficiales del Bot⠀[⤴](#content) ####
 
 Para poder ver este apartado es necesario haber escrito el comando `/settings` y haber accedido al apartado Noticias haciendo click sobre el botón.  
-Los canales de los que se dispone Oficialmente son los siguientes:  
+
+Los canales de los que se dispone Oficialmente son los siguientes:
 * [@ProfesorDumbledore](https://t.me/ProfesorDumbledore) (noticias sobre el bot [@ProfesorDumbledoreBot](https://t.me/ProfesorDumbledoreBot), bot de gestión de grupos)
 * [@DiarioElProfeta](https://t.me/DiarioElProfeta) (noticias actualizadas sobre el juego)
 * [@ElQuisquilloso](https://t.me/ElQuisquilloso) (concursos, colaboraciones con tiendas, youtubers…)
 
 Cada uno de los siguientes canales tienen sus propias características por los cuales son importantes y seguidos: algunos son de noticias sobre bots, noticias sobre el juego o noticias de broma.  
+
 Es decisión de cada grupo activar o no el reenvío de las noticias (y cuales) para mantenerse informados. Por defecto todas las noticias estarán desactivadas. Para activarlas se debe clickar encima del botón seleccionado.
 
 #### Canales de Noticias No-Oficiales⠀[⤴](#content) ####
@@ -340,6 +356,7 @@ Si quieres que las noticias de un canal (distinto a los mencionados en el aparta
 #### Bienvenida⠀[⤴](#content) ####
 
 El Profesor puede dar la bienvenida a los entrenadores que vayan entrando al grupo. Opción desactivada por defecto.  
+
 Para activar la Bienvenida es necesario activarla en `/settings` (clickando sobre el botón) y después es necesario utilizar el comando `/set_welcome` para definir el mensaje de bienvenida que dará el bot. Por ejemplo, si se quiere poner el mensaje “Bienvenidos al grupo”, sería:  
 ```
 /set_welcome Bienvenidos al grupo.
@@ -361,9 +378,13 @@ Para añadir links en el mensaje de bienvenida lo puedes hacer mediante la sigui
 [webdumbledore](https://profesordumbledore.com)
 ```
 Este link que veremos en el mensaje de bienvenida como `webdumbledore` al clickarlo nos mandará a la web `https://profesordumbledore.com`.  
+
 Para escribir texto en negrita dentro del mensaje de bienvenida se debe escribir con un `*` antes y después del texto, para escribir en cursiva se debe escribir, antes y después del texto, un `_` .  
+
 Si se quiere eliminar el mensaje de bienvenida, para que el bot deje de saludar cuando entren entrenadores nuevos, entonces se debe escribir el comando `/set_welcome` sin ningún texto más. También se puede hacer que el bot deje de dar la bienvenida desactivando la opción en `/settings`.  
+
 Para configurar la duración del mensaje de bienvenida se debe emplear el comando `/set_cooldown` seguido de un número entero y positivo que indicará la cantidad de segundos antes de que sea eliminado el mensaje. Por ejemplo: `/set_cooldown 15` En este ejemplo el bot mandaría el mensaje de bienvenida cuando entrase un entrenador al grupo, dejaría el mensaje durante 15 segundos y una vez terminada ese tiempo el mensaje del bot se borraría.  
+
 Si se quiere desactivar esa opción y que el mensaje no sea eliminado entonces se deberá escribir `/set_cooldown 0`.
 
 #### Modo Biblioteca⠀[⤴](#content) ####
