@@ -69,7 +69,7 @@ Para poder utilizar todas las funciones del Profesor Dumbledore es necesario ten
 Enviando el comando `/perfil` o `/profile` podrás acceder y editar toda la información sobre tu perfil en HPWU que has compartido con el Profesor.  
 Los dos emoticonos que siguen al nivel, representan la casa a la que pertenece el mago. Estos son los emoticonos seleccionados por nosotros.  
 | Iconos | Definición |
-|--------|------------|
+|:-------|:-----------|
 | ❤️🦁 | Gryffindor |
 | 💛🦡 | Hufflepuff |
 | 💙🦅 | Ravenclaw |
@@ -78,14 +78,14 @@ Los dos emoticonos que siguen al nivel, representan la casa a la que pertenece e
 
 A continuación, encontraremos la profesión. Estos son los emoticonos seleccionados por nosotros.  
 | Iconos | Definición |
-|--------|------------|
+|:-------|:-----------|
 | ⚔ | Auror |
 | 🐾 | Magizoologo |
 | 📚 | Profesor |
 
 Además, también contamos con otros emojis que nos servirán de flags.  
 | Iconos | Definición |
-|--------|------------|
+|:-------|:-----------|
 | 🧝‍♀🧝‍♂ | Afiliado a P.E.D.D.O |
 | 🔰⚔ | Ejército de Dumbledore |
 | 🧙 | Staff del bot |
@@ -141,7 +141,7 @@ Si se quiere borrar una lista bastará con eliminar el mensaje que sea la lista.
 
 ### Glosario de comandos para magos⠀[⤴](#content) ###
 | Comando | Descripción |
-|---------|-------------|
+|:--------|:------------|
 | /cucuruchodecucarachas | Registrarse en el bot |
 | /profile | Perfil, datos de tu pasaporte |
 | /ping | Comprueba el “ping” del bot, si tarda en contestar o está “caído” |
@@ -202,7 +202,7 @@ ID -123456.
 
 3. Una vez puesto el comando en el primer grupo, hay que volver al grupo de administradores e indicar, en la botonera, de qué trata el grupo que se acaba de vincular. Las opciones de las que dispones son las siguientes:  
 | Icono | Nombre | Descripción |
-|-------|--------|-------------|
+|:------|:-------|:------------|
 | 🗣 | Charla | Grupo general para charlar |
 | 🌿 | Invernaderos | Grupo para avisos de cultivos |
 | 👊🏼💢 | Fortalezas | Grupo de quedadas para fortalezas |
@@ -277,7 +277,7 @@ El nivel mínimo para entrar en el grupo se puede configurar, clicando en el bot
 
 Por defecto al añadir al Profesor, se establece el grupo como grupo abierto normal.
 | Identificador | Definición |
-|---------------|------------|
+|:--------------|:-----------|
 | ▪️ | Grupo abierto, sin requisitos |
 | ✅ | Grupo con validación obligatoria |
 | ❤️🦁 | Grupo exclusivo Gryffindor |
@@ -333,6 +333,7 @@ Para activar la Bienvenida es necesario activarla en `/settings` (clickando sobr
 
 Además el bot dispone de “inclusiones” que se pueden introducir en el texto de bienvenida para conocer más información del entrenador que acaba de entrar. Por ejemplo:  
 | Strings | Texto mostrado | Definición |
+|:--------|:---------------|:-----------|
 | {hpwu} | Nelu 23 Auror 💛 | Nick + Nivel + Profesion + Casa |
 | {usuario} | Nelu | Nick |
 | {title} | HPWUEspaña | Nombre del grupo |
@@ -402,7 +403,7 @@ No es recomendable tener las Normas del grupo activas junto a la Bienvenida con 
 
 ### Gestión de usuarios⠀[⤴](#content) ###
 
-Para saber la cantidad de magos y brujas que hay de cada categoría en un grupo y saber los magos que no están validados, puedes emplear el comando `/dumbleuv` y el Profesor te mostrará un mensaje parecido a este:  
+Para saber la cantidad de magos y brujas que hay de cada categoría en un grupo y saber los magos que no están validados, puedes emplear el comando `/dumbleuv` y el Profesor te mostrará un mensaje parecido a este:
 ```
 💙 Ravenclaw: 10
 💛 Hufflepuff: 3
@@ -411,18 +412,18 @@ Para saber la cantidad de magos y brujas que hay de cada categoría en un grupo 
 (?) Desconocidos: 12
 ```
 
-Los @ concretos de los entrenadores de una de las casas se pueden ver mediante:
-💙 Ravenclaw -> /dumbleuv R
-💛 Hufflepuff -> /dumbleuv H
-❤️ Gryffindor -> /dumbleuv G
-💙 Sltytherin -> /dumbleuv S
-💙 Auror -> /dumbleuv A
-💙 Magizoologo -> /dumbleuv M
-💙 Profesor -> /dumbleuv P
-No Validados -> /Dumbleuv U
+Los @ concretos de los entrenadores de una de las casas se pueden ver mediante:  
+💙 Ravenclaw -> `/dumbleuv R`  
+💛 Hufflepuff -> `/dumbleuv H`  
+❤️ Gryffindor -> `/dumbleuv G`  
+💙 Sltytherin -> `/dumbleuv S`  
+💙 Auror -> `/dumbleuv A`  
+💙 Magizoologo -> `/dumbleuv M`  
+💙 Profesor -> `/dumbleuv P`  
+No Validados -> `/Dumbleuv U`  
+Para que muestre una lista con todos -> `/dumbleuv R all`  
 
-Para que muestre una lista con todos -> /dumbleuv R all
-El comando /dumblekickuv sirve para expulsar a todos aquellos No Validados con el Profesor. El Profesor con ese comando no puede expulsar a los que no conoce, pero si a los que no están validados y conoce.
+El comando `/dumblekickuv` sirve para expulsar a todos aquellos No Validados con el Profesor. El Profesor con ese comando no puede expulsar a los que no conoce, pero si a los que no están validados y conoce.
 Cosas a tener en cuenta:
 AVISO: antes de usar el comando /dumblekickuv ten en cuenta que no hay ningún bot validado y puede expulsarlos.
 El comando /dumblekickuv y /dumbleuv, ambos con sus variantes, está restringido a una vez al día por grupo (independientemente de si este está vinculado o no). A las 00.00 se reinicia y se puede volver a utilizar.
