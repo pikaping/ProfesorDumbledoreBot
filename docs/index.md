@@ -85,7 +85,7 @@ Además, también contamos con otros emojis que nos servirán de flags.
 
   🧙 Staff del bot.
 
-### Código de Amigos ###
+### Código de Amigo ###
 
 Para añadir tu clave de amigo de HPWU en este bot, es tan sencillo como enviar /set_friendid seguido de tu clave de amigo. 
 Aquí tienes un ejemplo:
