@@ -1,9 +1,9 @@
 Bot para la gestión y dinamización de grupos en Telegram de Harry Potter Wizards Unite.
 Puedes pedir ayuda en el grupo @ProfesorDumbledoreAyuda y estar informado de las novedades en el canal de noticias @ProfesorDumbledore
 
-1. [Ayuda para magos](#ayuda-para-magos)  
-1.1. [Registro en el bot](#registro-para-el-bot)  
-1.2. [Ficha del Mago](#ficha-del-mago)  
+[1. Ayuda para magos](#ayuda-para-magos)  
+[1.1. Registro en el bot](#registro-para-el-bot)  
+[1.2. Ficha del Mago](#ficha-del-mago)  
 1.3. [Código de Amigo](#código-de-amigo)  
 1.4. [Informe / ¿Quién es?](#informe-/-¿quién-es?)  
 1.5. [Infografías](#infografías)  
