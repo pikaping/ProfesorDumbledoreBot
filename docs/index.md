@@ -104,7 +104,9 @@ Aquí tienes un ejemplo:
 
 Una vez hecho esto, tu clave de amigo se mostrará siempre que pregunten por tu ficha de mago.  
 Si deseas eliminar tu clave de amigo de tu perfil, simplemente envía /set_friendid.  
+
 Además, si quieres aparecer en todas las listas de códigos de los grupos en los que formes parte, tan solo deberás activarlo desde tu perfil, pulsando sobre el botón `🔒 Clave de amigo`. Cuando hayas pulsado el botón, el candado se abrirá y tu clave de amigo pasará a ser pública.  
+
 Para retirar tu clave de amigo de todos los listados deberás hacer exactamente lo mismo que para publicarla. Pulsa sobre el botón `🔓 Clave de amigo` en tu perfil.
 
 ### Informe / ¿Quién es?⠀[⤴](#content) ###
@@ -114,8 +116,11 @@ Si quieres ver la ficha de otro mago, podrás usar el comando `/informe` o `/who
 ### Infografías⠀[⤴](#content) ###
 
 El Profesor dispone de una amplia biblioteca de infografías que se van ampliando a medida que conocemos más datos del juego. Las infografías están creadas por el equipo creativo del diario el profeta (@diarioelprofeta).  
+
 Para solicitarlas se debe emplear el comando `/tabla` seguido de un espacio y el nombre de la tabla que se desea. El mensaje solicitando la tabla será eliminado por el Profesor de forma automática.  
+
 Dependiendo de la configuración del grupo, las tablas se enviarán al chat privado del bot o al grupo, para eso es necesario tener abierta una conversación privada con el Profesor Dumbledore  
+
 Estos son las infografías de las que se dispone en la actualidad:  
 * Hechizos 
 * NotasMaestras
@@ -136,14 +141,18 @@ Para registrar un cultivo se debe enviar la ubicación del invernadero y el bot 
 ### Listas⠀[⤴](#content) ###
 
 El profesor dispone de la opción para hacer listas, útiles para quedadas, luchas en fortalezas... En estas listas únicamente se podrá indicar si vas a acudir (botón “Me apunto!”) o si una vez apuntado has decidido no ir (botón “Paso”).  
+
 Para crear una lista se debe emplear el comando `/list` y añadir el título que tendrá la lista. Por ejemplo:  
 ```
 /list FORTALEZA A LAS CINCO.
 ```
 
 Los magos y brujas que se apunten a dicha lista aparecerán junto a la siguiente información: Alias de telegram, nivel, profesión, y aunque no sea relevante, casa de Hogwarts. Es por ello que es imprescindible estar Registrado en el bot.  
+
 Con el comando `/listrefloat` puedes reflotar una lista si esta ha quedado perdida entre mensajes, esta opción solo está habilitada para administradores y deben responder a la lista citándola con el comando.  
+
 También se dispone de la posibilidad de cerrar una lista para que nadie más se pueda apuntar en ese momento. Esto es posible hacerlo con el comando `/listclose`. Al cerrar la lista los botones para apuntarse y desapuntarse desaparecerán. Para abrir de nuevo una lista cerrada será necesario utilizar el comando `/listopen`; los botones volverán a aparecer y los usuarios podrán volverse a apuntar y desapuntar. Al reflotar una lista, si esta está cerrada sucederá lo mismo y los botones volverán.  
+
 Si se quiere borrar una lista bastará con eliminar el mensaje que sea la lista.
 
 ### Glosario de comandos para magos⠀[⤴](#content) ###
@@ -197,11 +206,8 @@ En el grupo de administración hay que empezar por escribir el comando `/setting
 
 Opciones de las que se dispone (tanto si es un grupo como si son varios los vinculados):
 * Mensaje de aviso de magos que entran al grupo, dónde se verá también si están validados, su id y en el caso de varios grupos vinculados, a cual entran.  
-
 * Mensaje de aviso de los magos que salen si han sido expulsados mediante ban o kick.  
-
 * Mensaje de aviso cuando un mago escribe `@admin` en el grupo.  
-
 * Mensaje de aviso de un warn (aviso) a un mago usuario.  
 
 #### Vincular grupos al grupo de Admins⠀[⤴](#content) ####
@@ -537,9 +543,7 @@ Algunos de los comandos más importantes para un administrador son los de tipo �
 
 Para utilizar alguno de estos tres comandos se puede hacer mediante las siguientes opciones:  
 1. Citando el mensaje del usuario al que se quiere “castigar” y escribiendo el comando.  
-
 2. Escribiendo el comando seguido del alias de Telegram del usuario. Por ejemplo: `/kick Nelulita`.  
-
 3. Escribiendo el comando seguido del ID del usuario. Por ejemplo: `/warn 111111` Para conseguir el ID del usuario se puede hacer mediante el aviso del bot en el grupo de administración, si se tiene activado o mediante el comando `/id`.  
 
 Los tres comandos permiten además, con todas sus opciones, añadir un mensaje con el motivo de dicho “castigo”. Por ejemplo: `/kick Nelulita por no asistir a la fortaleza`.
