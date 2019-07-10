@@ -186,7 +186,7 @@ def create_link_cmd(bot, update, args=None):
     if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
 
-    if args is None or len(args) != 1 or get_admin(args[0]) is None:
+    if args is None or len(args) != 1 or adm_sql.get_admin(args[0]) is None:
         bot.sendMessage(
             chat_id=chat_id,
             text="❌ Parece ser que has introducido un ID incorrecto.",
