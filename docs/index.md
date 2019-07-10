@@ -249,7 +249,7 @@ Además de las opciones configurables que se verán a continuación, está dispo
 Para desactivar esta opción solo hay que escribir el comando /set_maxmembers 0.
 
 
-#### No registrados en el Profesor⠀[⤴](#content) ####
+#### No registrados con el Profesor⠀[⤴](#content) ####
 Si se activa este botón (✅) el Profesor @ProfesorDumbledoreBot avisará si entra al grupo un mago que no tenga su pasaporte registrado con el Profesor. El aviso que mostrará consiste en un mensaje en el cual explicará cómo y dónde debe registrarse.
 
 #### Expulsiones silenciosas o notificadas⠀[⤴](#content) ####
