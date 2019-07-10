@@ -2,7 +2,7 @@ Bot para la gestión y dinamización de grupos en Telegram de Harry Potter Wizar
 Puedes pedir ayuda en el grupo @ProfesorDumbledoreAyuda y estar informado de las novedades en el canal de noticias @ProfesorDumbledore
 
 1. [Ayuda para magos y brujas](#ayuda-para-magos-y-brujas)  
-    1. [Registro en el bot](#registro-para-el-bot)  
+    1. [Registrarse en el bot](#registrarse-en-el-bot)  
     2. [Ficha del Mago](#ficha-del-mago)  
     3. [Código de Amigo](#código-de-amigo)  
     4. [Informe / ¿Quién es?](#informe--quién-es)  
@@ -65,7 +65,7 @@ Para iniciar el registro debes abrir una conversación con el Profesor e iniciar
 
 Para poder utilizar todas las funciones del Profesor Dumbledore es necesario tener definido un alias en Telegram. Puede hacerse desde: Opciones de Telegram -> Ajustes -> Alias
 
-### Ficha del mago⠀[⤴](#content) ###
+### Ficha del Mago⠀[⤴](#content) ###
 Enviando el comando /perfil o /profile podrás acceder y editar toda la información sobre tu perfil en HPWU que has compartido con el Profesor. 
 Los dos emoticonos que siguen al nivel, representan la casa a la que pertenece el mago. Estos son los emoticonos seleccionados por nosotros.
 
