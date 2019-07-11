@@ -422,17 +422,17 @@ def get_settings_keyboard(chat_id, keyboard="main"):
             reply_on_group_text = "✅ Respuestas en el grupo"
         else:
             reply_on_group_text = "▪️ Respuestas al privado"
-        if group.warn is WarnLimit.SO_EXTRICT.value:
+        if group.warn is model.WarnLimit.SO_EXTRICT.value:
             warn_text = "Limite de warns: 3"
-        elif group.warn is WarnLimit.EXTRICT.value:
+        elif group.warn is model.WarnLimit.EXTRICT.value:
             warn_text = "Limite de warns: 5"
-        elif group.warn is WarnLimit.LOW_PERMISIVE.value:
+        elif group.warn is model.WarnLimit.LOW_PERMISIVE.value:
             warn_text = "Limite de warns: 10"
-        elif group.warn is WarnLimit.MED_PERMISIVE.value:
+        elif group.warn is model.WarnLimit.MED_PERMISIVE.value:
             warn_text = "Limite de warns: 25"
-        elif group.warn is WarnLimit.HIGH_PERMISIVE.value:
+        elif group.warn is model.WarnLimit.HIGH_PERMISIVE.value:
             warn_text = "Limite de warns: 50"
-        elif group.warn is WarnLimit.SO_TOLERANT.value:
+        elif group.warn is model.WarnLimit.SO_TOLERANT.value:
             warn_text = "Limite de warns: 100"
 
         settings_keyboard = [
@@ -447,10 +447,10 @@ def get_settings_keyboard(chat_id, keyboard="main"):
     #3.JOIN SETTINGS
     elif keyboard == "join":
         join = get_join_settings(chat_id)
-        if join.requirment is ValidationRequiered.NO_VALIDATION.value:
+        if join.requirment is model.ValidationRequiered.NO_VALIDATION.value:
             validationrequired_text = "▪️ Grupo abierto"
 
-        elif join.requirment is ValidationRequiered.VALIDATION.value:
+        elif join.requirment is model.ValidationRequiered.VALIDATION.value:
             validationrequired_text = "✅ Validación obligatoria"
 
         if join.val_alert is True:

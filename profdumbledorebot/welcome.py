@@ -36,7 +36,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.utils.helpers import mention_markdown, escape_markdown
 
 
-VALID_WELCOME_FORMATTERS = ['nombre', 'apellido', 'nombre_completo', 'usuario', 'id', 'count', 'title', 'pogo', 'mention']
+VALID_WELCOME_FORMATTERS = ['nombre', 'apellido', 'nombre_completo', 'usuario', 'id', 'count', 'title', 'hpwu', 'mention']
 
 
 def send_welcome(bot, update):
