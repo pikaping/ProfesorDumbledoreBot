@@ -81,7 +81,7 @@ def send_welcome(bot, update):
                 valid_format = support.escape_invalid_curly_brackets(cust_welcome, VALID_WELCOME_FORMATTERS)
                 res = valid_format.format(nombre=escape_markdown(first_name),
                                           apellido=escape_markdown(new_mem.last_name or first_name),
-                                          pogo=support.replace(new_mem.id, first_name),
+                                          hpwu=support.replace(new_mem.id, first_name),
                                           nombre_completo=escape_markdown(fullname), usuario=username, mention=mention,
                                           count=count, title=escape_markdown(chat.title), id=new_mem.id)
                 buttons = welcome_sql.get_welc_buttons(chat.id)
