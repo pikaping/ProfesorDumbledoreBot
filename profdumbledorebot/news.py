@@ -61,7 +61,7 @@ def init_news(bot, update, args=None):
         "queda el último paso. Ejecuta `/add_news {}` en los grupos que quie"
         "ras recibir las noticias de este canal.".format(chat_id)
     )
-    bot.sendMessage(chat_id=chat_id, text=output)
+    bot.sendMessage(chat_id=chat_id, text=output, parse_mode=telegram.ParseMode.MARKDOWN)
 
 
 @run_async
