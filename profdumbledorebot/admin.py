@@ -116,21 +116,22 @@ def groups_cmd(bot, update):
 
     elif support.is_admin(chat_id, user_id, bot):
         for k in groups:
+            chat = bot.get_chat(group_id)
             if k.link is not None and re.match('@?[a-zA-Z]([a-zA-Z0-9_]+)$', k.link) is None:
-                output = output + "\n🏫 [{}]({}) - `{}`".format(k.label or k.title, k.link, k.linked_id)
+                output = output + "\n🏫 [{}]({}) - `{}`".format(k.label or chat.title, k.link, k.linked_id)
             elif k.link is not None and re.match('@?[a-zA-Z]([a-zA-Z0-9_]+)$', k.link) is not None:
-                output = output + "\n🏫 {} - {} - `{}`".format(k.label or k.title, k.link, k.linked_id)
+                output = output + "\n🏫 {} - {} - `{}`".format(k.label or chat.title, k.link, k.linked_id)
             else:
-                output = output + "\n🏫 {} - `{}`".format(k.label or k.title, k.linked_id)
+                output = output + "\n🏫 {} - `{}`".format(k.label or chat.title, k.linked_id)
 
     else:
         for k in groups:
             if k.link is not None and re.match('@?[a-zA-Z]([a-zA-Z0-9_]+)$', k.link) is None:
-                output = output + "\n🏫 [{}]({})".format(k.label or k.title, k.link)
+                output = output + "\n🏫 [{}]({})".format(k.label or chat.title, k.link)
             elif k.link is not None and re.match('@?[a-zA-Z]([a-zA-Z0-9_]+)$', k.link) is not None:
-                output = output + "\n🏫 {} - {}".format(k.label or k.title, k.link)
+                output = output + "\n🏫 {} - {}".format(k.label or chat.title, k.link)
             else:
-                output = output + "\n🏫 {}".format(k.label or k.title)
+                output = output + "\n🏫 {}".format(k.label or chat.title)
 
     if chat_type != "private":
         group = get_group_settings(chat_id)
@@ -193,7 +194,7 @@ def create_link_cmd(bot, update, args=None):
             parse_mode=telegram.ParseMode.MARKDOWN)
         return
 
-    adm_sql.new_link(args[0], chat_id, chat_title)
+    adm_sql.new_link(args[0], chat_id)
     bot.sendMessage(
         chat_id=chat_id,
         text="👌 El grupo ha sido registrado, continua el proceso desde el grupo de administracion.",
