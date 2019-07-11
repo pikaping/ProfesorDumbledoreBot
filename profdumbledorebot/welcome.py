@@ -54,7 +54,7 @@ def send_welcome(bot, update):
         Types.VIDEO.value: bot.sendVideo
     }
 
-    should_welc, cust_welcome, welc_type = welcome.get_welc_pref(chat.id)
+    should_welc, cust_welcome, welc_type = welcome_sql.get_welc_pref(chat.id)
     if should_welc:
         sent = None
         new_members = update.effective_message.new_chat_members
@@ -84,7 +84,7 @@ def send_welcome(bot, update):
                                           pogo=support.replace(new_mem.id, first_name),
                                           nombre_completo=escape_markdown(fullname), usuario=username, mention=mention,
                                           count=count, title=escape_markdown(chat.title), id=new_mem.id)
-                buttons = welcome.get_welc_buttons(chat.id)
+                buttons = welcome_sql.get_welc_buttons(chat.id)
                 keyb = support.build_keyboard(buttons)
                 if has_rules(chat.id):
                     config = get_config()

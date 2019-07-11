@@ -198,7 +198,7 @@ def create_link_cmd(bot, update, args=None):
     adm_sql.new_link(args[0], chat_id)
     bot.sendMessage(
         chat_id=chat_id,
-        text="👌 El grupo ha sido registrado, continua el proceso desde el grupo de administracion.",
+        text="👌 El grupo ha sido vinculado.",
         parse_mode=telegram.ParseMode.MARKDOWN)
 
 @run_async
