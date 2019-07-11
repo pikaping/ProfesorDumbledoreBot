@@ -41,8 +41,8 @@ from profdumbledorebot.config import ConfigurationNotLoaded, get_config
 from profdumbledorebot.sql.admin import get_particular_admin, get_admin
 from profdumbledorebot.sql.news import get_verified_providers, is_news_subscribed
 from telegram.utils.helpers import mention_markdown, mention_html, escape_markdown
-from profdumbledorebot.sql.settings import get_join_settings, get_nanny_settings, get_group_settings
 from telegram.error import TelegramError, Unauthorized, BadRequest, TimedOut, ChatMigrated, NetworkError
+from profdumbledorebot.sql.settings import get_join_settings, get_nanny_settings, get_group_settings, set_nanny
 
 
 MATCH_MD = re.compile(r'\*(.*?)\*|'
@@ -509,6 +509,10 @@ def get_settings_keyboard(chat_id, keyboard="main"):
     #7.NANNY SETTINGS
     elif keyboard == "nanny":
         nanny = get_nanny_settings(chat_id)
+        if nanny is None:
+            set_nanny(chat_id)
+            nanny = get_nanny_settings(chat_id)
+            
         if nanny.voice == 1:
             voice_text = "✅ Audio y Voz"
         else:
