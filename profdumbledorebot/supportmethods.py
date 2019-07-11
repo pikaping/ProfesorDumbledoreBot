@@ -40,6 +40,16 @@ from profdumbledorebot.config import ConfigurationNotLoaded, get_config
 from telegram.utils.helpers import mention_markdown, mention_html, escape_markdown
 from telegram.error import TelegramError, Unauthorized, BadRequest, TimedOut, ChatMigrated, NetworkError
 
+'''
+get_group_settings
+get_join_settings
+get_verified_providers
+is_news_subscribed
+get_welcome_settings
+get_nanny_settings
+get_particular_admin
+get_admin
+'''
 
 MATCH_MD = re.compile(r'\*(.*?)\*|'
                       r'_(.*?)_|'
@@ -390,12 +400,12 @@ def error_callback(bot, update, error):
 def get_settings_keyboard(chat_id, keyboard="main"):
     if keyboard == "main":
         settings_keyboard = [
-            [InlineKeyboardButton("Ajustes generales »", callback_data='settings_goto_general')],
-            [InlineKeyboardButton("Ajustes de entrada »", callback_data='settings_goto_join')],
-            [InlineKeyboardButton("Ajustes de administración »", callback_data='settings_goto_ladmin')],
-            [InlineKeyboardButton("Noticias »", callback_data='settings_goto_news')],
-            [InlineKeyboardButton("Bienvenida »", callback_data='settings_goto_welcome')],
-            [InlineKeyboardButton("Modo enfermera »", callback_data='settings_goto_nanny')],
+            [InlineKeyboardButton("👷‍♂️ Administración »", callback_data='settings_goto_ladmin')],
+            [InlineKeyboardButton("🛠 Ajustes »", callback_data='settings_goto_general')],
+            [InlineKeyboardButton("👋 Bienvenida »", callback_data='settings_goto_welcome')],
+            [InlineKeyboardButton("🚪 Entrada »", callback_data='settings_goto_join')],
+            [InlineKeyboardButton("📯 Noticias »", callback_data='settings_goto_news')],
+            [InlineKeyboardButton("🏫 Modo biblioteca »", callback_data='settings_goto_nanny')],
             [InlineKeyboardButton("Terminado", callback_data='settings_done')]
         ]
     
@@ -414,38 +424,28 @@ def get_settings_keyboard(chat_id, keyboard="main"):
             hard_text = "✅ Ban (Warns)"
         else:
             hard_text = "▪️ Kick (Warns)"
-        if group.notes == 1:
-            notes_text = "✅ Recordatorios"
-        else:
-            notes_text = "▪️ Recordatorios"
         if group.reply_on_group == 1:
             reply_on_group_text = "✅ Respuestas en el grupo"
         else:
             reply_on_group_text = "▪️ Respuestas al privado"
-        if group.command == 1:
-            command_text = "✅ Comandos personalizados"
-        else:
-            command_text = "▪️ Comandos personalizados"
-        if group.warn is WarnLimit.SO_EXTRICT:
+        if group.warn is WarnLimit.SO_EXTRICT.value:
             warn_text = "Limite de warns: 3"
-        elif group.warn is WarnLimit.EXTRICT:
+        elif group.warn is WarnLimit.EXTRICT.value:
             warn_text = "Limite de warns: 5"
-        elif group.warn is WarnLimit.LOW_PERMISIVE:
+        elif group.warn is WarnLimit.LOW_PERMISIVE.value:
             warn_text = "Limite de warns: 10"
-        elif group.warn is WarnLimit.MED_PERMISIVE:
+        elif group.warn is WarnLimit.MED_PERMISIVE.value:
             warn_text = "Limite de warns: 25"
-        elif group.warn is WarnLimit.HIGH_PERMISIVE:
+        elif group.warn is WarnLimit.HIGH_PERMISIVE.value:
             warn_text = "Limite de warns: 50"
-        elif group.warn is WarnLimit.SO_TOLERANT:
+        elif group.warn is WarnLimit.SO_TOLERANT.value:
             warn_text = "Limite de warns: 100"
 
         settings_keyboard = [
             [InlineKeyboardButton(jokes_text, callback_data='settings_general_jokes')],
             [InlineKeyboardButton(games_text, callback_data='settings_general_games')],
             [InlineKeyboardButton(hard_text, callback_data='settings_general_hard')],
-            #[InlineKeyboardButton(notes_text, callback_data='settings_general_notes')],
             [InlineKeyboardButton(reply_on_group_text, callback_data='settings_general_reply')],
-            #[InlineKeyboardButton(command_text, callback_data='settings_general_cmd')],
             [InlineKeyboardButton(warn_text, callback_data='settings_general_warn')],
             [InlineKeyboardButton("« Menú principal", callback_data='settings_goto_main')]
         ]   
@@ -453,10 +453,10 @@ def get_settings_keyboard(chat_id, keyboard="main"):
     #3.JOIN SETTINGS
     elif keyboard == "join":
         join = get_join_settings(chat_id)
-        if join.validationrequired is ValidationRequiered.NO_VALIDATION:
+        if join.validationrequired is ValidationRequiered.NO_VALIDATION.value:
             validationrequired_text = "▪️ Grupo abierto"
 
-        elif join.validationrequired is ValidationRequiered.VALIDATION:
+        elif join.validationrequired is ValidationRequiered.VALIDATION.value:
             validationrequired_text = "✅ Validación obligatoria"
         if join.joy is True:
             joy_text = "✅ No registrados"
@@ -636,7 +636,7 @@ def get_settings_keyboard(chat_id, keyboard="main"):
             [InlineKeyboardButton(admin_text, callback_data='settings_admin_admin')],
             [InlineKeyboardButton(welcome_text, callback_data='settings_admin_welcome')],
             [InlineKeyboardButton(ejections_text, callback_data='settings_admin_ejections')],
-            #[InlineKeyboardButton(spy_mode, callback_data='settings_admin_spy')],
+            [InlineKeyboardButton(spy_mode, callback_data='settings_admin_spy')],
             [InlineKeyboardButton("Terminado", callback_data='settings_done')]
         ] 
 
