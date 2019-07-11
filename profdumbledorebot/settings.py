@@ -304,7 +304,7 @@ def settingsbutton(bot, update):
             set_ladmin_settings(chat_id, settings_ladmin[data])
             support.update_settings_message(chat_id, bot, message_id, keyboard="ladmin")
         elif data == "settings_admin_spy":
-            set_ladmin_settings(chat_id, settings_ladmin[data])
+            set_ladmin_settings(chat_id, "admin_bot")
             support.delete_message(chat_id, message_id, bot)
             output = "Antes de nada administradores quiero daros las gracias. Debeis haber demostrado verdadera lealtad hacia mi en el grupo, y solo eso ha podido lograr que acuda Fawkes a vuestro grupo.\nÉl no puede leer nada de lo que suceda en el grupo, simplemente enviará las alertas que hayais configurado. Si necesitais configurar de nuevo las alertas o quereis usar los comandos, invitadme de nuevo al grupo y cuando acabeis volved a activar a Fawkes."
             bot.sendMessage(chat_id=chat_id, text=output, parse_mode=telegram.ParseMode.MARKDOWN)
