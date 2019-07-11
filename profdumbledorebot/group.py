@@ -148,7 +148,7 @@ def joined_chat(bot, update, job_queue):
             if (not exists_user_group(user_id, chat_id)):
                 set_user_group(user_id, chat_id)
             else:
-                join_group(user_id, chat_id, False)
+                join_group(user_id, chat_id)
 
             if has_rules(chat_id):
                 bot.restrict_chat_member(
