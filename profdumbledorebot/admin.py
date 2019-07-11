@@ -116,7 +116,7 @@ def groups_cmd(bot, update):
 
     elif support.is_admin(chat_id, user_id, bot):
         for k in groups:
-            chat = bot.get_chat(group_id)
+            chat = bot.get_chat(k.linked_id)
             if k.link is not None and re.match('@?[a-zA-Z]([a-zA-Z0-9_]+)$', k.link) is None:
                 output = output + "\n🏫 [{}]({}) - `{}`".format(k.label or chat.title, k.link, k.linked_id)
             elif k.link is not None and re.match('@?[a-zA-Z]([a-zA-Z0-9_]+)$', k.link) is not None:
