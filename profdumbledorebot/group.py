@@ -75,7 +75,7 @@ def joined_chat(bot, update, job_queue):
             " seguir.".format(escape_markdown(chat_title)))
 
         admin = get_admin(chat_id)
-        if admin is not None and admin.admin_bot:
+        if admin is not None and admin.admin_bot is True:
             set_admin_settings(chat_id, "admin_bot")
             message_text = message_text + "\n\n*Fawkes emprendió el vuelo.*"
 
@@ -284,13 +284,18 @@ def process_group_message(bot, update):
         ladmin = get_particular_admin(chat_id)
         if ladmin is not None and ladmin.admin:
             admin = get_admin_from_linked(chat_id)
-            if admin is not None and admin.admin is True:
-                bot.sendMessage(
-                    chat_id=admin.id,
-                    text=message_text,
-                    parse_mode=telegram.ParseMode.MARKDOWN
-                )
-                return
+            if admin is not None and admin.admin and admin.admin_bot:
+                config = get_config()
+                adm_bot = Bot(token=config["telegram"]["admin_token"])
+                replace_pogo = support.replace(user_id, message.from_user.first_name)
+                message_text = ("ℹ️ {}\n👤 {} {}").format(message.chat.title, replace_pogo, text)
+                adm_bot.sendMessage(chat_id=admin.id, text=message_text,
+                                parse_mode=telegram.ParseMode.MARKDOWN)
+            elif admin is not None and admin.admin:
+                replace_pogo = support.replace(user_id, message.from_user.first_name)
+                message_text = ("ℹ️ {}\n👤 {} {}").format(message.chat.title, replace_pogo, text)
+                bot.sendMessage(chat_id=admin.id, text=message_text,
+                                parse_mode=telegram.ParseMode.MARKDOWN)
 '''
     if text and len(text) < 31:
         commands = get_commands(chat_id)
