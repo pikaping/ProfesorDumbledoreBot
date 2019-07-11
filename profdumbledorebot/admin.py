@@ -118,20 +118,20 @@ def groups_cmd(bot, update):
         for k in groups:
             chat = bot.get_chat(k.linked_id)
             if k.link is not None and re.match('@?[a-zA-Z]([a-zA-Z0-9_]+)$', k.link) is None:
-                output = output + "\n🏫 [{}]({}) - `{}`".format(escape_markdown(k.label) or escape_markdown(chat.title), k.link, k.linked_id)
+                output = output + "\n🏫 [{}]({}) - `{}`".format(k.label or chat.title, k.link, k.linked_id)
             elif k.link is not None and re.match('@?[a-zA-Z]([a-zA-Z0-9_]+)$', k.link) is not None:
-                output = output + "\n🏫 {} - {} - `{}`".format(escape_markdown(k.label) or escape_markdown(chat.title), k.link, k.linked_id)
+                output = output + "\n🏫 {} - {} - `{}`".format(k.label or chat.title, k.link, k.linked_id)
             else:
-                output = output + "\n🏫 {} - `{}`".format(escape_markdown(k.label) or escape_markdown(chat.title), k.linked_id)
+                output = output + "\n🏫 {} - `{}`".format(k.label or chat.title, k.linked_id)
 
     else:
         for k in groups:
             if k.link is not None and re.match('@?[a-zA-Z]([a-zA-Z0-9_]+)$', k.link) is None:
-                output = output + "\n🏫 [{}]({})".format(escape_markdown(k.label) or escape_markdown(chat.title), k.link)
+                output = output + "\n🏫 [{}]({})".format(k.label or chat.title, k.link)
             elif k.link is not None and re.match('@?[a-zA-Z]([a-zA-Z0-9_]+)$', k.link) is not None:
-                output = output + "\n🏫 {} - {}".format(escape_markdown(k.label) or escape_markdown(chat.title), k.link)
+                output = output + "\n🏫 {} - {}".format(k.label or chat.title, k.link)
             else:
-                output = output + "\n🏫 {}".format(escape_markdown(k.label) or escape_markdown(chat.title))
+                output = output + "\n🏫 {}".format(k.label or chat.title)
 
     if chat_type != "private":
         group = get_group_settings(chat_id)
