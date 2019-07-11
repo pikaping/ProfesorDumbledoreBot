@@ -318,8 +318,6 @@ def settingsbutton(bot, update):
                 set_news_subscription(chat_id, news_id)
             support.update_settings_message(chat_id, bot, message_id, keyboard="news")
 
-        bot.answerCallbackQuery(
-            text="Estás editando los ajustes del grupo.", callback_query_id=update.callback_query.id, show_alert="true")
         return
 
     match = re.match(r"rm_warn\((.+?)\)", query.data)
