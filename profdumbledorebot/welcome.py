@@ -29,6 +29,7 @@ import profdumbledorebot.sql.welcome as welcome_sql
 import profdumbledorebot.supportmethods as support
 
 from telegram.error import BadRequest
+from profdumbledorebot.model import Types
 from profdumbledorebot.config import get_config
 from profdumbledorebot.sql.rules import has_rules
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup

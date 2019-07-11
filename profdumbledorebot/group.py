@@ -43,8 +43,8 @@ from profdumbledorebot.sql.support import are_banned
 from profdumbledorebot.sql.welcome import get_welc_pref
 from profdumbledorebot.sql.settings import get_join_settings
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from profdumbledorebot.sql.admin import get_particular_admin, get_admin_from_linked
 from profdumbledorebot.sql.usergroup import exists_user_group, set_user_group, join_group, message_counter
+from profdumbledorebot.sql.admin import get_particular_admin, get_admin_from_linked, get_admin, set_admin_settings
 
 @run_async
 def joined_chat(bot, update, job_queue):
@@ -73,6 +73,12 @@ def joined_chat(bot, update, job_queue):
             "e explica en detalle todos los pasos que se deben"
             " seguir.".format(escape_markdown(chat_title)))
 
+        admin = get_admin(chat_id)
+        if admin is not None and admin.admin_bot:
+            set_admin_settings(chat_id, "admin_bot")
+            message_text = message_text + "\n\n*Fawkes emprendió el vuelo.*"
+
+
         bot.sendMessage(
             chat_id=chat_id, 
             text=message_text, 
@@ -92,7 +98,7 @@ def joined_chat(bot, update, job_queue):
                 return
 
             user = get_user(user_id)       
-            if user is None and group.requirment is not ValidationRequiered.NO_VALIDATION:
+            if user is None and group.requirment is not ValidationRequiered.NO_VALIDATION.value:
                 bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
                 if group.mute is False:
                     output = "👌 Mago sin registrarse expulsado!"
@@ -103,7 +109,7 @@ def joined_chat(bot, update, job_queue):
                 good_luck(chat_id, message, "El usuario no está registrado")
                 return
 
-            if group.validationrequired is ValidationRequiered.VALIDATION and user.level is not None:
+            if group.requirment is ValidationRequiered.VALIDATION.value and user.level is not None:
                 bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
                 if group.mute is False:
                     output = "👌 Mago sin validarse expulsado!"
@@ -162,11 +168,32 @@ def joined_chat(bot, update, job_queue):
                         group.delete_cooldown,
                         context=delete_object
                     )
+
+            if group.val_alert and (user is None or user.level is None):
+                sent = bot.sendMessage(
+                    chat_id=chat_id,
+                    text="",
+                    parse_mode=telegram.ParseMode.MARKDOWN
+                )
+                if sent is not None:
+                    delete_object = support.DeleteContext(chat_id, sent.message_id)
+                    job_queue.run_once(
+                        support.callback_delete, 
+                        group.delete_cooldown or 60,
+                        context=delete_object
+                    )
             
             ladmin = get_particular_admin(chat_id)
             if ladmin is not None and ladmin.welcome:
                 admin = get_admin_from_linked(chat_id)
-                if admin is not None and admin.welcome is True:
+                if admin is not None and admin.welcome and admin.admin_bot:
+                    config = get_config()
+                    adm_bot = Bot(token=config["telegram"]["admin_token"])
+                    replace_pogo = support.replace(user_id, message.from_user.first_name)
+                    message_text = ("ℹ️ {}\n👤 {} ha entrado en el grupo").format(message.chat.title, replace_pogo)
+                    adm_bot.sendMessage(chat_id=admin.id, text=message_text,
+                                    parse_mode=telegram.ParseMode.MARKDOWN)
+                elif admin is not None and admin.welcome :
                     replace_pogo = support.replace(user_id, message.from_user.first_name)
                     message_text = ("ℹ️ {}\n👤 {} ha entrado en el grupo").format(message.chat.title, replace_pogo)
                     bot.sendMessage(chat_id=admin.id, text=message_text,
@@ -177,7 +204,14 @@ def good_luck(chat_id, message, text):
     ladmin = get_particular_admin(chat_id)
     if ladmin is not None and ladmin.welcome:
         admin = get_admin_from_linked(chat_id)
-        if admin is not None and admin.welcome is True:
+        if admin is not None and admin.welcome and admin.admin_bot:
+            config = get_config()
+            adm_bot = Bot(token=config["telegram"]["admin_token"])
+            replace_pogo = support.replace(user_id, message.from_user.first_name)
+            message_text = ("ℹ️ {}\n👤 {} {}").format(message.chat.title, replace_pogo, text)
+            adm_bot.sendMessage(chat_id=admin.id, text=message_text,
+                            parse_mode=telegram.ParseMode.MARKDOWN)
+        elif admin is not None and admin.welcome:
             replace_pogo = support.replace(user_id, message.from_user.first_name)
             message_text = ("ℹ️ {}\n👤 {} {}").format(message.chat.title, replace_pogo, text)
             bot.sendMessage(chat_id=admin.id, text=message_text,

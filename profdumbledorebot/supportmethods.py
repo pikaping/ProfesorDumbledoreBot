@@ -34,22 +34,16 @@ from threading import Thread
 from pytz import all_timezones
 from profdumbledorebot.mwt import MWT
 from datetime import datetime, timedelta
+from profdumbledorebot.sql.welcome import get_welcome_settings
 from profdumbledorebot.sql.user import get_user, get_real_user
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from profdumbledorebot.config import ConfigurationNotLoaded, get_config
+from profdumbledorebot.sql.admin import get_particular_admin, get_admin
+from profdumbledorebot.sql.news import get_verified_providers, is_news_subscribed
 from telegram.utils.helpers import mention_markdown, mention_html, escape_markdown
+from profdumbledorebot.sql.settings import get_join_settings, get_nanny_settings, get_group_settings
 from telegram.error import TelegramError, Unauthorized, BadRequest, TimedOut, ChatMigrated, NetworkError
 
-'''
-get_group_settings
-get_join_settings
-get_verified_providers
-is_news_subscribed
-get_welcome_settings
-get_nanny_settings
-get_particular_admin
-get_admin
-'''
 
 MATCH_MD = re.compile(r'\*(.*?)\*|'
                       r'_(.*?)_|'
@@ -183,39 +177,39 @@ def get_welcome_type(msg, cmd=False):
         offset = len(args[1]) - len(msg.text) - offset
         text, buttons = button_markdown_parser(args[1], entities=msg.parse_entities(), offset=offset)
         if buttons:
-            data_type = Types.BUTTON_TEXT
+            data_type = model.Types.BUTTON_TEXT
         else:
-            data_type = Types.TEXT
+            data_type = model.Types.TEXT
 
     elif message and message.sticker:
         content = message.sticker.file_id
         text = message.text
-        data_type = Types.STICKER
+        data_type = model.Types.STICKER
 
     elif message and message.document:
         content = message.document.file_id
         text = message.text
-        data_type = Types.DOCUMENT
+        data_type = model.Types.DOCUMENT
 
     elif message and message.photo:
         content = message.photo[-1].file_id
         text = message.text
-        data_type = Types.PHOTO
+        data_type = model.Types.PHOTO
 
     elif message and message.audio:
         content = message.audio.file_id
         text = message.text
-        data_type = Types.AUDIO
+        data_type = model.Types.AUDIO
 
     elif message and message.voice:
         content = message.voice.file_id
         text = message.text
-        data_type = Types.VOICE
+        data_type = model.Types.VOICE
 
     elif message and message.video:
         content = message.video.file_id
         text = message.text
-        data_type = Types.VIDEO
+        data_type = model.Types.VIDEO
         
     return text, data_type, content, buttons
 
@@ -453,31 +447,25 @@ def get_settings_keyboard(chat_id, keyboard="main"):
     #3.JOIN SETTINGS
     elif keyboard == "join":
         join = get_join_settings(chat_id)
-        if join.validationrequired is ValidationRequiered.NO_VALIDATION.value:
+        if join.requirment is ValidationRequiered.NO_VALIDATION.value:
             validationrequired_text = "▪️ Grupo abierto"
 
-        elif join.validationrequired is ValidationRequiered.VALIDATION.value:
+        elif join.requirment is ValidationRequiered.VALIDATION.value:
             validationrequired_text = "✅ Validación obligatoria"
-        if join.joy is True:
-            joy_text = "✅ No registrados"
-        else:
-            joy_text = "▪️ No registrados"
-        if join.mute is True:
+
+        if join.val_alert is True:
             mute_text = "✅ Expulsiones silenciosas"
         else:
             mute_text = "▪️ Expulsiones notificadas"
-        if join.silence is True:
+
+        if join.delete_header is True:
             silence_text = "✅ Borrar -> entró al grupo"
         else:
             silence_text = "▪️ Borrar -> entró al grupo"
 
         settings_keyboard = [
-            [InlineKeyboardButton(joy_text, callback_data='settings_join_joy')],
-            [InlineKeyboardButton(pikachu_text, callback_data='settings_join_pika')],
             [InlineKeyboardButton(mute_text, callback_data='settings_join_mute')],
             [InlineKeyboardButton(silence_text, callback_data='settings_join_silence')],
-            [InlineKeyboardButton(valpikachu_text, callback_data='settings_join_valpika')],
-            [InlineKeyboardButton(level_text, callback_data='settings_join_level')],
             [InlineKeyboardButton(validationrequired_text, callback_data='settings_join_val')],
             [InlineKeyboardButton("« Menú principal", callback_data='settings_goto_main')]
         ]
@@ -630,7 +618,7 @@ def get_settings_keyboard(chat_id, keyboard="main"):
         else:
             ejections_text = "▪️ Expulsiones"
         
-        spy_mode = "🚸 Modo Incognito"
+        spy_mode = "🦅 Fawkes"
 
         settings_keyboard = [
             [InlineKeyboardButton(admin_text, callback_data='settings_admin_admin')],

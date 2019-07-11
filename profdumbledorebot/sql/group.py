@@ -70,7 +70,7 @@ def set_group(group_id, group_title):
         session.close()
 
 
-def commit_group(user_id, title=None, language=None, timezone=None):
+def commit_group(chat_id, title=None, language=None, timezone=None):
     with LOCK:
         session = get_session()
         group = get_unique_from_query(session.query(model.Group).filter(model.Group.id == chat_id))
