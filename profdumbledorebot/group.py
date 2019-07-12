@@ -110,10 +110,136 @@ def joined_chat(bot, update, job_queue):
                 good_luck(chat_id, message, "El usuario no está registrado")
                 return
 
-            if group.requirment is ValidationRequiered.VALIDATION.value and user.level is not None:
+            elif group.requirment is ValidationRequiered.VALIDATION.value and user.level is None:
                 bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
                 if group.val_alert is False:
-                    output = "👌 Mago sin validarse expulsado!"
+                    output = "👌 Mago infiltrado expulsado!"
+                    bot.sendMessage(
+                        chat_id=chat_id, 
+                        text=output, 
+                        parse_mode=telegram.ParseMode.MARKDOWN)           
+                good_luck(chat_id, message, "El usuario no está registrado")
+                try:
+                    bot.sendMessage(
+                        chat_id=user_id, 
+                        text="❌ Debes validarte para entrar en este grupo", 
+                        parse_mode=telegram.ParseMode.MARKDOWN)
+                except Exception:
+                    pass
+                return
+
+            elif group.requirment is ValidationRequiered.PROFESSOR.value and user.profession is not Professions.PROFESSOR.value:
+                bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
+                if group.val_alert is False:
+                    output = "👌 Mago infiltrado expulsado!"
+                    bot.sendMessage(
+                        chat_id=chat_id, 
+                        text=output, 
+                        parse_mode=telegram.ParseMode.MARKDOWN)           
+                good_luck(chat_id, message, "El usuario no está registrado")
+                try:
+                    bot.sendMessage(
+                        chat_id=user_id, 
+                        text="❌ Debes validarte para entrar en este grupo", 
+                        parse_mode=telegram.ParseMode.MARKDOWN)
+                except Exception:
+                    pass
+                return
+
+            elif group.requirment is ValidationRequiered.MAGIZOOLOGIST.value and user.profession is not Professions.MAGIZOOLOGIST.value:
+                bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
+                if group.val_alert is False:
+                    output = "👌 Mago infiltrado expulsado!"
+                    bot.sendMessage(
+                        chat_id=chat_id, 
+                        text=output, 
+                        parse_mode=telegram.ParseMode.MARKDOWN)           
+                good_luck(chat_id, message, "El usuario no está registrado")
+                try:
+                    bot.sendMessage(
+                        chat_id=user_id, 
+                        text="❌ Debes validarte para entrar en este grupo", 
+                        parse_mode=telegram.ParseMode.MARKDOWN)
+                except Exception:
+                    pass
+                return
+
+            elif group.requirment is ValidationRequiered.AUROR.value and user.profession is not Professions.AUROR.value:
+                bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
+                if group.val_alert is False:
+                    output = "👌 Mago infiltrado expulsado!"
+                    bot.sendMessage(
+                        chat_id=chat_id, 
+                        text=output, 
+                        parse_mode=telegram.ParseMode.MARKDOWN)           
+                good_luck(chat_id, message, "El usuario no está registrado")
+                try:
+                    bot.sendMessage(
+                        chat_id=user_id, 
+                        text="❌ Debes validarte para entrar en este grupo", 
+                        parse_mode=telegram.ParseMode.MARKDOWN)
+                except Exception:
+                    pass
+                return
+
+            elif group.requirment is ValidationRequiered.GRYFFINDOR.value and user.house is not Houses.GRYFFINDOR.value:
+                bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
+                if group.val_alert is False:
+                    output = "👌 Mago infiltrado expulsado!"
+                    bot.sendMessage(
+                        chat_id=chat_id, 
+                        text=output, 
+                        parse_mode=telegram.ParseMode.MARKDOWN)           
+                good_luck(chat_id, message, "El usuario no está registrado")
+                try:
+                    bot.sendMessage(
+                        chat_id=user_id, 
+                        text="❌ Debes validarte para entrar en este grupo", 
+                        parse_mode=telegram.ParseMode.MARKDOWN)
+                except Exception:
+                    pass
+                return
+
+            elif group.requirment is ValidationRequiered.HUFFLEPUFF.value and user.house is not Houses.HUFFLEPUFF.value:
+                bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
+                if group.val_alert is False:
+                    output = "👌 Mago infiltrado expulsado!"
+                    bot.sendMessage(
+                        chat_id=chat_id, 
+                        text=output, 
+                        parse_mode=telegram.ParseMode.MARKDOWN)           
+                good_luck(chat_id, message, "El usuario no está registrado")
+                try:
+                    bot.sendMessage(
+                        chat_id=user_id, 
+                        text="❌ Debes validarte para entrar en este grupo", 
+                        parse_mode=telegram.ParseMode.MARKDOWN)
+                except Exception:
+                    pass
+                return
+
+            elif group.requirment is ValidationRequiered.RAVENCLAW.value and user.house is not Houses.RAVENCLAW.value:
+                bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
+                if group.val_alert is False:
+                    output = "👌 Mago infiltrado expulsado!"
+                    bot.sendMessage(
+                        chat_id=chat_id, 
+                        text=output, 
+                        parse_mode=telegram.ParseMode.MARKDOWN)           
+                good_luck(chat_id, message, "El usuario no está registrado")
+                try:
+                    bot.sendMessage(
+                        chat_id=user_id, 
+                        text="❌ Debes validarte para entrar en este grupo", 
+                        parse_mode=telegram.ParseMode.MARKDOWN)
+                except Exception:
+                    pass
+                return
+
+            elif group.requirment is ValidationRequiered.SLYTHERIN.value and user.house is not Houses.SLYTHERIN.value:
+                bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
+                if group.val_alert is False:
+                    output = "👌 Mago infiltrado expulsado!"
                     bot.sendMessage(
                         chat_id=chat_id, 
                         text=output, 
