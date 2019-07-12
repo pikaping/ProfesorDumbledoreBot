@@ -151,7 +151,7 @@ def start_bot():
     dispatcher.add_handler(CommandHandler('listrefloat', lists.listrefloat_cmd, Filters.group)) 
 
     dispatcher.add_handler(CommandHandler('settings', settings.settings, Filters.group))
-    dispatcher.add_handler(CommandHandler('set_nanny', nanny.set_nanny, Filters.group)) 
+    dispatcher.add_handler(CommandHandler('set_pince', nanny.set_nanny, Filters.group)) 
     dispatcher.add_handler(CommandHandler('set_welcome', settings.set_welcome, Filters.group))
     dispatcher.add_handler(CommandHandler('set_zone', settings.set_zone, Filters.group, pass_args=True))
     dispatcher.add_handler(CommandHandler('set_cooldown', settings.set_cooldown, Filters.group, pass_args=True))
