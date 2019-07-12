@@ -449,9 +449,22 @@ def get_settings_keyboard(chat_id, keyboard="main"):
         join = get_join_settings(chat_id)
         if join.requirment is model.ValidationRequiered.NO_VALIDATION.value:
             validationrequired_text = "▪️ Grupo abierto"
-
         elif join.requirment is model.ValidationRequiered.VALIDATION.value:
             validationrequired_text = "✅ Validación obligatoria"
+        elif join.requirment is model.ValidationRequiered.PROFESSOR.value:
+            validationrequired_text = "📚 Profesor"
+        elif join.requirment is model.ValidationRequiered.MAGIZOOLOGIST.value:
+            validationrequired_text = "🐾 Magizoologo"
+        elif join.requirment is model.ValidationRequiered.AUROR.value:
+            validationrequired_text = "⚔ Auror"
+        elif join.requirment is model.ValidationRequiered.GRYFFINDOR.value:
+            validationrequired_text = "❤️🦁 Gryffindor"
+        elif join.requirment is model.ValidationRequiered.HUFFLEPUFF.value:
+            validationrequired_text = "💛🦡 Hufflepuff"
+        elif join.requirment is model.ValidationRequiered.RAVENCLAW.value:
+            validationrequired_text = "💙🦅 Ravenclaw"
+        elif join.requirment is model.ValidationRequiered.SLYTHERIN.value:
+            validationrequired_text = "💚🐍 Slytherin"
 
         if join.val_alert is True:
             mute_text = "✅ Expulsiones silenciosas"

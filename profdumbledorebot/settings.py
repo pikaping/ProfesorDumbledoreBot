@@ -39,7 +39,7 @@ from profdumbledorebot.sql.usergroup import remove_warn
 from profdumbledorebot.sql.admin import set_admin_settings, set_ladmin_settings
 from profdumbledorebot.sql.news import is_news_subscribed, rm_news_subscription, set_news_subscription
 from profdumbledorebot.sql.welcome import set_welc_preference, set_custom_welcome, set_welcome_settings
-from profdumbledorebot.sql.settings import set_max_members, set_general_settings, set_join_settings, set_nanny_settings
+from profdumbledorebot.sql.settings import set_max_members, set_general_settings, set_join_settings, set_nanny_settings, set_welcome_cooldown
 
 
 @run_async
@@ -257,7 +257,8 @@ def settingsbutton(bot, update):
         "settings_nanny_url": "url",
         "settings_nanny_video": "video",
         "settings_nanny_warn": "warn",
-        "settings_nanny_admin_too": "admin_too"
+        "settings_nanny_admin_too": "admin_too",
+        "settings_nanny_voice":"voice"
     }
     settings_ladmin = {
         "settings_ladmin_welcome": "welcome",

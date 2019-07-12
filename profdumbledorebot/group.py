@@ -101,7 +101,7 @@ def joined_chat(bot, update, job_queue):
             user = get_user(user_id)       
             if user is None and group.requirment is not ValidationRequiered.NO_VALIDATION.value:
                 bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
-                if group.mute is False:
+                if group.val_alert is False:
                     output = "👌 Mago sin registrarse expulsado!"
                     bot.sendMessage(
                         chat_id=chat_id, 
@@ -112,7 +112,7 @@ def joined_chat(bot, update, job_queue):
 
             if group.requirment is ValidationRequiered.VALIDATION.value and user.level is not None:
                 bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
-                if group.mute is False:
+                if group.val_alert is False:
                     output = "👌 Mago sin validarse expulsado!"
                     bot.sendMessage(
                         chat_id=chat_id, 
@@ -129,7 +129,7 @@ def joined_chat(bot, update, job_queue):
                 return
         
             if group.max_members is not None and group.max_members > 0 and bot.get_chat_members_count(chat_id) >= group.max_members:
-                if group.mute is False:
+                if group.val_alert is False:
                     output = "❌ El número máximo de integrantes en el grupo ha sido alcanzado"
                     sent = bot.sendMessage(
                         chat_id=chat_id, 
