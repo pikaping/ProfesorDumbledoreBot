@@ -323,9 +323,9 @@ def set_nanny(bot, update, args=None):
         offset = len(args[1]) - len(msg.text)
         text, buttons = support.button_markdown_parser(args[1], entities=msg.parse_entities(), offset=offset)
         set_nanny_reply(chat_id, text)
-        msg.reply_text("Mensaje del modo niñera guardado correctamente")
+        msg.reply_text("Mensaje del modo biblioteca guardado correctamente")
 
     else:
         set_nanny_reply(chat_id, None)
-        msg.reply_text("Mensaje del modo niñera por defecto activado")
+        msg.reply_text("Mensaje del modo biblioteca por defecto activado")
 

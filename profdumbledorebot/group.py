@@ -275,7 +275,7 @@ def process_group_message(bot, update):
         )
         for admin in bot.get_chat_administrators(chat_id):
             user = get_user(admin.user.id)
-            if user is not None and user.adm_alerts:
+            if user is not None and user.alerts:
                 bot.sendMessage(
                     chat_id=admin.user.id,
                     text=message_text,
