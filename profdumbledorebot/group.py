@@ -41,9 +41,9 @@ from profdumbledorebot.welcome import send_welcome
 from telegram.utils.helpers import escape_markdown
 from profdumbledorebot.sql.support import are_banned
 from profdumbledorebot.sql.welcome import get_welc_pref
-from profdumbledorebot.model import ValidationRequiered
 from profdumbledorebot.sql.settings import get_join_settings
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Bot
+from profdumbledorebot.model import ValidationRequiered, Houses, Professions
 from profdumbledorebot.sql.usergroup import exists_user_group, set_user_group, join_group, message_counter
 from profdumbledorebot.sql.admin import get_particular_admin, get_admin_from_linked, get_admin, set_admin_settings
 
