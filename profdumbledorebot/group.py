@@ -220,7 +220,7 @@ def good_luck(chat_id, message, text):
 
 
 @run_async
-def process_group_message(bot, update):
+def process_group_message(bot, update, job_queue):
     chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
     msg = update.effective_message
     
@@ -236,34 +236,34 @@ def process_group_message(bot, update):
     message_counter(user_id, chat_id)
     if text is None or msg.photo is None:
         if msg and msg.document:
-            nanny.process_gif(bot, update)
+            nanny.process_gif(bot, update, job_queue)
             return
         elif msg and msg.contact:
-            nanny.process_contact(bot, update)
+            nanny.process_contact(bot, update, job_queue)
             return
         elif msg and msg.game:
-            nanny.process_game(bot, update)
+            nanny.process_game(bot, update, job_queue)
             return
         elif msg and msg.location or msg.venue:
-            nanny.process_ubi(bot, update)
+            nanny.process_ubi(bot, update, job_queue)
             return
         elif msg and msg.photo:
-            nanny.process_pic(bot, update)
+            nanny.process_pic(bot, update, job_queue)
             return
         elif msg and msg.sticker:
-            nanny.process_sticker(bot, update)
+            nanny.process_sticker(bot, update, job_queue)
             return
         elif msg and msg.voice or msg.audio:
-            nanny.process_voice(bot, update)
+            nanny.process_voice(bot, update, job_queue)
             return
         elif msg and msg.video or msg.video_note:
-            nanny.process_video(bot, update)
+            nanny.process_video(bot, update, job_queue)
             return
 
-    if msg and msg.entities and nanny.process_url(bot, update):
+    if msg and msg.entities and nanny.process_url(bot, update, job_queue):
         return
 
-    if nanny.nanny_text(bot, user_id, chat_id, message):
+    if nanny.nanny_text(bot, user_id, chat_id, message, job_queue):
         return
 
     if text is not None and re.search("@admin(?!\w)", text) is not None:

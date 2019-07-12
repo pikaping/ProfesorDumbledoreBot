@@ -170,8 +170,8 @@ def start_bot():
 
     dispatcher.add_handler(MessageHandler(Filters.group & Filters.status_update.new_chat_members, group.joined_chat, pass_job_queue=True)) 
  
-    dispatcher.add_handler(MessageHandler(Filters.command, nanny.process_cmd))
-    dispatcher.add_handler(MessageHandler(Filters.group & Filters.all, group.process_group_message))
+    dispatcher.add_handler(MessageHandler(Filters.command, nanny.process_cmd, pass_job_queue=True))
+    dispatcher.add_handler(MessageHandler(Filters.group & Filters.all, group.process_group_message, pass_job_queue=True))
 
     dispatcher.add_handler(MessageHandler(Filters.all, news.send_news))
     dispatcher.add_handler(CallbackQueryHandler(settings.settingsbutton))
