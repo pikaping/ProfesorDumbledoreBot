@@ -239,7 +239,7 @@ def settingsbutton(bot, update):
     }
     settings_join = {
         "settings_join_mute": "silence",
-        "settings_join_silence": "mutes",
+        "settings_join_silence": "mute",
         "settings_join_val": "val"
     }
     settings_welcome = {
