@@ -227,24 +227,6 @@ ID -123456.
 /create_link -123456
 ```
 
-3. Una vez puesto el comando en el primer grupo, hay que volver al grupo de administradores e indicar, en la botonera, de qué trata el grupo que se acaba de vincular. Las opciones de las que dispones son las siguientes:  
-
-| Icono | Nombre | Descripción |
-|-------|--------|-------------|
-| 🗣 | Charla | Grupo general para charlar |
-| 🌿 | Invernaderos | Grupo para avisos de cultivos |
-| 👊🏼💢 | Fortalezas | Grupo de quedadas para fortalezas |
-| 👥 | Amigos | Grupo de código de amistad |
-| 🎲 | Juegos | Grupo para los juegos del bot (en construcción) |
-| ❤️🦁 | Gryffindor | Grupo para miembros de esta casa |
-| 💚🐍 | Slytherin | Grupo para miembros de esta casa |
-| 💙🦅 | Ravenclaw | Grupo para miembros de esta casa |
-| 💛🦡 | Hufflepuff | Grupo para miembros de esta casa |
-| ⚔️🔰 | Aurores | Grupo para este tipo de profesión |
-| 📚 | Profesores | Grupo para este tipo de profesión |
-| 🐾 |Magizoologos | Grupo para este tipo de profesión |
-| 🎪 |Offtopic | Grupo que suele ser un desvarío pero muy común |
-
 Si se necesita que el bot deje de considerar un grupo como el de administración se puede ejecutar el comando `/rm_admin` en el mismo. Ese comando desvinculará todos los grupos unidos. Si sólo se quiere desvincular un grupo hay que dirigirse al grupo concreto y ejecutar el comando `/rm_link`.  
 
 Para saber cuáles son los grupos que están vinculados a uno de administración se puede solicitar con el comando `/groups` en cualquiera de ellos y el bot enviará una lista de los grupos vinculados, excepto el de administración por razones obvias.
