@@ -8,9 +8,10 @@ Puedes pedir ayuda en el grupo @ProfesorDumbledoreAyuda y estar informado de las
     4. [Informe / ¿Quién es?](#informe--quién-es)  
     5. [Infografías](#infografías)  
     6. [Registrar cultivos en invernaderos](#registrar-cultivos-en-invernaderos)  
-    7. [Listas](#listas)  
-    8. [Glosario de comandos para entrenadores](#glosario-de-comandos-para-entrenadores)  
-    9. [Más ayuda](#más-ayuda)  
+    7. [Fortalezas](#fortalezas) 
+    8. [Listas](#listas)  
+    9. [Glosario de comandos para entrenadores](#glosario-de-comandos-para-entrenadores)  
+    10. [Más ayuda](#más-ayuda)  
 2. [Ayuda para administradores](#ayuda-para-administradores)  
     1. [Añadir el bot a un grupo o canal](#añadir-el-bot-a-un-grupo-o-canal)  
     2. [Configuración admins](#configuración-admins)  
@@ -67,7 +68,7 @@ Para poder utilizar todas las funciones del Profesor Dumbledore es necesario ten
 
 ### Ficha del Mago⠀[⤴](#content) ###
 
-Enviando el comando `/perfil` o `/profile` podrás acceder y editar toda la información sobre tu perfil en HPWU que has compartido con el Profesor.  
+Enviando el comando `/pasaporte` podrás acceder y editar toda la información sobre tu perfil en HPWU que has compartido con el Profesor.  
 Los dos emoticonos que siguen al nivel, representan la casa a la que pertenece el mago. Estos son los emoticonos seleccionados por nosotros.
 
 | Iconos | Definición |
@@ -96,14 +97,14 @@ Además, también contamos con otros emojis que nos servirán de flags.
 
 ### Código de Amigo⠀[⤴](#content) ###
 
-Para añadir tu clave de amigo de HPWU en este bot, es tan sencillo como enviar /set_friendid seguido de tu clave de amigo.  
+Para añadir tu clave de amigo de HPWU en este bot, es tan sencillo como enviar `/set_friendid` seguido de tu clave de amigo.  
 Aquí tienes un ejemplo:
 ```
 /set_friendid 123412341234
 ```
 
 Una vez hecho esto, tu clave de amigo se mostrará siempre que pregunten por tu ficha de mago.  
-Si deseas eliminar tu clave de amigo de tu perfil, simplemente envía /set_friendid.  
+Si deseas eliminar tu clave de amigo de tu perfil, simplemente envía `/set_friendid`.  
 
 Además, si quieres aparecer en todas las listas de códigos de los grupos en los que formes parte, tan solo deberás activarlo desde tu perfil, pulsando sobre el botón `🔒 Clave de amigo`. Cuando hayas pulsado el botón, el candado se abrirá y tu clave de amigo pasará a ser pública.  
 
@@ -117,9 +118,12 @@ Si quieres ver la ficha de otro mago, podrás usar el comando `/informe` o `/who
 
 El Profesor dispone de una amplia biblioteca de infografías que se van ampliando a medida que conocemos más datos del juego. Las infografías están creadas por el equipo creativo del diario el profeta (@diarioelprofeta).  
 
-Para solicitarlas se debe emplear el comando `/tabla` seguido de un espacio y el nombre de la tabla que se desea. El mensaje solicitando la tabla será eliminado por el Profesor de forma automática.  
+Para solicitarlas escribe el alias del bot seguido del nombre de la tabla, por ejemplo:
+```
+@ProfesorDumbledoreBot hechizos
+```
 
-Dependiendo de la configuración del grupo, las tablas se enviarán al chat privado del bot o al grupo, para eso es necesario tener abierta una conversación privada con el Profesor Dumbledore  
+Las tablas se enviarán **siempre** al chat en el que estés escribiendo el mensaje anterior  
 
 Estos son las infografías de las que se dispone en la actualidad:  
 * Hechizos 
@@ -130,14 +134,19 @@ Estos son las infografías de las que se dispone en la actualidad:
 * Rarezas
 * Ingredientes
 * RecompensaRegistros
-* xpNiveles
-* incontratus
+* XpNiveles
+* Incontratus
+* Incontratus exclusivo
+* Profesiones
 
 
 ### Registrar cultivos en invernaderos⠀[⤴](#content) ###
 
-El bot dispone de registro de cultivos en invernadero, para ello debe tener el grupo en el que se utilice la opción habilitada. Esta configuración únicamente la puede realizar un administrador de dicho grupo.  
-Para registrar un cultivo se debe enviar la ubicación del invernadero y el bot comenzará el registro.  
+En construcción.
+
+### Fortalezas⠀[⤴](#content) ###
+
+En construcción, en un futuro el bot contará con una herramienta específica, pero de momento se pueden utilizar las [Listas](#listas) para ello.
 
 ### Listas⠀[⤴](#content) ###
 
@@ -161,10 +170,9 @@ Si se quiere borrar una lista bastará con eliminar el mensaje que sea la lista.
 | Comando | Descripción |
 |---------|-------------|
 | /cucuruchodecucarachas | Registrarse en el bot |
-| /profile | Perfil, datos de tu pasaporte |
 | /ping | Comprueba el “ping” del bot, si tarda en contestar o está “caído” |
 | /pasaporte | Edición del nivel o de los datos de tu perfil |
-|/help | Ayuda del bot |
+| /help | Ayuda del bot |
 | /set_friendid | Para añadir tu código de amigo |
 | /fc | Ver códigos de amigo en el grupo |
 | /privacity | Código de Entrenador |
@@ -225,24 +233,6 @@ ID -123456.
 /create_link -123456
 ```
 
-3. Una vez puesto el comando en el primer grupo, hay que volver al grupo de administradores e indicar, en la botonera, de qué trata el grupo que se acaba de vincular. Las opciones de las que dispones son las siguientes:  
-
-| Icono | Nombre | Descripción |
-|-------|--------|-------------|
-| 🗣 | Charla | Grupo general para charlar |
-| 🌿 | Invernaderos | Grupo para avisos de cultivos |
-| 👊🏼💢 | Fortalezas | Grupo de quedadas para fortalezas |
-| 👥 | Amigos | Grupo de código de amistad |
-| 🎲 | Juegos | Grupo para los juegos del bot (en construcción) |
-| ❤️🦁 | Gryffindor | Grupo para miembros de esta casa |
-| 💚🐍 | Slytherin | Grupo para miembros de esta casa |
-| 💙🦅 | Ravenclaw | Grupo para miembros de esta casa |
-| 💛🦡 | Hufflepuff | Grupo para miembros de esta casa |
-| ⚔️🔰 | Aurores | Grupo para este tipo de profesión |
-| 📚 | Profesores | Grupo para este tipo de profesión |
-| 🐾 |Magizoologos | Grupo para este tipo de profesión |
-| 🎪 |Offtopic | Grupo que suele ser un desvarío pero muy común |
-
 Si se necesita que el bot deje de considerar un grupo como el de administración se puede ejecutar el comando `/rm_admin` en el mismo. Ese comando desvinculará todos los grupos unidos. Si sólo se quiere desvincular un grupo hay que dirigirse al grupo concreto y ejecutar el comando `/rm_link`.  
 
 Para saber cuáles son los grupos que están vinculados a uno de administración se puede solicitar con el comando `/groups` en cualquiera de ellos y el bot enviará una lista de los grupos vinculados, excepto el de administración por razones obvias.
@@ -271,9 +261,9 @@ Este botón determinará la cantidad máxima de warn que recibirá un usuario an
 
 Este botón determina si un grupo quiere recibir las respuestas a comandos por el mismo o que se envíe por privado a los magos.  
 
-Por ejemplo, si un mago pide una tabla de “masternotes” y el botón marca “respuestas al grupo” se enviará de manera pública. Por el contrario si se ponen en privado pero esa persona no ha iniciado una conversación previa con el bot, no recibirá nada. Si la tiene iniciada la recibirá de manera normal.  
+Por ejemplo, si un mago pide un `/informe` de un usuario y el botón marca “respuestas al grupo” se enviará de manera pública. Por el contrario si se ponen en privado pero esa persona no ha iniciado una conversación previa con el bot, no recibirá nada. Si la tiene iniciada la recibirá de manera normal.  
 
-Esto sucederá tanto con las tablas como con otros comandos comunes: informe, ping, groups…
+Esto sucederá tanto con los informes como con otros comandos comunes: ping, groups…
 
 
 #### Ajustes de entrada⠀[⤴](#content) ####
@@ -486,7 +476,7 @@ El comando `/dumblekickuv` y `/dumbleuv`, ambos con sus variantes, está restrin
 ### Id⠀[⤴](#content) ###
 
 Saber el Id de un entrenador es posible gracias al comando `/id`. Este comando no és exclusivo para administradores, pero está orientado y pensado principalmente para a estos.  
-El comando, al igual que el /informe, se puede emplear:  
+El comando, al igual que el `/informe`, se puede emplear:  
 * Citando un mensaje del mago.  
 * Citando un reenviado de un mensaje del mago.  
 * Con el @ (alias de telegram) del mago pero sin poner el @ solo el texto.  
@@ -609,7 +599,7 @@ La información se almacena durante el tiempo necesario para cumplir con los fin
 
 ### Derechos contemplados en el RGPD⠀[⤴](#content) ###
 
-Los derechos al olvido contemplados por la RGPD se ejercen mediante el comando /profile. Desde ahí, se podrán editar y eliminar todos los datos de tu perfil.
+Los derechos al olvido contemplados por la RGPD se ejercen mediante el comando `/profile`. Desde ahí, se podrán editar y eliminar todos los datos de tu perfil.
 
 ### Agradecimientos y colaboraciones⠀[⤴](#content) ###
 
@@ -617,6 +607,5 @@ Por último y no por ello menos importante, de manera personal y pública despu�
 
 Pikaping por ser el creador del alma del bot, a Gentakojima porque sin él, no estaríamos aquí. Ansett por ser la cabeza y mano derecha en los momentos clave. McFigue y Pilfer por mantener el merodeador en constante actualización mientras llegaba el Profesor.  
 
-Al equipo de las tablas, Saray, Zetateck, Nicky y Ferran. A los youtuber que quieren colaborar con sus videos y que pronto se verán reflejados en la web y a todos los usuarios que habéis esperado estos meses con expectación.  
+Al equipo de las tablas, Saray, Zetateck, Nicky, Ferran y Linkcelot. A los youtuber que quieren colaborar con sus videos y que pronto se verán reflejados en la web y a todos los usuarios que habéis esperado estos meses con expectación.  
 Salid a la calle, ¡el Ministerio de Magia os necesita!
-
