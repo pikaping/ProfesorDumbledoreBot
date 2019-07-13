@@ -39,7 +39,7 @@ from profdumbledorebot.sql.usergroup import remove_warn
 from profdumbledorebot.sql.admin import set_admin_settings, set_ladmin_settings
 from profdumbledorebot.sql.news import is_news_subscribed, rm_news_subscription, set_news_subscription
 from profdumbledorebot.sql.welcome import set_welc_preference, set_custom_welcome, set_welcome_settings
-from profdumbledorebot.sql.settings import set_max_members, set_general_settings, set_join_settings, set_nanny_settings
+from profdumbledorebot.sql.settings import set_max_members, set_general_settings, set_join_settings, set_nanny_settings, set_welcome_cooldown
 
 
 @run_async
@@ -116,10 +116,7 @@ def set_zone(bot, update, args=None):
     tz = support.get_unified_timezone(args[0])
 
     if len(tz) == 1:
-        group.timezone = tz[0]
-        group.title = chat_title
-
-
+        commit_group(chat_id, timezone=tz[0])
         bot.sendMessage(
             chat_id=chat_id,
             text="👌 Perfecto! Ya se que hora es. *{}*.".format(group.timezone))
@@ -234,24 +231,16 @@ def settingsbutton(bot, update):
         "settings_goto_main": "main"
     }
     settings_general = {
-        "settings_general_pvp": "pvp",
         "settings_general_jokes": "jokes",
         "settings_general_games": "games",
         "settings_general_hard": "hard",
-        "settings_general_trades": "trades",
-        "settings_general_notes": "notes",
         "settings_general_reply": "reply",
-        "settings_general_cmd": "command",
         "settings_general_warn": "warn"
     }
     settings_join = {
-        "settings_join_joy": "joy",
-        "settings_join_pika": "pika",
-        "settings_join_mute": "mute",
-        "settings_join_silence": "silence",
-        "settings_join_level": "level",
-        "settings_join_val": "val",
-        "settings_join_valpika": "valpika"
+        "settings_join_mute": "silence",
+        "settings_join_silence": "mute",
+        "settings_join_val": "val"
     }
     settings_welcome = {
         "settings_welcome_welcome": "should_welcome"
@@ -268,21 +257,17 @@ def settingsbutton(bot, update):
         "settings_nanny_url": "url",
         "settings_nanny_video": "video",
         "settings_nanny_warn": "warn",
-        "settings_nanny_admin_too": "admin_too"
+        "settings_nanny_admin_too": "admin_too",
+        "settings_nanny_voice":"voice"
     }
     settings_ladmin = {
         "settings_ladmin_welcome": "welcome",
-        "settings_ladmin_goodbye": "goodbye",
-        "settings_ladmin_nests": "nests",
-        "settings_ladmin_gejections": "globalEjections",
         "settings_ladmin_admin": "admin",
         "settings_ladmin_ejections": "ejections"
     }
     settings_admin = {
         "settings_admin_welcome": "welcome",
         "settings_admin_goodbye": "goodbye",
-        "settings_admin_nests": "nests",
-        "settings_admin_gejections": "globalEjections",
         "settings_admin_admin": "admin",
         "settings_admin_ejections": "ejections"
     }
@@ -319,6 +304,13 @@ def settingsbutton(bot, update):
         elif data in settings_ladmin:
             set_ladmin_settings(chat_id, settings_ladmin[data])
             support.update_settings_message(chat_id, bot, message_id, keyboard="ladmin")
+        elif data == "settings_admin_spy":
+            set_ladmin_settings(chat_id, "admin_bot")
+            support.delete_message(chat_id, message_id, bot)
+            output = "Antes de nada administradores quiero daros las gracias. Debeis haber demostrado verdadera lealtad hacia mi en el grupo, y solo eso ha podido lograr que acuda Fawkes a vuestro grupo.\nÉl no puede leer nada de lo que suceda en el grupo, simplemente enviará las alertas que hayais configurado. Si necesitais configurar de nuevo las alertas o quereis usar los comandos, invitadme de nuevo al grupo y cuando acabeis volved a activar a Fawkes."
+            bot.sendMessage(chat_id=chat_id, text=output, parse_mode=telegram.ParseMode.MARKDOWN)
+            bot.leaveChat(chat_id=chat_id)
+
         elif match:
             news_id = match.group(1)
             if is_news_subscribed(chat_id, news_id):
@@ -327,8 +319,6 @@ def settingsbutton(bot, update):
                 set_news_subscription(chat_id, news_id)
             support.update_settings_message(chat_id, bot, message_id, keyboard="news")
 
-        bot.answerCallbackQuery(
-            text="Estás editando los ajustes del grupo.", callback_query_id=update.callback_query.id, show_alert="true")
         return
 
     match = re.match(r"rm_warn\((.+?)\)", query.data)

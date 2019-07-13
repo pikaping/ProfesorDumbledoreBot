@@ -34,11 +34,15 @@ from threading import Thread
 from pytz import all_timezones
 from profdumbledorebot.mwt import MWT
 from datetime import datetime, timedelta
+from profdumbledorebot.sql.welcome import get_welcome_settings
 from profdumbledorebot.sql.user import get_user, get_real_user
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from profdumbledorebot.config import ConfigurationNotLoaded, get_config
+from profdumbledorebot.sql.admin import get_particular_admin, get_admin
+from profdumbledorebot.sql.news import get_verified_providers, is_news_subscribed
 from telegram.utils.helpers import mention_markdown, mention_html, escape_markdown
 from telegram.error import TelegramError, Unauthorized, BadRequest, TimedOut, ChatMigrated, NetworkError
+from profdumbledorebot.sql.settings import get_join_settings, get_nanny_settings, get_group_settings, set_nanny
 
 
 MATCH_MD = re.compile(r'\*(.*?)\*|'
@@ -173,39 +177,39 @@ def get_welcome_type(msg, cmd=False):
         offset = len(args[1]) - len(msg.text) - offset
         text, buttons = button_markdown_parser(args[1], entities=msg.parse_entities(), offset=offset)
         if buttons:
-            data_type = Types.BUTTON_TEXT
+            data_type = model.Types.BUTTON_TEXT
         else:
-            data_type = Types.TEXT
+            data_type = model.Types.TEXT
 
     elif message and message.sticker:
         content = message.sticker.file_id
         text = message.text
-        data_type = Types.STICKER
+        data_type = model.Types.STICKER
 
     elif message and message.document:
         content = message.document.file_id
         text = message.text
-        data_type = Types.DOCUMENT
+        data_type = model.Types.DOCUMENT
 
     elif message and message.photo:
         content = message.photo[-1].file_id
         text = message.text
-        data_type = Types.PHOTO
+        data_type = model.Types.PHOTO
 
     elif message and message.audio:
         content = message.audio.file_id
         text = message.text
-        data_type = Types.AUDIO
+        data_type = model.Types.AUDIO
 
     elif message and message.voice:
         content = message.voice.file_id
         text = message.text
-        data_type = Types.VOICE
+        data_type = model.Types.VOICE
 
     elif message and message.video:
         content = message.video.file_id
         text = message.text
-        data_type = Types.VIDEO
+        data_type = model.Types.VIDEO
         
     return text, data_type, content, buttons
 
@@ -390,12 +394,12 @@ def error_callback(bot, update, error):
 def get_settings_keyboard(chat_id, keyboard="main"):
     if keyboard == "main":
         settings_keyboard = [
-            [InlineKeyboardButton("Ajustes generales »", callback_data='settings_goto_general')],
-            [InlineKeyboardButton("Ajustes de entrada »", callback_data='settings_goto_join')],
-            [InlineKeyboardButton("Ajustes de administración »", callback_data='settings_goto_ladmin')],
-            [InlineKeyboardButton("Noticias »", callback_data='settings_goto_news')],
-            [InlineKeyboardButton("Bienvenida »", callback_data='settings_goto_welcome')],
-            [InlineKeyboardButton("Modo enfermera »", callback_data='settings_goto_nanny')],
+            [InlineKeyboardButton("👷‍♂️ Administración »", callback_data='settings_goto_ladmin')],
+            [InlineKeyboardButton("🛠 Ajustes »", callback_data='settings_goto_general')],
+            [InlineKeyboardButton("👋 Bienvenida »", callback_data='settings_goto_welcome')],
+            [InlineKeyboardButton("🚪 Entrada »", callback_data='settings_goto_join')],
+            [InlineKeyboardButton("📯 Noticias »", callback_data='settings_goto_news')],
+            [InlineKeyboardButton("🏫 Modo biblioteca »", callback_data='settings_goto_nanny')],
             [InlineKeyboardButton("Terminado", callback_data='settings_done')]
         ]
     
@@ -414,38 +418,28 @@ def get_settings_keyboard(chat_id, keyboard="main"):
             hard_text = "✅ Ban (Warns)"
         else:
             hard_text = "▪️ Kick (Warns)"
-        if group.notes == 1:
-            notes_text = "✅ Recordatorios"
-        else:
-            notes_text = "▪️ Recordatorios"
         if group.reply_on_group == 1:
             reply_on_group_text = "✅ Respuestas en el grupo"
         else:
             reply_on_group_text = "▪️ Respuestas al privado"
-        if group.command == 1:
-            command_text = "✅ Comandos personalizados"
-        else:
-            command_text = "▪️ Comandos personalizados"
-        if group.warn is WarnLimit.SO_EXTRICT:
+        if group.warn is model.WarnLimit.SO_EXTRICT.value:
             warn_text = "Limite de warns: 3"
-        elif group.warn is WarnLimit.EXTRICT:
+        elif group.warn is model.WarnLimit.EXTRICT.value:
             warn_text = "Limite de warns: 5"
-        elif group.warn is WarnLimit.LOW_PERMISIVE:
+        elif group.warn is model.WarnLimit.LOW_PERMISIVE.value:
             warn_text = "Limite de warns: 10"
-        elif group.warn is WarnLimit.MED_PERMISIVE:
+        elif group.warn is model.WarnLimit.MED_PERMISIVE.value:
             warn_text = "Limite de warns: 25"
-        elif group.warn is WarnLimit.HIGH_PERMISIVE:
+        elif group.warn is model.WarnLimit.HIGH_PERMISIVE.value:
             warn_text = "Limite de warns: 50"
-        elif group.warn is WarnLimit.SO_TOLERANT:
+        elif group.warn is model.WarnLimit.SO_TOLERANT.value:
             warn_text = "Limite de warns: 100"
 
         settings_keyboard = [
             [InlineKeyboardButton(jokes_text, callback_data='settings_general_jokes')],
             [InlineKeyboardButton(games_text, callback_data='settings_general_games')],
             [InlineKeyboardButton(hard_text, callback_data='settings_general_hard')],
-            #[InlineKeyboardButton(notes_text, callback_data='settings_general_notes')],
             [InlineKeyboardButton(reply_on_group_text, callback_data='settings_general_reply')],
-            #[InlineKeyboardButton(command_text, callback_data='settings_general_cmd')],
             [InlineKeyboardButton(warn_text, callback_data='settings_general_warn')],
             [InlineKeyboardButton("« Menú principal", callback_data='settings_goto_main')]
         ]   
@@ -453,31 +447,38 @@ def get_settings_keyboard(chat_id, keyboard="main"):
     #3.JOIN SETTINGS
     elif keyboard == "join":
         join = get_join_settings(chat_id)
-        if join.validationrequired is ValidationRequiered.NO_VALIDATION:
+        if join.requirment is model.ValidationRequiered.NO_VALIDATION.value:
             validationrequired_text = "▪️ Grupo abierto"
-
-        elif join.validationrequired is ValidationRequiered.VALIDATION:
+        elif join.requirment is model.ValidationRequiered.VALIDATION.value:
             validationrequired_text = "✅ Validación obligatoria"
-        if join.joy is True:
-            joy_text = "✅ No registrados"
-        else:
-            joy_text = "▪️ No registrados"
-        if join.mute is True:
+        elif join.requirment is model.ValidationRequiered.PROFESSOR.value:
+            validationrequired_text = "📚 Profesor"
+        elif join.requirment is model.ValidationRequiered.MAGIZOOLOGIST.value:
+            validationrequired_text = "🐾 Magizoologo"
+        elif join.requirment is model.ValidationRequiered.AUROR.value:
+            validationrequired_text = "⚔ Auror"
+        elif join.requirment is model.ValidationRequiered.GRYFFINDOR.value:
+            validationrequired_text = "❤️🦁 Gryffindor"
+        elif join.requirment is model.ValidationRequiered.HUFFLEPUFF.value:
+            validationrequired_text = "💛🦡 Hufflepuff"
+        elif join.requirment is model.ValidationRequiered.RAVENCLAW.value:
+            validationrequired_text = "💙🦅 Ravenclaw"
+        elif join.requirment is model.ValidationRequiered.SLYTHERIN.value:
+            validationrequired_text = "💚🐍 Slytherin"
+
+        if join.val_alert is True:
             mute_text = "✅ Expulsiones silenciosas"
         else:
             mute_text = "▪️ Expulsiones notificadas"
-        if join.silence is True:
+
+        if join.delete_header is True:
             silence_text = "✅ Borrar -> entró al grupo"
         else:
             silence_text = "▪️ Borrar -> entró al grupo"
 
         settings_keyboard = [
-            [InlineKeyboardButton(joy_text, callback_data='settings_join_joy')],
-            [InlineKeyboardButton(pikachu_text, callback_data='settings_join_pika')],
             [InlineKeyboardButton(mute_text, callback_data='settings_join_mute')],
             [InlineKeyboardButton(silence_text, callback_data='settings_join_silence')],
-            [InlineKeyboardButton(valpikachu_text, callback_data='settings_join_valpika')],
-            [InlineKeyboardButton(level_text, callback_data='settings_join_level')],
             [InlineKeyboardButton(validationrequired_text, callback_data='settings_join_val')],
             [InlineKeyboardButton("« Menú principal", callback_data='settings_goto_main')]
         ]
@@ -521,6 +522,10 @@ def get_settings_keyboard(chat_id, keyboard="main"):
     #7.NANNY SETTINGS
     elif keyboard == "nanny":
         nanny = get_nanny_settings(chat_id)
+        if nanny is None:
+            set_nanny(chat_id)
+            nanny = get_nanny_settings(chat_id)
+            
         if nanny.voice == 1:
             voice_text = "✅ Audio y Voz"
         else:
@@ -630,13 +635,13 @@ def get_settings_keyboard(chat_id, keyboard="main"):
         else:
             ejections_text = "▪️ Expulsiones"
         
-        spy_mode = "🚸 Modo Incognito"
+        spy_mode = "🦅 Fawkes"
 
         settings_keyboard = [
             [InlineKeyboardButton(admin_text, callback_data='settings_admin_admin')],
             [InlineKeyboardButton(welcome_text, callback_data='settings_admin_welcome')],
             [InlineKeyboardButton(ejections_text, callback_data='settings_admin_ejections')],
-            #[InlineKeyboardButton(spy_mode, callback_data='settings_admin_spy')],
+            [InlineKeyboardButton(spy_mode, callback_data='settings_admin_spy')],
             [InlineKeyboardButton("Terminado", callback_data='settings_done')]
         ] 
 
@@ -652,6 +657,7 @@ def update_settings_message(chat_id, bot, message_id, keyboard = "main"):
         " termines, pulsa el botón <b>Terminado</b> para borrar el "
         "mensaje."
     )
+    time.sleep(0.5)
 
     return bot.edit_message_text(
         text=text,

@@ -24,7 +24,7 @@
 from setuptools import setup, find_packages
 
 DIST_NAME = 'profdumbledorebot'
-VERSION = '0.1.0'
+VERSION = '1.0'
 
 
 setup(

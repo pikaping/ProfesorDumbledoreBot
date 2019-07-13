@@ -29,6 +29,7 @@ import telegram
 
 from uuid import uuid4
 from telegram.ext.dispatcher import run_async
+from profdumbledorebot.config import get_config
 from profdumbledorebot.supportmethods import extract_update_info
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, InlineQueryResultCachedPhoto
 
@@ -40,26 +41,44 @@ except:
 
 
 @run_async
-def list_pics(bot, update):
+def list_pics(bot, update, args):
     logging.debug("%s %s" % (bot, update))
     chat_id, chat_type, user_id, text, message = extract_update_info(update)
     output = "Listado de tablas:"
     count = 0
 
-    for k in __TABLAS_JSON["tablas"]:
-        count = count + 1
-        output = output + "\n\nTitle: {1}\nKeywords: {2}\nID: `{0}`".format(
-            k["id"],
-            k["name"],
-            k["keywords"]
-        )
-        if count == 5:  
-            bot.sendMessage(
-                chat_id=chat_id,
-                text=output,
-                parse_mode=telegram.ParseMode.MARKDOWN)
-            count = 0
-            output = ""
+    if args is None or len(args)!=1:
+        for k in __TABLAS_JSON["tablas"]:
+            count = count + 1
+            output = output + "\n\nTitle: {1}\nKeywords: {2}\nID: `{0}`".format(
+                k["id"],
+                k["name"],
+                k["keywords"]
+            )
+            if count == 5:  
+                bot.sendMessage(
+                    chat_id=chat_id,
+                    text=output,
+                    parse_mode=telegram.ParseMode.MARKDOWN)
+                count = 0
+                output = ""
+    else:
+        for k in __TABLAS_JSON["tablas"]:
+            if args[0] in k["keywords"]:
+                count = count + 1
+                output = output + "\n\nTitle: {1}\nKeywords: {2}\nID: `{0}`".format(
+                    k["id"],
+                    k["name"],
+                    k["keywords"]
+                )
+                if count == 5:  
+                    bot.sendMessage(
+                        chat_id=chat_id,
+                        text=output,
+                        parse_mode=telegram.ParseMode.MARKDOWN)
+                    count = 0
+                    output = ""
+
 
     if count != 0:
         bot.sendMessage(
@@ -211,7 +230,7 @@ def inline_tablas(bot, update):
                     id=uuid4(),
                     photo_file_id=i["file_id"],
                     title=i["name"],
-                    caption="@ProfDumbledoreBot {}".format(i["name"]))
+                    caption="@ProfesorDumbledoreBot {}".format(i["name"]))
                 )
 
             if count == max_range:
@@ -228,7 +247,7 @@ def inline_tablas(bot, update):
                         id=uuid4(),
                         photo_file_id=i["file_id"],
                         title=i["name"],
-                        caption="@ProfDumbledoreBot {}".format(i["name"]))
+                        caption="@ProfesorDumbledoreBot {}".format(i["name"]))
                     )
                     break
 
@@ -240,7 +259,7 @@ def inline_tablas(bot, update):
                 id=uuid4(),
                 photo_file_id=__TABLAS_JSON["tablas"][i]["file_id"],
                 title=__TABLAS_JSON["tablas"][i]["name"],
-                caption="@ProfDumbledoreBot {}".format(__TABLAS_JSON["tablas"][i]["name"])))
+                caption="@ProfesorDumbledoreBot {}".format(__TABLAS_JSON["tablas"][i]["name"])))
 
         update.inline_query.answer(results=results, cache_time=0)
 
@@ -251,12 +270,13 @@ def tablas_btn(bot, update):
     query = update.callback_query
     data = query.data
     chat_id = query.message.chat.id
-    news_id = int(-1001290515565)
+    config = get_config()
+    news_id = int(config["telegram"]["news_id"])
     message_id = query.message.message_id
     
     match_new = re.match(r"tabla_new_(.*)", query.data)
     if match_new:
-        text = "Ha sido añadida la tabla {0} a nuestros archivos. Solicítala ya mediante `@ProfDumbledoreBot {0}`\n\n¡Suerte en tu busqueda mago!".format(match_new.group(1))
+        text = "Ha sido añadida la tabla {0} a nuestros archivos. Solicítala ya mediante `@ProfesorDumbledoreBot {0}`\n\n¡Suerte en tu busqueda mago!".format(match_new.group(1))
         bot.sendMessage(
             chat_id=news_id,
             text=text,
@@ -264,7 +284,7 @@ def tablas_btn(bot, update):
 
     match_edit = re.match(r"tabla_edit_(.*)", query.data)
     if match_new is None and match_edit:
-        text = "Ha sido modificada la tabla {0}. Recuerda que puedes solicitarla mediante `@ProfDumbledoreBot {0}`\n\n¡Suerte en tu busqueda mago!".format(match_new.group(1))
+        text = "Ha sido modificada la tabla {0}. Recuerda que puedes solicitarla mediante `@ProfesorDumbledoreBot {0}`\n\n¡Suerte en tu busqueda mago!".format(match_new.group(1))
         bot.sendMessage(
             chat_id=news_id,
             text=text,

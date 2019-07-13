@@ -127,3 +127,13 @@ def set_nanny_settings(chat_id, settings_str):
         session.close()
         return
 
+
+def set_nanny(chat_id):
+    with LOCK:
+        session = get_session()
+        nanny = SettingsNurse(id=chat_id)
+        session.add(nanny)
+        session.commit()
+        session.close()
+
+

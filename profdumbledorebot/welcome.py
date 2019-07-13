@@ -29,13 +29,14 @@ import profdumbledorebot.sql.welcome as welcome_sql
 import profdumbledorebot.supportmethods as support
 
 from telegram.error import BadRequest
+from profdumbledorebot.model import Types
 from profdumbledorebot.config import get_config
 from profdumbledorebot.sql.rules import has_rules
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.utils.helpers import mention_markdown, escape_markdown
 
 
-VALID_WELCOME_FORMATTERS = ['nombre', 'apellido', 'nombre_completo', 'usuario', 'id', 'count', 'title', 'pogo', 'mention']
+VALID_WELCOME_FORMATTERS = ['nombre', 'apellido', 'nombre_completo', 'usuario', 'id', 'count', 'title', 'hpwu', 'mention']
 
 
 def send_welcome(bot, update):
@@ -53,7 +54,7 @@ def send_welcome(bot, update):
         Types.VIDEO.value: bot.sendVideo
     }
 
-    should_welc, cust_welcome, welc_type = welcome.get_welc_pref(chat.id)
+    should_welc, cust_welcome, welc_type = welcome_sql.get_welc_pref(chat.id)
     if should_welc:
         sent = None
         new_members = update.effective_message.new_chat_members
@@ -80,10 +81,10 @@ def send_welcome(bot, update):
                 valid_format = support.escape_invalid_curly_brackets(cust_welcome, VALID_WELCOME_FORMATTERS)
                 res = valid_format.format(nombre=escape_markdown(first_name),
                                           apellido=escape_markdown(new_mem.last_name or first_name),
-                                          pogo=support.replace(new_mem.id, first_name),
+                                          hpwu=support.replace(new_mem.id, first_name),
                                           nombre_completo=escape_markdown(fullname), usuario=username, mention=mention,
                                           count=count, title=escape_markdown(chat.title), id=new_mem.id)
-                buttons = welcome.get_welc_buttons(chat.id)
+                buttons = welcome_sql.get_welc_buttons(chat.id)
                 keyb = support.build_keyboard(buttons)
                 if has_rules(chat.id):
                     config = get_config()

@@ -151,7 +151,7 @@ def start_bot():
     dispatcher.add_handler(CommandHandler('listrefloat', lists.listrefloat_cmd, Filters.group)) 
 
     dispatcher.add_handler(CommandHandler('settings', settings.settings, Filters.group))
-    dispatcher.add_handler(CommandHandler('set_nanny', nanny.set_nanny, Filters.group)) 
+    dispatcher.add_handler(CommandHandler('set_pince', nanny.set_nanny, Filters.group)) 
     dispatcher.add_handler(CommandHandler('set_welcome', settings.set_welcome, Filters.group))
     dispatcher.add_handler(CommandHandler('set_zone', settings.set_zone, Filters.group, pass_args=True))
     dispatcher.add_handler(CommandHandler('set_cooldown', settings.set_cooldown, Filters.group, pass_args=True))
@@ -159,10 +159,10 @@ def start_bot():
 
     dispatcher.add_handler(InlineQueryHandler(tablas.inline_tablas))
     dispatcher.add_handler(CallbackQueryHandler(tablas.tablas_btn, pattern=r"^tabla_"))
-    dispatcher.add_handler(CommandHandler('tablas', tablas.list_pics, Filters.chat(config["telegram"]["staff_id"])))
-    dispatcher.add_handler(CommandHandler('nueva_tabla', tablas.new_pic, Filters.chat(config["telegram"]["staff_id"]),pass_args=True))
-    dispatcher.add_handler(CommandHandler('borrar_tabla', tablas.rm_pic, Filters.chat(config["telegram"]["staff_id"]),pass_args=True))
-    dispatcher.add_handler(CommandHandler('editar_tabla', tablas.edit_pic, Filters.chat(config["telegram"]["staff_id"]),pass_args=True))
+    dispatcher.add_handler(CommandHandler('tablas', tablas.list_pics, Filters.chat(int(config["telegram"]["staff_id"])),pass_args=True))
+    dispatcher.add_handler(CommandHandler('nueva_tabla', tablas.new_pic, Filters.chat(int(config["telegram"]["staff_id"])),pass_args=True))
+    dispatcher.add_handler(CommandHandler('borrar_tabla', tablas.rm_pic, Filters.chat(int(config["telegram"]["staff_id"])),pass_args=True))
+    dispatcher.add_handler(CommandHandler('editar_tabla', tablas.edit_pic, Filters.chat(int(config["telegram"]["staff_id"])),pass_args=True))
 
     dispatcher.add_handler(CommandHandler('list_news', news.list_news, Filters.group))
     dispatcher.add_handler(CommandHandler('rm_news', news.rm_news, Filters.group, pass_args=True))
@@ -170,8 +170,8 @@ def start_bot():
 
     dispatcher.add_handler(MessageHandler(Filters.group & Filters.status_update.new_chat_members, group.joined_chat, pass_job_queue=True)) 
  
-    dispatcher.add_handler(MessageHandler(Filters.command, nanny.process_cmd))
-    dispatcher.add_handler(MessageHandler(Filters.group & Filters.all, group.process_group_message))
+    dispatcher.add_handler(MessageHandler(Filters.command, nanny.process_cmd, pass_job_queue=True))
+    dispatcher.add_handler(MessageHandler(Filters.group & Filters.all, group.process_group_message, pass_job_queue=True))
 
     dispatcher.add_handler(MessageHandler(Filters.all, news.send_news))
     dispatcher.add_handler(CallbackQueryHandler(settings.settingsbutton))

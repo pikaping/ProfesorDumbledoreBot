@@ -146,10 +146,10 @@ def get_groups(chat_id):
         session.close()
 
 
-def new_link(admin, chat, title):
+def new_link(admin, chat):
     with LOCK:
         session = get_session()
-        linked = LinkedGroups(admin_id=admin, linked_id=chat, title=title)
+        linked = LinkedGroups(admin_id=admin, linked_id=chat)
         session.add(linked)
         session.commit()
         session.close()

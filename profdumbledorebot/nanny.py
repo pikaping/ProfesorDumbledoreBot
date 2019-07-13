@@ -33,7 +33,7 @@ from profdumbledorebot.sql.usergroup import warn_user
 from profdumbledorebot.sql.settings import get_nanny_settings, get_group_settings, set_nanny_reply
 
 
-def nanny_text(bot, user_id, chat_id, message):
+def nanny_text(bot, user_id, chat_id, message, job_queue):
     nanny = get_nanny_settings(chat_id)
 
     if nanny and nanny.text:
@@ -42,16 +42,16 @@ def nanny_text(bot, user_id, chat_id, message):
 
         support.delete_message(chat_id, message.message_id, bot)
         if nanny and nanny.warn:
-            send_warn(bot, chat_id, user_id, nanny.reply)
+            send_warn(bot, chat_id, user_id, job_queue, nanny.reply)
         else:
-            send_alert(bot, chat_id, nanny.reply)
+            send_alert(bot, chat_id, job_queue, nanny.reply)
 
         return True
 
     return False
     
 
-def process_gif(bot, update):
+def process_gif(bot, update, job_queue):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     nanny = get_nanny_settings(chat_id)
 
@@ -61,12 +61,12 @@ def process_gif(bot, update):
 
         support.delete_message(chat_id, message.message_id, bot)
         if nanny.warn:
-            send_warn(bot, chat_id, user_id, nanny.reply)
+            send_warn(bot, chat_id, user_id, job_queue, nanny.reply)
         else:
-            send_alert(bot, chat_id, nanny.reply)
+            send_alert(bot, chat_id, job_queue, nanny.reply)
 
 
-def process_cmd(bot, update):
+def process_cmd(bot, update, job_queue):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
 
     try:
@@ -87,7 +87,7 @@ def process_cmd(bot, update):
             return
 
         elif command == "stop_news":
-            stop_news(bot, update)
+            stop_news(bot, update, job_queue)
             return
 
     nanny = get_nanny_settings(chat_id)
@@ -99,13 +99,13 @@ def process_cmd(bot, update):
         support.delete_message(chat_id, message.message_id, bot)
 
         if nanny and nanny.warn:
-            send_warn(bot, chat_id, user_id, nanny.reply)
+            send_warn(bot, chat_id, user_id, job_queue, nanny.reply)
 
         else:
-            send_alert(bot, chat_id, nanny.reply)
+            send_alert(bot, chat_id, job_queue, nanny.reply)
 
 
-def process_contact(bot, update):
+def process_contact(bot, update, job_queue):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update) 
     nanny = get_nanny_settings(chat_id)
 
@@ -116,13 +116,13 @@ def process_contact(bot, update):
         support.delete_message(chat_id, message.message_id, bot)
 
         if nanny and nanny.warn:
-            send_warn(bot, chat_id, user_id, nanny.reply)
+            send_warn(bot, chat_id, user_id, job_queue, nanny.reply)
 
         else:
-            send_alert(bot, chat_id, nanny.reply)
+            send_alert(bot, chat_id, job_queue, nanny.reply)
 
 
-def process_file(bot, update):
+def process_file(bot, update, job_queue):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update) 
     nanny = get_nanny_settings(chat_id)
 
@@ -133,13 +133,13 @@ def process_file(bot, update):
         support.delete_message(chat_id, message.message_id, bot)
 
         if nanny and nanny.warn:
-            send_warn(bot, chat_id, user_id, nanny.reply)
+            send_warn(bot, chat_id, user_id, job_queue, nanny.reply)
 
         else:
-            send_alert(bot, chat_id, nanny.reply)
+            send_alert(bot, chat_id, job_queue, nanny.reply)
 
 
-def process_game(bot, update):
+def process_game(bot, update, job_queue):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
 
     nanny = get_nanny_settings(chat_id)
@@ -151,13 +151,13 @@ def process_game(bot, update):
         support.delete_message(chat_id, message.message_id, bot)
 
         if nanny and nanny.warn:
-            send_warn(bot, chat_id, user_id, nanny.reply)
+            send_warn(bot, chat_id, user_id, job_queue, nanny.reply)
 
         else:
-            send_alert(bot, chat_id, nanny.reply)
+            send_alert(bot, chat_id, job_queue, nanny.reply)
 
 
-def process_ubi(bot, update):
+def process_ubi(bot, update, job_queue):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update) 
 
     nanny = get_nanny_settings(chat_id)
@@ -168,13 +168,13 @@ def process_ubi(bot, update):
         support.delete_message(chat_id, message.message_id, bot)
 
         if nanny and nanny.warn:
-            send_warn(bot, chat_id, user_id, nanny.reply)
+            send_warn(bot, chat_id, user_id, job_queue, nanny.reply)
 
         else:
-            send_alert(bot, chat_id, nanny.reply)
+            send_alert(bot, chat_id, job_queue, nanny.reply)
 
 
-def process_pic(bot, update):
+def process_pic(bot, update, job_queue):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update) 
 
     nanny = get_nanny_settings(chat_id)
@@ -186,13 +186,13 @@ def process_pic(bot, update):
         support.delete_message(chat_id, message.message_id, bot)
 
         if nanny and nanny.warn:
-            send_warn(bot, chat_id, user_id, nanny.reply)
+            send_warn(bot, chat_id, user_id, job_queue, nanny.reply)
 
         else:
-            send_alert(bot, chat_id, nanny.reply)
+            send_alert(bot, chat_id, job_queue, nanny.reply)
 
 
-def process_sticker(bot, update):
+def process_sticker(bot, update, job_queue):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update) 
 
     nanny = get_nanny_settings(chat_id)
@@ -204,13 +204,13 @@ def process_sticker(bot, update):
         support.delete_message(chat_id, message.message_id, bot)
 
         if nanny and nanny.warn:
-            send_warn(bot, chat_id, user_id, nanny.reply)
+            send_warn(bot, chat_id, user_id, job_queue, nanny.reply)
 
         else:
-            send_alert(bot, chat_id, nanny.reply)
+            send_alert(bot, chat_id, job_queue, nanny.reply)
 
 
-def process_voice(bot, update):
+def process_voice(bot, update, job_queue):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)  
 
     nanny = get_nanny_settings(chat_id)
@@ -222,13 +222,13 @@ def process_voice(bot, update):
         support.delete_message(chat_id, message.message_id, bot)
 
         if nanny and nanny.warn:
-            send_warn(bot, chat_id, user_id, nanny.reply)
+            send_warn(bot, chat_id, user_id, job_queue, nanny.reply)
 
         else:
-            send_alert(bot, chat_id, nanny.reply)
+            send_alert(bot, chat_id, job_queue, nanny.reply)
 
 
-def process_video(bot, update):
+def process_video(bot, update, job_queue):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update) 
 
     nanny = get_nanny_settings(chat_id)
@@ -240,13 +240,13 @@ def process_video(bot, update):
         support.delete_message(chat_id, message.message_id, bot)
 
         if nanny and nanny.warn:
-            send_warn(bot, chat_id, user_id, nanny.reply)
+            send_warn(bot, chat_id, user_id, job_queue, nanny.reply)
 
         else:
-            send_alert(bot, chat_id, nanny.reply)
+            send_alert(bot, chat_id, job_queue, nanny.reply)
 
 
-def process_url(bot, update):
+def process_url(bot, update, job_queue):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)  
 
     nanny = get_nanny_settings(chat_id)
@@ -258,17 +258,17 @@ def process_url(bot, update):
         support.delete_message(chat_id, message.message_id, bot)
 
         if nanny and nanny.warn:
-            send_warn(bot, chat_id, user_id, nanny.reply)
+            send_warn(bot, chat_id, user_id, job_queue, nanny.reply)
 
         else:
-            send_alert(bot, chat_id, nanny.reply)
+            send_alert(bot, chat_id, job_queue, nanny.reply)
 
         return True
 
     return False
 
 
-def send_alert(bot, chat_id, nanny_text=None):
+def send_alert(bot, chat_id, job_queue, nanny_text=None):
     if nanny_text is None:
         text = (
             "Shhhh... Lo siento pero aquí no puedes enviar "
@@ -283,7 +283,7 @@ def send_alert(bot, chat_id, nanny_text=None):
     job_queue.run_once(support.callback_delete, 10, context=delete_object)
 
 
-def send_warn(bot, chat_id, user_id, nanny_text=None):
+def send_warn(bot, chat_id, user_id, job_queue, nanny_text=None):
     warning = warn_user(chat_id, user_id, 1)
     group = get_group_settings(chat_id)
     if nanny_text is not None:
@@ -323,9 +323,9 @@ def set_nanny(bot, update, args=None):
         offset = len(args[1]) - len(msg.text)
         text, buttons = support.button_markdown_parser(args[1], entities=msg.parse_entities(), offset=offset)
         set_nanny_reply(chat_id, text)
-        msg.reply_text("Mensaje del modo niñera guardado correctamente")
+        msg.reply_text("Mensaje del modo biblioteca guardado correctamente")
 
     else:
         set_nanny_reply(chat_id, None)
-        msg.reply_text("Mensaje del modo niñera por defecto activado")
+        msg.reply_text("Mensaje del modo biblioteca por defecto activado")
 
