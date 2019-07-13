@@ -146,7 +146,7 @@ En construcción.
 
 ### Fortalezas⠀[⤴](#content) ###
 
-En construcción, en un futuro el bot contará con una herramienta específica para ello, pero de momento se pueden utilizar las [Listas](#listas) para ello.
+En construcción, en un futuro el bot contará con una herramienta específica, pero de momento se pueden utilizar las [Listas](#listas) para ello.
 
 ### Listas⠀[⤴](#content) ###
 
