@@ -67,7 +67,7 @@ Para poder utilizar todas las funciones del Profesor Dumbledore es necesario ten
 
 ### Ficha del Mago⠀[⤴](#content) ###
 
-Enviando el comando `/perfil` o `/profile` podrás acceder y editar toda la información sobre tu perfil en HPWU que has compartido con el Profesor.  
+Enviando el comando `/pasaporte` podrás acceder y editar toda la información sobre tu perfil en HPWU que has compartido con el Profesor.  
 Los dos emoticonos que siguen al nivel, representan la casa a la que pertenece el mago. Estos son los emoticonos seleccionados por nosotros.
 
 | Iconos | Definición |
@@ -117,9 +117,12 @@ Si quieres ver la ficha de otro mago, podrás usar el comando `/informe` o `/who
 
 El Profesor dispone de una amplia biblioteca de infografías que se van ampliando a medida que conocemos más datos del juego. Las infografías están creadas por el equipo creativo del diario el profeta (@diarioelprofeta).  
 
-Para solicitarlas se debe emplear el comando `/tabla` seguido de un espacio y el nombre de la tabla que se desea. El mensaje solicitando la tabla será eliminado por el Profesor de forma automática.  
+Para solicitarlas escribe el alias del bot seguido del nombre de la tabla, por ejemplo:
+```
+@ProfesorDumbledoreBot hechizos
+```
 
-Dependiendo de la configuración del grupo, las tablas se enviarán al chat privado del bot o al grupo, para eso es necesario tener abierta una conversación privada con el Profesor Dumbledore  
+Las tablas se enviarán **siempre** al chat en el que estés escribiendo el mensaje anterior  
 
 Estos son las infografías de las que se dispone en la actualidad:  
 * Hechizos 
@@ -163,10 +166,9 @@ Si se quiere borrar una lista bastará con eliminar el mensaje que sea la lista.
 | Comando | Descripción |
 |---------|-------------|
 | /cucuruchodecucarachas | Registrarse en el bot |
-| /profile | Perfil, datos de tu pasaporte |
 | /ping | Comprueba el “ping” del bot, si tarda en contestar o está “caído” |
 | /pasaporte | Edición del nivel o de los datos de tu perfil |
-|/help | Ayuda del bot |
+| /help | Ayuda del bot |
 | /set_friendid | Para añadir tu código de amigo |
 | /fc | Ver códigos de amigo en el grupo |
 | /privacity | Código de Entrenador |
@@ -255,9 +257,9 @@ Este botón determinará la cantidad máxima de warn que recibirá un usuario an
 
 Este botón determina si un grupo quiere recibir las respuestas a comandos por el mismo o que se envíe por privado a los magos.  
 
-Por ejemplo, si un mago pide una tabla de “masternotes” y el botón marca “respuestas al grupo” se enviará de manera pública. Por el contrario si se ponen en privado pero esa persona no ha iniciado una conversación previa con el bot, no recibirá nada. Si la tiene iniciada la recibirá de manera normal.  
+Por ejemplo, si un mago pide un `/informe` de un usuario y el botón marca “respuestas al grupo” se enviará de manera pública. Por el contrario si se ponen en privado pero esa persona no ha iniciado una conversación previa con el bot, no recibirá nada. Si la tiene iniciada la recibirá de manera normal.  
 
-Esto sucederá tanto con las tablas como con otros comandos comunes: informe, ping, groups…
+Esto sucederá tanto con los informes como con otros comandos comunes: ping, groups…
 
 
 #### Ajustes de entrada⠀[⤴](#content) ####
