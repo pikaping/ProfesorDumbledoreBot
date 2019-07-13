@@ -41,26 +41,44 @@ except:
 
 
 @run_async
-def list_pics(bot, update):
+def list_pics(bot, update, args):
     logging.debug("%s %s" % (bot, update))
     chat_id, chat_type, user_id, text, message = extract_update_info(update)
     output = "Listado de tablas:"
     count = 0
 
-    for k in __TABLAS_JSON["tablas"]:
-        count = count + 1
-        output = output + "\n\nTitle: {1}\nKeywords: {2}\nID: `{0}`".format(
-            k["id"],
-            k["name"],
-            k["keywords"]
-        )
-        if count == 5:  
-            bot.sendMessage(
-                chat_id=chat_id,
-                text=output,
-                parse_mode=telegram.ParseMode.MARKDOWN)
-            count = 0
-            output = ""
+    if args is None or len(args)!=1:
+        for k in __TABLAS_JSON["tablas"]:
+            count = count + 1
+            output = output + "\n\nTitle: {1}\nKeywords: {2}\nID: `{0}`".format(
+                k["id"],
+                k["name"],
+                k["keywords"]
+            )
+            if count == 5:  
+                bot.sendMessage(
+                    chat_id=chat_id,
+                    text=output,
+                    parse_mode=telegram.ParseMode.MARKDOWN)
+                count = 0
+                output = ""
+    else:
+        for k in __TABLAS_JSON["tablas"]:
+            if args[0] in k["keywords"]:
+                count = count + 1
+                output = output + "\n\nTitle: {1}\nKeywords: {2}\nID: `{0}`".format(
+                    k["id"],
+                    k["name"],
+                    k["keywords"]
+                )
+                if count == 5:  
+                    bot.sendMessage(
+                        chat_id=chat_id,
+                        text=output,
+                        parse_mode=telegram.ParseMode.MARKDOWN)
+                    count = 0
+                    output = ""
+
 
     if count != 0:
         bot.sendMessage(

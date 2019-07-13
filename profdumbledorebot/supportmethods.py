@@ -657,6 +657,7 @@ def update_settings_message(chat_id, bot, message_id, keyboard = "main"):
         " termines, pulsa el botón <b>Terminado</b> para borrar el "
         "mensaje."
     )
+    time.sleep(0.5)
 
     return bot.edit_message_text(
         text=text,
