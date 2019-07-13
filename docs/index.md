@@ -141,8 +141,11 @@ Estos son las infografías de las que se dispone en la actualidad:
 
 ### Registrar cultivos en invernaderos⠀[⤴](#content) ###
 
-El bot dispone de registro de cultivos en invernadero, para ello debe tener el grupo en el que se utilice la opción habilitada. Esta configuración únicamente la puede realizar un administrador de dicho grupo.  
-Para registrar un cultivo se debe enviar la ubicación del invernadero y el bot comenzará el registro.  
+En construcción.
+
+### Fortalezas⠀[⤴](#content) ###
+
+En construcción, en un futuro el bot contará con una herramienta específica para ello, pero de momento se pueden utilizar las [Listas](#listas) para ello.
 
 ### Listas⠀[⤴](#content) ###
 
