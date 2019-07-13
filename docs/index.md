@@ -96,14 +96,14 @@ Además, también contamos con otros emojis que nos servirán de flags.
 
 ### Código de Amigo⠀[⤴](#content) ###
 
-Para añadir tu clave de amigo de HPWU en este bot, es tan sencillo como enviar /set_friendid seguido de tu clave de amigo.  
+Para añadir tu clave de amigo de HPWU en este bot, es tan sencillo como enviar `/set_friendid` seguido de tu clave de amigo.  
 Aquí tienes un ejemplo:
 ```
 /set_friendid 123412341234
 ```
 
 Una vez hecho esto, tu clave de amigo se mostrará siempre que pregunten por tu ficha de mago.  
-Si deseas eliminar tu clave de amigo de tu perfil, simplemente envía /set_friendid.  
+Si deseas eliminar tu clave de amigo de tu perfil, simplemente envía `/set_friendid`.  
 
 Además, si quieres aparecer en todas las listas de códigos de los grupos en los que formes parte, tan solo deberás activarlo desde tu perfil, pulsando sobre el botón `🔒 Clave de amigo`. Cuando hayas pulsado el botón, el candado se abrirá y tu clave de amigo pasará a ser pública.  
 
@@ -130,8 +130,10 @@ Estos son las infografías de las que se dispone en la actualidad:
 * Rarezas
 * Ingredientes
 * RecompensaRegistros
-* xpNiveles
-* incontratus
+* XpNiveles
+* Incontratus
+* Incontratus exclusivo
+* Profesiones
 
 
 ### Registrar cultivos en invernaderos⠀[⤴](#content) ###
@@ -486,7 +488,7 @@ El comando `/dumblekickuv` y `/dumbleuv`, ambos con sus variantes, está restrin
 ### Id⠀[⤴](#content) ###
 
 Saber el Id de un entrenador es posible gracias al comando `/id`. Este comando no és exclusivo para administradores, pero está orientado y pensado principalmente para a estos.  
-El comando, al igual que el /informe, se puede emplear:  
+El comando, al igual que el `/informe`, se puede emplear:  
 * Citando un mensaje del mago.  
 * Citando un reenviado de un mensaje del mago.  
 * Con el @ (alias de telegram) del mago pero sin poner el @ solo el texto.  
@@ -609,7 +611,7 @@ La información se almacena durante el tiempo necesario para cumplir con los fin
 
 ### Derechos contemplados en el RGPD⠀[⤴](#content) ###
 
-Los derechos al olvido contemplados por la RGPD se ejercen mediante el comando /profile. Desde ahí, se podrán editar y eliminar todos los datos de tu perfil.
+Los derechos al olvido contemplados por la RGPD se ejercen mediante el comando `/profile`. Desde ahí, se podrán editar y eliminar todos los datos de tu perfil.
 
 ### Agradecimientos y colaboraciones⠀[⤴](#content) ###
 
@@ -617,6 +619,6 @@ Por último y no por ello menos importante, de manera personal y pública despu�
 
 Pikaping por ser el creador del alma del bot, a Gentakojima porque sin él, no estaríamos aquí. Ansett por ser la cabeza y mano derecha en los momentos clave. McFigue y Pilfer por mantener el merodeador en constante actualización mientras llegaba el Profesor.  
 
-Al equipo de las tablas, Saray, Zetateck, Nicky y Ferran. A los youtuber que quieren colaborar con sus videos y que pronto se verán reflejados en la web y a todos los usuarios que habéis esperado estos meses con expectación.  
+Al equipo de las tablas, Saray, Zetateck, Nicky, Ferran y Linkcelot. A los youtuber que quieren colaborar con sus videos y que pronto se verán reflejados en la web y a todos los usuarios que habéis esperado estos meses con expectación.  
 Salid a la calle, ¡el Ministerio de Magia os necesita!
 
