@@ -461,7 +461,7 @@ Los @ concretos de los entrenadores de una de las casas se pueden ver mediante:
 ❤️🦁 Gryffindor -> `/dumbleuv G`  
 💛🦡 Hufflepuff -> `/dumbleuv H`  
 💙🦅 Ravenclaw -> `/dumbleuv R`  
-💚 Sltytherin -> `/dumbleuv S`  
+💚🐍 Slytherin -> `/dumbleuv S`  
 ⚔️ Auror -> `/dumbleuv A`  
 🐾 Magizoologo -> `/dumbleuv M`  
 📚 Profesor -> `/dumbleuv P`  
