@@ -10,7 +10,7 @@ Puedes pedir ayuda en el grupo @ProfesorDumbledoreAyuda y estar informado de las
     6. [Registrar cultivos en invernaderos](#registrar-cultivos-en-invernaderos)  
     7. [Fortalezas](#fortalezas) 
     8. [Listas](#listas)  
-    9. [Glosario de comandos para entrenadores](#glosario-de-comandos-para-entrenadores)  
+    9. [Glosario de comandos para magos](#glosario-de-comandos-para-magos)  
     10. [Más ayuda](#más-ayuda)  
 2. [Ayuda para administradores](#ayuda-para-administradores)  
     1. [Añadir el bot a un grupo o canal](#añadir-el-bot-a-un-grupo-o-canal)  
@@ -86,6 +86,7 @@ A continuación, encontraremos la profesión. Estos son los emoticonos seleccion
 | ⚔ | Auror |
 | 🐾 | Magizoologo |
 | 📚 | Profesor |
+
 
 Además, también contamos con otros emojis que nos servirán de flags.
 
@@ -304,10 +305,10 @@ Por defecto al añadir al Profesor, se establece el grupo como grupo abierto nor
 | ▪️ | Grupo abierto, sin requisitos |
 | ✅ | Grupo con validación obligatoria |
 | ❤️🦁 | Grupo exclusivo Gryffindor |
-| 💚🐍 | Grupo exclusivo Slytherin |
-| 💙🦅 | Grupo exclusivo Ravenclaw |
 | 💛🦡 | Grupo exclusivo Hufflepuff |
-| ⚔️🔰 | Grupo exclusivo Aurores |
+| 💙🦅 | Grupo exclusivo Ravenclaw |
+| 💚🐍 | Grupo exclusivo Slytherin |
+| ⚔️ | Grupo exclusivo Aurores |
 | 📚 | Grupo exclusivo Profesores |
 | 🐾 |Grupo exclusivo Magizoologos |
 
@@ -457,14 +458,14 @@ Para saber la cantidad de magos y brujas que hay de cada categoría en un grupo 
 ```
 
 Los @ concretos de los entrenadores de una de las casas se pueden ver mediante:  
-💙 Ravenclaw -> `/dumbleuv R`  
-💛 Hufflepuff -> `/dumbleuv H`  
-❤️ Gryffindor -> `/dumbleuv G`  
-💙 Sltytherin -> `/dumbleuv S`  
-💙 Auror -> `/dumbleuv A`  
-💙 Magizoologo -> `/dumbleuv M`  
-💙 Profesor -> `/dumbleuv P`  
-No Validados -> `/Dumbleuv U`  
+❤️🦁 Gryffindor -> `/dumbleuv G`  
+💛🦡 Hufflepuff -> `/dumbleuv H`  
+💙🦅 Ravenclaw -> `/dumbleuv R`  
+💚 Sltytherin -> `/dumbleuv S`  
+⚔️ Auror -> `/dumbleuv A`  
+🐾 Magizoologo -> `/dumbleuv M`  
+📚 Profesor -> `/dumbleuv P`  
+❌ No Validados -> `/Dumbleuv U`  
 Para que muestre una lista con todos -> `/dumbleuv R all`  
 
 El comando `/dumblekickuv` sirve para expulsar a todos aquellos No Validados con el Profesor. El Profesor con ese comando no puede expulsar a los que no conoce, pero si a los que no están validados y conoce.  
@@ -609,3 +610,4 @@ Pikaping por ser el creador del alma del bot, a Gentakojima porque sin él, no e
 
 Al equipo de las tablas, Saray, Zetateck, Nicky, Ferran y Linkcelot. A los youtuber que quieren colaborar con sus videos y que pronto se verán reflejados en la web y a todos los usuarios que habéis esperado estos meses con expectación.  
 Salid a la calle, ¡el Ministerio de Magia os necesita!
+
