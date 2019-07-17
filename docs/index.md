@@ -497,9 +497,39 @@ Profesion: Auror
 
 ### Reales decretos (Comandos personalizados)⠀[⤴](#content) ###
 
-AÚN NO DISPONIBLE.
+**AÚN NO DISPONIBLE.**
+
+Al igual que Dolores Umbridge nuestros Administradores (Prefectos) pueden crear sus propios Decretos o comandos personalizados. Estos comandos personalizados harán que el bot responda con una frase, imagen, link, fichero, video, audio, nota de voz o gif.  
+
+Los magos miembros del grupo pueden emplearlos y hacer que el Profesor responda con los reales decretos personalizados que hayan creado los administradores del grupo. Son una información propia de cada grupo, es por ello que los decretos cambiarán según en el grupo en el que te encuentres.  
+
+Pasos para crear comandos:  
+1. Para crear un real decreto personalizado se debe enviar cual será la respuesta del decreto.  
+2. Seguidamente respondiendo (y citando) la futura respuesta, el administrador debe poner `/nuevo_decreto (nombre)` con un máximo de 30 caracteres. Hay que tener en cuenta que cada vez que el Profesor lea ese decreto responderá automáticamente con la respuesta que se le ha dado..  
+
+Por ejemplo, podría haber un decreto personalizado que se llame `"ojoloco"` y que el bot responderá a este con un gif sobre ojoloco.  
+Para hacerlo, se envía el gif de ojoloco, se responde con `/nuevo_decreto ojoloco` y cada vez que un usuario diga `“ojoloco”` el profesor mandará el gif.  
+
+Ten en cuenta que el Profesor responderá únicamente si la frase que se escribas es el decreto personalizado, sin importar las mayúsculas o minúsculas, y borrará el decreto personalizado dejando únicamente su respuesta.  
+
+Para solicitar el listado de reales decretos personalizados de un grupo debes escribir en dicho grupo la frase: Listado de decretos. 
+La lista de decretos será mandada al privado que tienes con el Profesor y podrás ver todos los decretos personalizados que tiene ese grupo en concreto.  
+
+Si deseas borrar un decreto puedes hacerlo con `eliminar decreto {número del decreto}`, substituyendo la variable `{número del decreto}` por el número del real decreto personalizado que tenga en el “Listado de decretos”. Por ejemplo:  
+```
+Eliminar decreto 55
+```
+En este caso el decreto que se borraría sería el comando que corresponda al número 55.  
+
+Si al intentar borrar un real decreto personalizado el Profesor te responde que este no existe te recomiendo que le solicites al Profesor el listado (está explicado más arriba) para que te asegures de cual quieres eliminar.  
+
+Si en vez de borrar un decreto lo que se quiere es únicamente modificar la respuesta del Profesor, entonces bastará con crear de nuevo un decreto con el mismo nombre.
 
 ### Otros comandos exclusivos para administradores⠀[⤴](#content) ###
+
+Algunos de los comandos más importantes para un administrador son los de tipo “castigo”. Estos comandos únicamente pueden ser utilizados por los administradores, y si algún usuario lo escribiese el Profesor respondería que dicho usuario no tiene permisos para ello.
+
+#### Comandos de expulsiones individuales⠀[⤴](#content) ####
 
 Algunos de los comandos más importantes para un administrador son los de tipo “castigo”. Estos comandos únicamente pueden ser utilizados por los administradores, y si algún usuario lo escribiese el Profesor respondería que dicho usuario no tiene permisos para ello.
 
@@ -588,4 +618,3 @@ Pikaping por ser el creador del alma del bot, a Gentakojima porque sin él, no e
 
 Al equipo de las tablas, Saray, Zetateck, Nicky, Ferran y Linkcelot. A los youtuber que quieren colaborar con sus videos y que pronto se verán reflejados en la web y a todos los usuarios que habéis esperado estos meses con expectación.  
 Salid a la calle, ¡el Ministerio de Magia os necesita!
-
