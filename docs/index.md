@@ -448,6 +448,8 @@ No es recomendable tener las Normas del grupo activas junto a la Bienvenida con 
 
 ### Gestión de usuarios⠀[⤴](#content) ###
 
+**AÚN NO DISPONIBLE.**
+
 Para saber la cantidad de magos y brujas que hay de cada categoría en un grupo y saber los magos que no están validados, puedes emplear el comando `/dumbleuv` y el Profesor te mostrará un mensaje parecido a este:
 ```
 💙 Ravenclaw: 10
