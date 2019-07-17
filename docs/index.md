@@ -618,3 +618,4 @@ Pikaping por ser el creador del alma del bot, a Gentakojima porque sin él, no e
 
 Al equipo de las tablas, Saray, Zetateck, Nicky, Ferran y Linkcelot. A los youtuber que quieren colaborar con sus videos y que pronto se verán reflejados en la web y a todos los usuarios que habéis esperado estos meses con expectación.  
 Salid a la calle, ¡el Ministerio de Magia os necesita!
+
