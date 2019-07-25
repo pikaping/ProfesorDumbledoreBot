@@ -127,18 +127,26 @@ Para solicitarlas escribe el alias del bot seguido del nombre de la tabla, por e
 Las tablas se enviarán **siempre** al chat en el que estés escribiendo el mensaje anterior  
 
 Estos son las infografías de las que se dispone en la actualidad:  
-* Hechizos 
-* NotasMaestras
-* Posadas 
-* XpFamilia
-* GuiaCultivo
-* Rarezas
-* Ingredientes
-* RecompensaRegistros
-* XpNiveles
-* Incontratus
-* Incontratus exclusivo
+* Altos
+* Graves
+* Emergencia
+* Magizoologo
+* Auror
+* Profesor
+* Evento
+* CommunityDay
 * Profesiones
+* IncontratusExclusivo
+* AcechadoresNocturnos
+* RecompensaNiveles
+* RecompensaRegistros
+* Ingredientes
+* SpawnDeRarezas
+* GuiaDeCultivo
+* XpFamilia
+* Posadas
+* NotasMaestras
+* Hechizos
 
 
 ### Registrar cultivos en invernaderos⠀[⤴](#content) ###
@@ -618,4 +626,3 @@ Pikaping por ser el creador del alma del bot, a Gentakojima porque sin él, no e
 
 Al equipo de las tablas, Saray, Zetateck, Nicky, Ferran y Linkcelot. A los youtuber que quieren colaborar con sus videos y que pronto se verán reflejados en la web y a todos los usuarios que habéis esperado estos meses con expectación.  
 Salid a la calle, ¡el Ministerio de Magia os necesita!
-
