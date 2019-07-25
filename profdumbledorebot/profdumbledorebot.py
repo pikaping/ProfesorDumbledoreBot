@@ -200,7 +200,7 @@ def whois_cmd(bot, update, args=None):
         return
 
     if user is None:
-        output = "❌ No tengo información sobre este usuario."
+        output = "❌ No tengo ningún registro sobre este mago."
         bot.sendMessage(
             chat_id=user_id,
             text=output,
@@ -306,7 +306,7 @@ def ranking_cmd(bot, update):
 
     main = user_sql.get_user(user_id)
     count = 0
-    text = "**Ránking de {0}:**".format(message.chat.title)
+    text = "🏆 **Ranking de {0}** 🏆\n".format(message.chat.title)
     user_list = []
 
     users = get_users_from_group(chat_id)
@@ -540,12 +540,12 @@ def passport_btn(bot, update):
         
     elif data == "profile_other":
         user = user_sql.get_real_user(user_id)
-        friendtext = "🔒 Clave de amigo"
-        rankingtext = "❌ Ránking"
+        friendtext = "▪️ Clave de amigo"
+        rankingtext = "▪️ Ránking"
         if user.fclists:
-            friendtext = "🔓 Clave de amigo"
+            friendtext = "✅ Clave de amigo"
         if user.ranking:
-            rankingtext = "✔️ Ránking"
+            rankingtext = "✅ Ránking"
         button_list = [
             [InlineKeyboardButton(friendtext, callback_data='profile_other_1')],
             [InlineKeyboardButton(rankingtext, callback_data='profile_other_2')],
@@ -627,12 +627,12 @@ def passport_btn(bot, update):
     elif data == "profile_other_1":
         user_sql.update_fclist(user_id)
         user = user_sql.get_real_user(user_id)
-        friendtext = "🔒 Clave de amigo"
-        rankingtext = "❌ Ránking"
+        friendtext = "▪️ Clave de amigo"
+        rankingtext = "▪️ Ránking"
         if user.fclists:
-            friendtext = "🔓 Clave de amigo"
+            friendtext = "✅ Clave de amigo"
         if user.ranking:
-            rankingtext = "✔️ Ránking"
+            rankingtext = "✅ Ránking"
         button_list = [
             [InlineKeyboardButton(friendtext, callback_data='profile_other_1')],
             [InlineKeyboardButton(rankingtext, callback_data='profile_other_2')],
@@ -647,12 +647,12 @@ def passport_btn(bot, update):
     elif data == "profile_other_2":
         user_sql.update_ranking(user_id)
         user = user_sql.get_real_user(user_id)
-        friendtext = "🔒 Clave de amigo"
-        rankingtext = "❌ Ránking"
+        friendtext = "▪️ Clave de amigo"
+        rankingtext = "▪️ Ránking"
         if user.fclists:
-            friendtext = "🔓 Clave de amigo"
+            friendtext = "✅ Clave de amigo"
         if user.ranking:
-            rankingtext = "✔️ Ránking"
+            rankingtext = "✅ Ránking"
         button_list = [
             [InlineKeyboardButton(friendtext, callback_data='profile_other_1')],
             [InlineKeyboardButton(rankingtext, callback_data='profile_other_2')],
