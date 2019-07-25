@@ -89,6 +89,13 @@ def update_fclist(user_id):
         session.commit()
         session.close()
 
+def update_ranking(user_id):
+    with LOCK:
+        session = get_session()
+        user = get_unique_from_query(session.query(User).filter(User.id == user_id))
+        user.ranking = not user.ranking
+        session.commit()
+        session.close()
 
 def update_mentions(user_id):
     with LOCK:
@@ -155,4 +162,3 @@ def set_fc(fc, user_id):
         user.friend_id = fc
         session.commit()
         session.close()
-

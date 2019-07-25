@@ -4,3 +4,5 @@ profdumbledorebot/model.py
 profdumbledorebot/twitter.py
 profdumbledorebot/custom_commands.py
 profdumbledorebot/sql/ccmd.py
+*.json
+profdumbledorebot/games.py

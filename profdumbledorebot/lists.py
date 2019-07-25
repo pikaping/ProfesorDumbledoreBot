@@ -27,7 +27,7 @@ import logging
 import telegram
 import profdumbledorebot.supportmethods as support
 
-from profdumbledorebot.model import Houses
+from profdumbledorebot.model import Houses, Professions
 from telegram.ext.dispatcher import run_async
 from profdumbledorebot.sql.user import get_user
 from telegram.utils.helpers import escape_markdown
@@ -79,6 +79,15 @@ def list_btn(bot, update):
     if user is None:
         return
 
+    if user.profession is Professions.PROFESSOR.value:
+        text_prof = "📚"
+    elif user.profession is Professions.MAGIZOOLOGIST.value:
+        text_prof = "🐾"
+    elif user.profession is Professions.AUROR.value:
+        text_prof = "⚔️"
+    elif user.profession is Professions.NONE.value:
+        text_prof = "🍮"
+
     if user.house is Houses.GRYFFINDOR.value:
         text_team = "❤️🦁"
     elif user.house is Houses.HUFFLEPUFF.value:
@@ -90,13 +99,14 @@ def list_btn(bot, update):
     elif user.house is Houses.NONE.value:
         text_team = "💜🙈"
 
-    string = r'\n(.|❤️🦁|💙🦅|💛🦡|💚🐍|💜🙈)(\d\d|\d) - @{}'.format(username)
+    string = r'\n(.|❤️🦁|💛🦡|💙🦅|💚🐍|💜🙈) - (\d\d|\d) - (.|📚|🐾|⚔️|🍮) - @{}'.format(username)
     text = re.sub(string, "", text)
 
     if data == "list_join":
-        text = escape_markdown(text) + "\n{0}**{1}** - @{2}".format(
+        text = escape_markdown(text) + "\n{0} - {1} - {2} - @{3}".format(
             text_team,
             user.level,
+            text_prof,
             escape_markdown("{}".format(username))
         )
 

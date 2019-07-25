@@ -42,7 +42,7 @@ import profdumbledorebot.config as config_file
 import profdumbledorebot.settings as settings
 import profdumbledorebot.supportmethods as support
 import profdumbledorebot.profdumbledorebot as profdumbledorebot
-
+#import profdumbledorebot.games as games
 
 from logging.handlers import  TimedRotatingFileHandler
 from profdumbledorebot.nanny import process_cmd, set_nanny
@@ -101,10 +101,15 @@ def start_bot():
     dispatcher = updater.dispatcher
 
     dispatcher.add_error_handler(support.error_callback)
-
-    
+    '''
+    dispatcher.add_handler(CommandHandler('grageas', games.grag_cmd))
+    dispatcher.add_handler(CallbackQueryHandler(games.grag_btn, pattern=r"^grag_"))
+    dispatcher.add_handler(CommandHandler('whosaid', games.whosaid_cmd))
+    dispatcher.add_handler(CallbackQueryHandler(games.whosaid_btn, pattern=r"^whosaid_"))
+    '''
     dispatcher.add_handler(CommandHandler('ping', profdumbledorebot. ping_cmd))
     dispatcher.add_handler(CommandHandler(['fclist','fc'], profdumbledorebot.fclist_cmd, Filters.group))
+    dispatcher.add_handler(CommandHandler('ranking', profdumbledorebot.ranking_cmd, Filters.group))
     dispatcher.add_handler(CommandHandler(['help','start'], profdumbledorebot.start_cmd, pass_args=True))
     dispatcher.add_handler(CommandHandler(['informe','info'], profdumbledorebot.whois_cmd, pass_args=True))
 
@@ -180,4 +185,3 @@ def start_bot():
     updater.start_polling(timeout=25)
     
     sys.exit(0)
-
