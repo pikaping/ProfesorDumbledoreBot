@@ -21,17 +21,17 @@
 #                                                                          #
 ############################################################################
 
-import os
-import re
 import json
 import logging
-import telegram
-
+import re
 from uuid import uuid4
+
+import telegram
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, InlineQueryResultCachedPhoto
 from telegram.ext.dispatcher import run_async
+
 from profdumbledorebot.config import get_config
 from profdumbledorebot.supportmethods import extract_update_info
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, InlineQueryResultCachedPhoto
 
 try:
     with open('/var/local/profdumbledore/json/tablas.json') as f:

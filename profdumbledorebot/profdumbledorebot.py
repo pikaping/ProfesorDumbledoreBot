@@ -21,24 +21,21 @@
 #                                                                          #
 ############################################################################
 
-import os
-import re
-import sys
 import logging
+import re
+from datetime import datetime
+
 import telegram
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext.dispatcher import run_async
 
 import profdumbledorebot.sql.user as user_sql
 import profdumbledorebot.supportmethods as support
-
-from threading import Thread
-from datetime import datetime
-from profdumbledorebot.model import Houses
-from telegram.ext.dispatcher import run_async
-from profdumbledorebot.rules import send_rules
 from profdumbledorebot.config import get_config
-from profdumbledorebot.sql.support import are_banned
+from profdumbledorebot.model import Houses
+from profdumbledorebot.rules import send_rules
 from profdumbledorebot.sql.settings import get_group_settings
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from profdumbledorebot.sql.support import are_banned
 from profdumbledorebot.sql.usergroup import get_users_from_group
 
 

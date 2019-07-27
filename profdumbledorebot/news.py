@@ -21,19 +21,15 @@
 #                                                                          #
 ############################################################################
 
-import os
-import re
-import time
-import emoji
 import logging
-import telegram
+import time
 
-from threading import Thread
+import telegram
 from telegram.ext.dispatcher import run_async
-from profdumbledorebot.sql.support import are_banned
 
 import profdumbledorebot.sql.news as news_sql
 import profdumbledorebot.supportmethods as support
+from profdumbledorebot.sql.support import are_banned
 
 
 @run_async

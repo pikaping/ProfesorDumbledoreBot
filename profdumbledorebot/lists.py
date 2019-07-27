@@ -21,18 +21,17 @@
 #                                                                          #
 ############################################################################
 
-import os
 import re
-import logging
-import telegram
-import profdumbledorebot.supportmethods as support
 
-from profdumbledorebot.model import Houses
-from telegram.ext.dispatcher import run_async
-from profdumbledorebot.sql.user import get_user
-from telegram.utils.helpers import escape_markdown
-from profdumbledorebot.sql.support import are_banned
+import telegram
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext.dispatcher import run_async
+from telegram.utils.helpers import escape_markdown
+
+import profdumbledorebot.supportmethods as support
+from profdumbledorebot.model import Houses
+from profdumbledorebot.sql.support import are_banned
+from profdumbledorebot.sql.user import get_user
 
 REGLIST = re.compile(
     r'Apuntados:'

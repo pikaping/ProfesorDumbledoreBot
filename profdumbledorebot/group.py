@@ -21,31 +21,28 @@
 #                                                                          #
 ############################################################################
 
-import os
 import re
 import time
-import logging
+
 import telegram
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Bot
+from telegram.ext.dispatcher import run_async
+from telegram.utils.helpers import escape_markdown
 
 import profdumbledorebot.nanny as nanny
 import profdumbledorebot.sql.group as group_sql
 import profdumbledorebot.supportmethods as support
-
-from threading import Thread
-from Levenshtein import distance
-from telegram.ext.dispatcher import run_async
-from profdumbledorebot.sql.user import get_user
 from profdumbledorebot.config import get_config
-from profdumbledorebot.sql.rules import has_rules
-from profdumbledorebot.welcome import send_welcome
-from telegram.utils.helpers import escape_markdown
-from profdumbledorebot.sql.support import are_banned
-from profdumbledorebot.sql.welcome import get_welc_pref
-from profdumbledorebot.sql.settings import get_join_settings
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Bot
 from profdumbledorebot.model import ValidationRequiered, Houses, Professions
-from profdumbledorebot.sql.usergroup import exists_user_group, set_user_group, join_group, message_counter
 from profdumbledorebot.sql.admin import get_particular_admin, get_admin_from_linked, get_admin, set_admin_settings
+from profdumbledorebot.sql.rules import has_rules
+from profdumbledorebot.sql.settings import get_join_settings
+from profdumbledorebot.sql.support import are_banned
+from profdumbledorebot.sql.user import get_user
+from profdumbledorebot.sql.usergroup import exists_user_group, set_user_group, join_group, message_counter
+from profdumbledorebot.sql.welcome import get_welc_pref
+from profdumbledorebot.welcome import send_welcome
+
 
 @run_async
 def joined_chat(bot, update, job_queue):

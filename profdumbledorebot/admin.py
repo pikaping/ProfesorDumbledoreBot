@@ -21,24 +21,24 @@
 #                                                                          #
 ############################################################################
 
-import os
+import logging
 import re
 import time
-import logging
+from datetime import datetime
+
 import telegram
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Bot
+from telegram.ext.dispatcher import run_async
+from telegram.utils.helpers import escape_markdown
 
 import profdumbledorebot.sql.admin as adm_sql
 import profdumbledorebot.supportmethods as support
-
-from datetime import datetime
-from telegram.ext.dispatcher import run_async
 from profdumbledorebot.config import get_config
-from telegram.utils.helpers import escape_markdown
-from profdumbledorebot.sql.support import are_banned
 from profdumbledorebot.sql.settings import get_group_settings
+from profdumbledorebot.sql.support import are_banned
 from profdumbledorebot.sql.user import get_user, get_user_by_name
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Bot
 from profdumbledorebot.sql.usergroup import exists_user_group, set_user_group, warn_user
+
 
 # Admin Group
 
@@ -133,15 +133,6 @@ def groups_cmd(bot, update):
                 output = output + "\n🏫 {} - {}".format(k.label or chat.title, k.link)
             else:
                 output = output + "\n🏫 {}".format(k.label or chat.title)
-
-    if chat_type != "private":
-        group = get_group_settings(chat_id)
-        if group.reply_on_group:
-            dest_id = chat_id
-        else:
-            dest_id = user_id
-    else:
-        dest_id = user_id
 
     bot.sendMessage(
         chat_id=user_id,
