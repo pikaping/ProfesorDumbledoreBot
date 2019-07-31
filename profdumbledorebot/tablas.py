@@ -167,7 +167,7 @@ def edit_pic(bot, update, args=None):
         k["id"],
         k["name"]
     )
-    txt = name.replace(" ", "_")
+    txt = k["name"].replace(" ", "_")
     keyboard = [[
         InlineKeyboardButton(text="✅ Si", callback_data='tabla_edit_{}'.format(txt)),
         InlineKeyboardButton(text="❌ No", callback_data='tabla_rm')
@@ -284,7 +284,7 @@ def tablas_btn(bot, update):
 
     match_edit = re.match(r"tabla_edit_(.*)", query.data)
     if match_new is None and match_edit:
-        text = "Ha sido modificada la tabla {0}. Recuerda que puedes solicitarla mediante `@ProfesorDumbledoreBot {0}`\n\n¡Suerte en tu busqueda mago!".format(match_new.group(1))
+        text = "Ha sido modificada la tabla {0}. Recuerda que puedes solicitarla mediante `@ProfesorDumbledoreBot {0}`\n\n¡Suerte en tu busqueda mago!".format(match_edit.group(1))
         bot.sendMessage(
             chat_id=news_id,
             text=text,
