@@ -462,7 +462,7 @@ def passport_btn(bot, update):
         return
         
     elif data == "profile_code":
-        user = user_sql.get_user(user_id)
+        user = user_sql.get_real_user(user_id)
         text = "▪️ Clave de amigo"
         if user.fclists:
             text = "✅ Clave de amigo"
