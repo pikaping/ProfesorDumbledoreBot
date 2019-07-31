@@ -22,15 +22,14 @@
 ############################################################################
 
 import re
-import logging
+
 import telegram
+from telegram.ext.dispatcher import run_async
 
 import profdumbledorebot.supportmethods as support
-
-from telegram.ext.dispatcher import run_async
 from profdumbledorebot.news import init_news, stop_news
-from profdumbledorebot.sql.usergroup import warn_user
 from profdumbledorebot.sql.settings import get_nanny_settings, get_group_settings, set_nanny_reply
+from profdumbledorebot.sql.usergroup import warn_user
 
 
 def nanny_text(bot, user_id, chat_id, message, job_queue):

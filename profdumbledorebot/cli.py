@@ -21,32 +21,27 @@
 #                                                                          #
 ############################################################################
 
-import os
-import re
-import sys
-import time
-import random
-import signal
-import logging
 import argparse
+import logging
+import os
+import signal
+import sys
+from logging.handlers import TimedRotatingFileHandler
 
-import profdumbledorebot.news as news
+from telegram.ext import Updater, CommandHandler, MessageHandler, InlineQueryHandler, CallbackQueryHandler, Filters
+
 import profdumbledorebot.admin as admin
-import profdumbledorebot.nanny as nanny
+import profdumbledorebot.config as config_file
 import profdumbledorebot.group as group
-import profdumbledorebot.rules as rules
 import profdumbledorebot.lists as lists
 import profdumbledorebot.model as model
-import profdumbledorebot.tablas as tablas
-import profdumbledorebot.config as config_file
+import profdumbledorebot.nanny as nanny
+import profdumbledorebot.news as news
+import profdumbledorebot.profdumbledorebot as profdumbledorebot
+import profdumbledorebot.rules as rules
 import profdumbledorebot.settings as settings
 import profdumbledorebot.supportmethods as support
-import profdumbledorebot.profdumbledorebot as profdumbledorebot
-
-
-from logging.handlers import  TimedRotatingFileHandler
-from profdumbledorebot.nanny import process_cmd, set_nanny
-from telegram.ext import Updater, CommandHandler, MessageHandler, InlineQueryHandler, CallbackQueryHandler, Filters
+import profdumbledorebot.tablas as tablas
 
 
 def start_bot():

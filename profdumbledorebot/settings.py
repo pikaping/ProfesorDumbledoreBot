@@ -21,25 +21,23 @@
 #                                                                          #
 ############################################################################
 
-import re
 import logging
+import re
+from datetime import datetime
+
 import telegram
+from pytz import timezone
+from telegram.ext.dispatcher import run_async
 
 import profdumbledorebot.supportmethods as support
-
-from pytz import timezone
-from datetime import datetime
-from nursejoybot.db import get_session
-from telegram.ext.dispatcher import run_async
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-
+from profdumbledorebot.sql.admin import set_admin_settings, set_ladmin_settings
 from profdumbledorebot.sql.group import get_group
+from profdumbledorebot.sql.news import is_news_subscribed, rm_news_subscription, set_news_subscription
+from profdumbledorebot.sql.settings import set_max_members, set_general_settings, set_join_settings, set_nanny_settings, \
+    set_welcome_cooldown
 from profdumbledorebot.sql.support import are_banned
 from profdumbledorebot.sql.usergroup import remove_warn
-from profdumbledorebot.sql.admin import set_admin_settings, set_ladmin_settings
-from profdumbledorebot.sql.news import is_news_subscribed, rm_news_subscription, set_news_subscription
 from profdumbledorebot.sql.welcome import set_welc_preference, set_custom_welcome, set_welcome_settings
-from profdumbledorebot.sql.settings import set_max_members, set_general_settings, set_join_settings, set_nanny_settings, set_welcome_cooldown
 
 
 @run_async

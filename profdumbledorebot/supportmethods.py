@@ -21,29 +21,26 @@
 #                                                                          #
 ############################################################################
 
+import logging
 import os
 import re
 import time
+
 import emoji
-import logging
 import telegram
+from pytz import all_timezones
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.error import TelegramError, Unauthorized, BadRequest, TimedOut, ChatMigrated, NetworkError
+from telegram.utils.helpers import escape_markdown
 
 import profdumbledorebot.model as model
-
-from threading import Thread
-from pytz import all_timezones
-from profdumbledorebot.mwt import MWT
-from datetime import datetime, timedelta
-from profdumbledorebot.sql.welcome import get_welcome_settings
-from profdumbledorebot.sql.user import get_user, get_real_user
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from profdumbledorebot.config import ConfigurationNotLoaded, get_config
+from profdumbledorebot.mwt import MWT
 from profdumbledorebot.sql.admin import get_particular_admin, get_admin
 from profdumbledorebot.sql.news import get_verified_providers, is_news_subscribed
-from telegram.utils.helpers import mention_markdown, mention_html, escape_markdown
-from telegram.error import TelegramError, Unauthorized, BadRequest, TimedOut, ChatMigrated, NetworkError
 from profdumbledorebot.sql.settings import get_join_settings, get_nanny_settings, get_group_settings, set_nanny
-
+from profdumbledorebot.sql.user import get_user, get_real_user
+from profdumbledorebot.sql.welcome import get_welcome_settings
 
 MATCH_MD = re.compile(r'\*(.*?)\*|'
                       r'_(.*?)_|'

@@ -4,3 +4,8 @@ profdumbledorebot/model.py
 profdumbledorebot/twitter.py
 profdumbledorebot/custom_commands.py
 profdumbledorebot/sql/ccmd.py
+*_env
+.idea/*
+build/*
+dist/*
+profdumbledorebot.egg-info/*

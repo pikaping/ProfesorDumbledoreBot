@@ -21,20 +21,16 @@
 #                                                                          #
 ############################################################################
 
-import os
-import logging
 import telegram
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.error import BadRequest
+from telegram.utils.helpers import mention_markdown, escape_markdown
 
 import profdumbledorebot.sql.welcome as welcome_sql
 import profdumbledorebot.supportmethods as support
-
-from telegram.error import BadRequest
-from profdumbledorebot.model import Types
 from profdumbledorebot.config import get_config
+from profdumbledorebot.model import Types
 from profdumbledorebot.sql.rules import has_rules
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.utils.helpers import mention_markdown, escape_markdown
-
 
 VALID_WELCOME_FORMATTERS = ['nombre', 'apellido', 'nombre_completo', 'usuario', 'id', 'count', 'title', 'hpwu', 'mention']
 
