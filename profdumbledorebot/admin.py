@@ -72,7 +72,7 @@ def create_admin_cmd(bot, update):
 
     if adm_sql.get_admin(chat_id) is None:
         adm_sql.set_admin(chat_id)
-        output = "👌 Grupo configuado exitosamente. Continua vinculando grupos con este ID: `{}`\nNo olvides activar las alertas con `/settings_admin`.".format(chat_id)
+        output = "👌 Grupo configurado exitosamente. Continua vinculando grupos con este ID: `{}`\nNo olvides activar las alertas con `/settings_admin`.".format(chat_id)
     else:
         output = "👌 Ya está configurado este grupo como administrativo.\nAquí tienes tu ID: `{}`".format(chat_id)
 
