@@ -9,3 +9,5 @@ profdumbledorebot/sql/ccmd.py
 build/*
 dist/*
 profdumbledorebot.egg-info/*
+runpycharm.py
+.eggs/*

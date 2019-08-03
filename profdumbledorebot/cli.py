@@ -42,6 +42,7 @@ import profdumbledorebot.rules as rules
 import profdumbledorebot.settings as settings
 import profdumbledorebot.supportmethods as support
 import profdumbledorebot.tablas as tablas
+from profdumbledorebot import fort
 
 
 def start_bot():
@@ -162,6 +163,10 @@ def start_bot():
     dispatcher.add_handler(CommandHandler('list_news', news.list_news, Filters.group))
     dispatcher.add_handler(CommandHandler('rm_news', news.rm_news, Filters.group, pass_args=True))
     dispatcher.add_handler(CommandHandler('add_news', news.add_news, Filters.group, pass_args=True))
+
+    # Fortress handlers
+    dispatcher.add_handler(CommandHandler('fort', fort.start, Filters.group))
+    # End of fortress handlers
 
     dispatcher.add_handler(MessageHandler(Filters.group & Filters.status_update.new_chat_members, group.joined_chat, pass_job_queue=True)) 
  

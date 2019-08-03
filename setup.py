@@ -3,7 +3,7 @@
 
 ############################################################################
 #                                                                          #
-# Profesor Dumbledore Bot                                                  # 
+# Profesor Dumbledore Bot                                                  #
 # Copyright (C) 2019 - Pikaping                                            #
 #                                                                          #
 # This program is free software: you can redistribute it and/or modify     #
@@ -21,11 +21,31 @@
 #                                                                          #
 ############################################################################
 
+import sys
+
 from setuptools import setup, find_packages
+from setuptools.command.test import test as TestCommand
 
 DIST_NAME = 'profdumbledorebot'
 VERSION = '1.0'
 
+class PyTest(TestCommand):
+    user_options = [('pytest-args=', 'a', "Arguments to pass to py.test")]
+
+    def initialize_options(self):
+        TestCommand.initialize_options(self)
+        self.pytest_args = []
+
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
+
+    def run_tests(self):
+        #import here, cause outside the eggs aren't loaded
+        import pytest
+        errno = pytest.main(self.pytest_args)
+        sys.exit(errno)
 
 setup(
     name=DIST_NAME,
@@ -49,4 +69,6 @@ setup(
         ],
     },
     include_package_data=True,
+    tests_require=['pytest'],
+    cmdclass = {'test': PyTest},
 )
