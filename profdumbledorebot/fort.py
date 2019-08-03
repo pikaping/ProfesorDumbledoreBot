@@ -36,22 +36,20 @@ def get_group_from_regexp(regexp, text, group):
 
 
 def remove_time_from_text(time, text):
-    left_side_space = get_group_from_regexp('(\s*){}'.format(time), text, 1)
-    right_side_space = get_group_from_regexp('{}(\s*)'.format(time), text, 1)
+    left_side_space = get_group_from_regexp(r'(\s*){}'.format(time), text, 1)
+    right_side_space = get_group_from_regexp(r'{}(\s*)'.format(time), text, 1)
     if left_side_space and right_side_space:
-        return re.sub('\s*{}\s*'.format(time), " ", text)
+        return re.sub(r'\s*{}\s*'.format(time), " ", text)
     else:
-        return re.sub('\s*{}\s*'.format(time), "", text)
+        return re.sub(r'\s*{}\s*'.format(time), "", text)
 
 
 def get_time_place(fort_text):
-    re.purge()
-    searches_full_time = get_group_from_regexp(r"(\d+\:\d{2})", fort_text, 1)
-    re.purge()
-    searches_partial_time = get_group_from_regexp(r"(\d+)", fort_text, 1)
+    searches_full_time = get_group_from_regexp(r'(\d+\:\d{2})', fort_text, 1)
+    searches_partial_time = get_group_from_regexp(r'(\d+)', fort_text, 1)
     time = searches_full_time or searches_partial_time
     if time:
-        text_without_command = re.sub(r"^/fort\s*", "", fort_text)
+        text_without_command = re.sub(r'^/fort\s*', '', fort_text)
         place = remove_time_from_text(time, text_without_command)
         if time == searches_partial_time:
             time += ':00'
@@ -64,16 +62,16 @@ def start(bot, update):
     chat_id, chat_type, user_id, text, message = supportmethods.extract_update_info(update)
     supportmethods.delete_message(chat_id, message.message_id, bot)
     if support.are_banned(user_id, chat_id):
-        profdumbledorebot.global_vars.message_queue.append("El usuario ha sido baneado y no puede realizar esta acción.")
+        profdumbledorebot.global_vars.message_queue.append('El usuario ha sido baneado y no puede realizar esta acción.')
         return
     [ time, place ] = get_time_place(text)
     button_list = [[
-        InlineKeyboardButton(text="🏃 Voy", callback_data='fort_join'),
-        InlineKeyboardButton(text="+1", callback_data='fort_plusone'),
-        InlineKeyboardButton(text="-1", callback_data='fort_minsone')
+        InlineKeyboardButton(text='🏃 Voy', callback_data='fort_join'),
+        InlineKeyboardButton(text='+1', callback_data='fort_plusone'),
+        InlineKeyboardButton(text='-1', callback_data='fort_minsone')
     ],[
-        InlineKeyboardButton(text="⌛ Tardaré", callback_data='fort_late'),
-        InlineKeyboardButton(text="✔ Ya estoy", callback_data='fort_there')
+        InlineKeyboardButton(text='⌛ Tardaré', callback_data='fort_late'),
+        InlineKeyboardButton(text='✔ Ya estoy', callback_data='fort_there')
     ]]
     user = user_handler.get_user(user_id)
     bot.sendMessage(
