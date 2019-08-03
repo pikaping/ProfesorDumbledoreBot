@@ -696,3 +696,25 @@ def create_needed_paths():
             os.makedirs(directory)
 
     return True
+
+
+def get_profession_icon(profession):
+    if profession == model.Professions.PROFESSOR.value:
+        return '📚'
+    if profession == model.Professions.AUROR.value:
+        return '⚔'
+    if profession == model.Professions.MAGIZOOLOGIST.value:
+        return '🐾'
+    return '❓'
+
+
+def get_house_icon(house):
+    if house == model.Houses.GRYFFINDOR.value:
+        return '❤'
+    if house == model.Houses.SLYTHERIN.value:
+        return '💚'
+    if house == model.Houses.RAVENCLAW.value:
+        return '💙'
+    if house == model.Houses.HUFFLEPUFF.value:
+        return '💛'
+    return '❓'
