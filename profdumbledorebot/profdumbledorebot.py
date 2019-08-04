@@ -206,7 +206,7 @@ def whois_cmd(bot, update, args=None):
         return
 
     text_friend_id = ("\nSu Clave de Amigo: `{}`".format(user.friend_id)
-                      if user_sql.has_fc(user_id) and user.fclists is not False
+                      if user_sql.has_fc(user_id) and user.fclists is not False and user.friend_id is not None
                       else "")
 
     output = support.replace(replied_id) + text_friend_id
