@@ -97,7 +97,8 @@ def start_bot():
 
     dispatcher.add_error_handler(support.error_callback)
 
-    
+    dispatcher.add_handler(CommandHandler(['midepollas','flipaos'], profdumbledorebot.ranking_spain_cmd, Filters.chat(int(config["telegram"]["spain_id"])) & Filters.user(int(config["telegram"]["ranking_admin_id"]))))
+
     dispatcher.add_handler(CommandHandler('ping', profdumbledorebot. ping_cmd))
     dispatcher.add_handler(CommandHandler(['fclist','fc'], profdumbledorebot.fclist_cmd, Filters.group))
     dispatcher.add_handler(CommandHandler(['help','start'], profdumbledorebot.start_cmd, pass_args=True))

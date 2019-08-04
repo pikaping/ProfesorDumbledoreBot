@@ -64,7 +64,7 @@ def has_fc(user_id):
     try:
         session = get_session()
         fc = get_unique_from_query(session.query(User.friend_id).filter(User.id == user_id))
-        if fc:
+        if fc[0]:
             return True
         return False
     finally:
@@ -86,6 +86,15 @@ def update_fclist(user_id):
         session = get_session()
         user = get_unique_from_query(session.query(User).filter(User.id == user_id))
         user.fclists = not user.fclists
+        session.commit()
+        session.close()
+
+
+def update_ranking(user_id):
+    with LOCK:
+        session = get_session()
+        user = get_unique_from_query(session.query(User).filter(User.id == user_id))
+        user.ranking = not user.ranking
         session.commit()
         session.close()
 
