@@ -343,7 +343,8 @@ def ranking_spain_cmd(bot, update):
                 count += 1
                 if count == 100:
                     break
-    sorted_user = sorted(user_list, key=lambda x: x.split(' - ')[2], reverse=True)
+
+    sorted_user = sorted(user_list, key=lambda x: int(x.split(' - ')[2]), reverse=True)
     if count >= 1:
         sorted_user[0] = "\n🥇 " + sorted_user[0] + "\n"
     if count >= 2:
