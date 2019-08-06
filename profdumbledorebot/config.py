@@ -67,6 +67,9 @@ news_id=####
 news_url=####
 help_url=####
 staff_id=####
+spain_id=####
+ranking_id=####
+ranking_admin_id=####
 bot_alias=ProfesorDumbledoreBot
 """)
 
