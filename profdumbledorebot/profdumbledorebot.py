@@ -341,8 +341,6 @@ def ranking_spain_cmd(bot, update):
                 ))
 
                 count += 1
-                if count == 100:
-                    break
 
     sorted_user = sorted(user_list, key=lambda x: int(x.split(' - ')[2]), reverse=True)
     if count >= 1:
@@ -353,7 +351,7 @@ def ranking_spain_cmd(bot, update):
         sorted_user[2] = "🥉 " + sorted_user[2] + "\n"
     bot.sendMessage(
         chat_id=int(config["telegram"]["ranking_id"]),
-        text=text + '\n'.join(sorted_user),
+        text=text + '\n'.join(sorted_user[:100]),
         parse_mode=telegram.ParseMode.MARKDOWN
     )
 
