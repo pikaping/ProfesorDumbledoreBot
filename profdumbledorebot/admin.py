@@ -24,7 +24,7 @@
 import logging
 import re
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import telegram
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Bot
@@ -160,7 +160,7 @@ def add_url_cmd(bot, update, args=None):
         adm_sql.add_tlink(chat_id, enlace)
         bot.sendMessage(
             chat_id=chat_id,
-            text="👌 Establecido el link del grupo a {}.".format(ensure_escaped(enlace)),
+            text="👌 Establecido el link del grupo a {}.".format(support.ensure_escaped(enlace)),
             parse_mode=telegram.ParseMode.MARKDOWN)
     else:
         adm_sql.add_tlink(chat_id, None)
@@ -246,43 +246,91 @@ kickuv_last_check = {}
 kicklvl_last_check = {}
 kickmsg_last_check = {}
 kickold_last_check = {}
+games_last_check = {}
+ranking_check = {}
+fort_alert_check = {}
 
-
-def last_run(chat_id, cmdtype):
+def last_run(id, cmdtype):
     if cmdtype is 'uv':
-        if str(chat_id) in uv_last_check:
-            lastpress = uv_last_check[str(chat_id)]
+        if str(id) in uv_last_check:
+            lastpress = uv_last_check[str(id)]
         else:
             lastpress = None
-        uv_last_check[str(chat_id)] = datetime.now()
+        uv_last_check[str(id)] = datetime.now()
     elif cmdtype is 'kickuv':
 
-        if str(chat_id) in kickuv_last_check:
-            lastpress = kickuv_last_check[str(chat_id)]
+        if str(id) in kickuv_last_check:
+            lastpress = kickuv_last_check[str(id)]
         else:
             lastpress = None
-        kickuv_last_check[str(chat_id)] = datetime.now()
+        kickuv_last_check[str(id)] = datetime.now()
     elif cmdtype is 'kicklvl':
 
-        if str(chat_id) in kicklvl_last_check:
-            lastpress = kicklvl_last_check[str(chat_id)]
+        if str(id) in kicklvl_last_check:
+            lastpress = kicklvl_last_check[str(id)]
         else:
             lastpress = None
-        kicklvl_last_check[str(chat_id)] = datetime.now()
+        kicklvl_last_check[str(id)] = datetime.now()
     elif cmdtype is 'kickmsg':
 
-        if str(chat_id) in kickmsg_last_check:
-            lastpress = kickmsg_last_check[str(chat_id)]
+        if str(id) in kickmsg_last_check:
+            lastpress = kickmsg_last_check[str(id)]
         else:
             lastpress = None
-        kickmsg_last_check[str(chat_id)] = datetime.now()
+        kickmsg_last_check[str(id)] = datetime.now()
     elif cmdtype is 'kickold':
 
-        if str(chat_id) in kickold_last_check:
-            lastpress = kickold_last_check[str(chat_id)]
+        if str(id) in kickold_last_check:
+            lastpress = kickold_last_check[str(id)]
         else:
             lastpress = None
-        kickold_last_check[str(chat_id)] = datetime.now()
+        kickold_last_check[str(id)] = datetime.now()
+    elif cmdtype is 'games':
+        if str(id) in games_last_check:
+            lastpress = games_last_check[str(id)]
+        else:
+            lastpress = None
+            games_last_check[str(id)] = datetime.now()
+
+        if lastpress is not None:
+            difftime = datetime.now() - lastpress
+            seconds = difftime.total_seconds()
+            minutes = divmod(seconds, 60)[0]
+            if minutes == 0:
+                return True
+            else:
+                games_last_check[str(id)] = datetime.now()
+                return False
+    elif cmdtype is 'ranking':
+        if str(id) in ranking_check:
+            lastpress = ranking_check[str(id)]
+        else:
+            lastpress = None
+            ranking_check[str(id)] = datetime.now()
+
+        if lastpress is not None:
+            difftime = datetime.now() - lastpress
+            if difftime.days == 0:
+                return True
+            else:
+                ranking_check[str(id)] = datetime.now()
+                return False
+    elif cmdtype is 'fort_alert':
+        if str(id) in fort_alert_check:
+            lastpress = fort_alert_check[str(id)]
+        else:
+            lastpress = None
+            fort_alert_check[str(id)] = datetime.now()
+
+        if lastpress is not None:
+            difftime = datetime.now() - lastpress
+            seconds = difftime.total_seconds()
+            minutes = divmod(seconds, 300)[0]
+            if minutes == 0:
+                return True
+            else:
+                fort_alert_check[str(id)] = datetime.now()
+                return False
 
     if lastpress is not None:
         difftime = datetime.now() - lastpress
@@ -518,10 +566,8 @@ def warn_cmd(bot, update, args=None):
                 return
         if args[0].isdigit():
             user = get_user(args[0])
-            if user and user.trainer_name:
-                name = user.trainer_name
-            elif user and user.username:
-                name = user.username
+            if user and user.alias:
+                name = user.alias
             else:
                 name = args[0]
             replied_user = args[0]
@@ -531,7 +577,7 @@ def warn_cmd(bot, update, args=None):
             user = get_user_by_name(args[0])
             del args[0]
             if user:
-                name = user.trainer_name
+                name = user.alias
                 replied_user = user.id
             else:
                 return
@@ -701,10 +747,8 @@ def kick_cmd(bot, update, args=None):
                 return
         if args[0].isdigit():
             user = get_user(args[0])
-            if user and user.trainer_name:
-                name = user.trainer_name
-            elif user and user.username:
-                name = user.username
+            if user and user.alias:
+                name = user.alias
             else:
                 name = args[0]
             replied_user = args[0]
@@ -714,7 +758,7 @@ def kick_cmd(bot, update, args=None):
             user = get_user_by_name(args[0])
             del args[0]
             if user:
-                name = user.trainer_name
+                name = user.alias
                 replied_user = user.id
             else:
                 return
@@ -842,10 +886,8 @@ def ban_cmd(bot, update, args=None):
                 return
         if args[0].isdigit():
             user = get_user(args[0])
-            if user and user.trainer_name:
-                name = user.trainer_name
-            elif user and user.username:
-                name = user.username
+            if user and user.alias:
+                name = user.alias
             else:
                 name = args[0]
             replied_user = args[0]
@@ -855,7 +897,7 @@ def ban_cmd(bot, update, args=None):
             user = get_user_by_name(args[0])
             del args[0]
             if user:
-                name = user.trainer_name
+                name = user.alias
                 replied_user = user.id
             else:
                 return
@@ -981,10 +1023,8 @@ def unban_cmd(bot, update, args=None):
                 return
         if args[0].isdigit():
             user = get_user(args[0])
-            if user and user.trainer_name:
-                name = user.trainer_name
-            elif user and user.username:
-                name = user.username
+            if user and user.alias:
+                name = user.alias
             else:
                 name = args[0]
             replied_user = args[0]
@@ -994,7 +1034,7 @@ def unban_cmd(bot, update, args=None):
             user = get_user_by_name(args[0])
             del args[0]
             if user:
-                name = user.trainer_name
+                name = user.alias
                 replied_user = user.id
             else:
                 return
@@ -1080,3 +1120,334 @@ def unban_cmd(bot, update, args=None):
                     text="ℹ️ {}\n👤 {} ha sido desbaneado".format(chat.title, replace_pogo),
                     parse_mode=telegram.ParseMode.MARKDOWN)
 
+
+@run_async
+def mute_cmd(bot, update, args=None):
+    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    support.delete_message(chat_id, message.message_id, bot)
+
+    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
+        return
+
+    name = ""
+    if message.reply_to_message is not None:
+        if message.reply_to_message.forward_from is not None:
+            if args is not None and len(args)!=0 and args[0] is "f":
+                replied_user = message.reply_to_message.from_user.id
+                name = message.reply_to_message.from_user.first_name
+                del args[0]
+            else:
+                replied_user = message.reply_to_message.forward_from.id
+                name = message.reply_to_message.forward_from.first_name
+        elif message.reply_to_message.from_user is not None:
+            replied_user = message.reply_to_message.from_user.id
+            name = message.reply_to_message.from_user.first_name
+        logging.debug('%s', args)
+    elif args is not None and len(args) > 0:
+        if len(args) > 1 and args[0][0] is '-':
+            if adm_sql.get_linked_admin(chat_id, args[0]):
+                chat_id = args[0]
+                del args[0]
+            else:
+                bot.sendMessage(
+                    chat_id=chat_id,
+                    text="❌ Ese grupo no esta vinculado a este",
+                    parse_mode=telegram.ParseMode.MARKDOWN)
+                return
+        if args[0].isdigit():
+            user = get_user(args[0])
+            if user and user.alias:
+                name = user.alias
+            else:
+                name = args[0]
+            replied_user = args[0]
+            del args[0]
+        else:
+            args[0] = re.sub("@", "", args[0])
+            user = get_user_by_name(args[0])
+            del args[0]
+            if user:
+                name = user.alias
+                replied_user = user.id
+            else:
+                return
+    else:
+        return
+
+    if args is not None and len(args) > 0:
+        r = re.search(r'^\d+[smhd]$', args[0])
+        print(args)
+        if r is not None:
+            if args[0][-1].lower() == "s":
+                time = datetime.now() + timedelta(seconds=int(args[0][:-1]))
+            elif args[0][-1].lower() == "m":
+                time = datetime.now() + timedelta(minutes=int(args[0][:-1]))
+            elif args[0][-1].lower() == "h":
+                time = datetime.now() + timedelta(hours=int(args[0][:-1]))
+            elif args[0][-1].lower() == "d":
+                time = datetime.now() + timedelta(days=int(args[0][:-1]))
+            try:
+                if args[1].lower() == "media":
+                    text = True
+            except:
+                text = False
+        elif args[0].lower() == "media":
+            text = True
+            try:
+                if args[1][-1].lower() == "s":
+                    time = datetime.now() + timedelta(seconds=int(args[1][:-1]))
+                elif args[1][-1].lower() == "m":
+                    time = datetime.now() + timedelta(minutes=int(args[1][:-1]))
+                elif args[1][-1].lower() == "h":
+                    time = datetime.now() + timedelta(hours=int(args[1][:-1]))
+                elif args[1][-1].lower() == "d":
+                    time = datetime.now() + timedelta(days=int(args[1][:-1]))
+            except:
+                time = None
+    else:
+        text = False
+        time = None
+
+    if adm_sql.get_admin(chat_id) is not None:
+        groups = adm_sql.get_all_groups(chat_id)
+    else:
+        groups = None
+
+    if groups is None:
+        try:
+            bot.restrict_chat_member(chat_id, replied_user, until_date=time, can_send_messages=text, can_send_media_messages=False, can_send_other_messages=False, can_add_web_page_previews=False)
+            output = "👌 Mago {} muteado correctamente!".format(name)
+            keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("Desmutear", callback_data='rm_mute({})'.format(replied_user))]])
+            bot.sendMessage(
+                chat_id=chat_id,
+                text=output,
+                parse_mode=telegram.ParseMode.MARKDOWN,
+                reply_markup=keyboard)
+        except:
+            bot.sendMessage(
+                chat_id=chat_id,
+                text="❌ No he podido mutear al Mago. Puede que sea administrador.",
+                parse_mode=telegram.ParseMode.MARKDOWN)
+            return
+
+        ladmin = adm_sql.get_particular_admin(chat_id)
+        if ladmin is not None and ladmin.ejections:
+            chat = bot.get_chat(chat_id)
+            admin = adm_sql.get_admin_from_linked(chat_id)
+            if admin is not None and admin.ejections and admin.admin_bot:
+                config = get_config()
+                adm_bot = Bot(token=config["telegram"]["admin_token"])
+                replace_pogo = support.replace(replied_user, name)
+                adm_bot.sendMessage(
+                    chat_id=admin.id,
+                    text="ℹ️ {}\n👤 {} ha sido muteado".format(chat.title, replace_pogo),
+                    parse_mode=telegram.ParseMode.MARKDOWN)
+            elif admin is not None and admin.ejections :
+                replace_pogo = support.replace(replied_user, name)
+                bot.sendMessage(
+                    chat_id=admin.id,
+                    text="ℹ️ {}\n👤 {} ha sido muteado".format(chat.title, replace_pogo),
+                    parse_mode=telegram.ParseMode.MARKDOWN)
+    else:
+        for group in groups:
+            chat_id = group.linked_id
+            try:
+                bot.restrict_chat_member(chat_id, replied_user, until_date=time, can_send_messages=text, can_send_media_messages=False, can_send_other_messages=False, can_add_web_page_previews=False)
+                output = "👌 Mago {} muteado correctamente!".format(name)
+                keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("Desmutear", callback_data='rm_mute({})'.format(replied_user))]])
+                bot.sendMessage(
+                    chat_id=chat_id, 
+                    text=output,
+                    parse_mode=telegram.ParseMode.MARKDOWN,
+                    reply_markup=keyboard)
+            except:
+                bot.sendMessage(
+                    chat_id=chat_id,
+                    text="❌ No he podido mutear al Mago. Puede que sea administrador.",
+                    parse_mode=telegram.ParseMode.MARKDOWN)
+                return
+
+            ladmin = adm_sql.get_particular_admin(chat_id)
+            if ladmin is not None and ladmin.ejections:
+                chat = bot.get_chat(chat_id)
+                admin = adm_sql.get_admin_from_linked(chat_id)
+                if admin is not None and admin.ejections and admin.admin_bot:
+                    config = get_config()
+                    adm_bot = Bot(token=config["telegram"]["admin_token"])
+                    replace_pogo = support.replace(replied_user, name)
+                    adm_bot.sendMessage(
+                        chat_id=admin.id,
+                        text="ℹ️ {}\n👤 {} ha sido muteado".format(chat.title, replace_pogo),
+                        parse_mode=telegram.ParseMode.MARKDOWN)
+                elif admin is not None and admin.ejections :
+                    replace_pogo = support.replace(replied_user, name)
+                    bot.sendMessage(
+                        chat_id=admin.id,
+                        text="ℹ️ {}\n👤 {} ha sido muteado".format(chat.title, replace_pogo),
+                        parse_mode=telegram.ParseMode.MARKDOWN)
+
+
+@run_async
+def unmute_cmd(bot, update, args=None):
+    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    support.delete_message(chat_id, message.message_id, bot)
+
+    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
+        return
+
+    name = ""
+    if message.reply_to_message is not None:
+        if message.reply_to_message.forward_from is not None:
+            if args is not None and len(args)!=0 and args[0] is "f":
+                replied_user = message.reply_to_message.from_user.id
+                name = message.reply_to_message.from_user.first_name
+                del args[0]
+            else:
+                replied_user = message.reply_to_message.forward_from.id
+                name = message.reply_to_message.forward_from.first_name
+        elif message.reply_to_message.from_user is not None:
+            replied_user = message.reply_to_message.from_user.id
+            name = message.reply_to_message.from_user.first_name
+        logging.debug('%s', args)
+    elif args is not None and len(args) > 0:
+        if len(args) > 1 and args[0][0] is '-':
+            if adm_sql.get_linked_admin(chat_id, args[0]):
+                chat_id = args[0]
+                del args[0]
+            else:
+                bot.sendMessage(
+                    chat_id=chat_id,
+                    text="❌ Ese grupo no esta vinculado a este",
+                    parse_mode=telegram.ParseMode.MARKDOWN)
+                return
+        if args[0].isdigit():
+            user = get_user(args[0])
+            if user and user.alias:
+                name = user.alias
+            else:
+                name = args[0]
+            replied_user = args[0]
+            del args[0]
+        else:
+            args[0] = re.sub("@", "", args[0])
+            user = get_user_by_name(args[0])
+            del args[0]
+            if user:
+                name = user.alias
+                replied_user = user.id
+            else:
+                return
+    else:
+        return
+
+    if args is not None and len(args) > 0:
+        r = re.search(r'^\d+[smhd]$', args[0])
+        print(args)
+        if r is not None:
+            if args[0][-1].lower() == "s":
+                time = datetime.now() + timedelta(seconds=int(args[0][:-1]))
+            elif args[0][-1].lower() == "m":
+                time = datetime.now() + timedelta(minutes=int(args[0][:-1]))
+            elif args[0][-1].lower() == "h":
+                time = datetime.now() + timedelta(hours=int(args[0][:-1]))
+            elif args[0][-1].lower() == "d":
+                time = datetime.now() + timedelta(days=int(args[0][:-1]))
+            try:
+                if args[1].lower() == "media":
+                    text = True
+            except:
+                text = False
+        elif args[0].lower() == "media":
+            text = True
+            try:
+                if args[1][-1].lower() == "s":
+                    time = datetime.now() + timedelta(seconds=int(args[1][:-1]))
+                elif args[1][-1].lower() == "m":
+                    time = datetime.now() + timedelta(minutes=int(args[1][:-1]))
+                elif args[1][-1].lower() == "h":
+                    time = datetime.now() + timedelta(hours=int(args[1][:-1]))
+                elif args[1][-1].lower() == "d":
+                    time = datetime.now() + timedelta(days=int(args[1][:-1]))
+            except:
+                time = None
+    else:
+        text = False
+        time = None
+
+    if adm_sql.get_admin(chat_id) is not None:
+        groups = adm_sql.get_all_groups(chat_id)
+    else:
+        groups = None
+
+    if groups is None:
+        try:
+            bot.restrict_chat_member(chat_id, replied_user, until_date=time, can_send_messages=text, can_send_media_messages=False, can_send_other_messages=False, can_add_web_page_previews=False)
+            output = "👌 Mago {} muteado correctamente!".format(name)
+            keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("Desmutear", callback_data='rm_mute({})'.format(replied_user))]])
+            bot.sendMessage(
+                chat_id=chat_id,
+                text=output,
+                parse_mode=telegram.ParseMode.MARKDOWN,
+                reply_markup=keyboard)
+        except:
+            bot.sendMessage(
+                chat_id=chat_id,
+                text="❌ No he podido mutear al Mago. Puede que sea administrador.",
+                parse_mode=telegram.ParseMode.MARKDOWN)
+            return
+
+        ladmin = adm_sql.get_particular_admin(chat_id)
+        if ladmin is not None and ladmin.ejections:
+            chat = bot.get_chat(chat_id)
+            admin = adm_sql.get_admin_from_linked(chat_id)
+            if admin is not None and admin.ejections and admin.admin_bot:
+                config = get_config()
+                adm_bot = Bot(token=config["telegram"]["admin_token"])
+                replace_pogo = support.replace(replied_user, name)
+                adm_bot.sendMessage(
+                    chat_id=admin.id,
+                    text="ℹ️ {}\n👤 {} ha sido muteado".format(chat.title, replace_pogo),
+                    parse_mode=telegram.ParseMode.MARKDOWN)
+            elif admin is not None and admin.ejections :
+                replace_pogo = support.replace(replied_user, name)
+                bot.sendMessage(
+                    chat_id=admin.id,
+                    text="ℹ️ {}\n👤 {} ha sido muteado".format(chat.title, replace_pogo),
+                    parse_mode=telegram.ParseMode.MARKDOWN)
+    else:
+        for group in groups:
+            chat_id = group.linked_id
+            try:
+                bot.restrict_chat_member(chat_id, replied_user, until_date=time, can_send_messages=text, can_send_media_messages=False, can_send_other_messages=False, can_add_web_page_previews=False)
+                output = "👌 Mago {} muteado correctamente!".format(name)
+                keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("Desmutear", callback_data='rm_mute({})'.format(replied_user))]])
+                bot.sendMessage(
+                    chat_id=chat_id, 
+                    text=output,
+                    parse_mode=telegram.ParseMode.MARKDOWN,
+                    reply_markup=keyboard)
+            except:
+                bot.sendMessage(
+                    chat_id=chat_id,
+                    text="❌ No he podido mutear al Mago. Puede que sea administrador.",
+                    parse_mode=telegram.ParseMode.MARKDOWN)
+                return
+
+            ladmin = adm_sql.get_particular_admin(chat_id)
+            if ladmin is not None and ladmin.ejections:
+                chat = bot.get_chat(chat_id)
+                admin = adm_sql.get_admin_from_linked(chat_id)
+                if admin is not None and admin.ejections and admin.admin_bot:
+                    config = get_config()
+                    adm_bot = Bot(token=config["telegram"]["admin_token"])
+                    replace_pogo = support.replace(replied_user, name)
+                    adm_bot.sendMessage(
+                        chat_id=admin.id,
+                        text="ℹ️ {}\n👤 {} ha sido muteado".format(chat.title, replace_pogo),
+                        parse_mode=telegram.ParseMode.MARKDOWN)
+                elif admin is not None and admin.ejections :
+                    replace_pogo = support.replace(replied_user, name)
+                    bot.sendMessage(
+                        chat_id=admin.id,
+                        text="ℹ️ {}\n👤 {} ha sido muteado".format(chat.title, replace_pogo),
+                        parse_mode=telegram.ParseMode.MARKDOWN)

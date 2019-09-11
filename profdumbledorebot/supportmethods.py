@@ -39,7 +39,8 @@ from profdumbledorebot.mwt import MWT
 from profdumbledorebot.sql.admin import get_particular_admin, get_admin
 from profdumbledorebot.sql.news import get_verified_providers, is_news_subscribed
 from profdumbledorebot.sql.settings import get_join_settings, get_nanny_settings, get_group_settings, set_nanny
-from profdumbledorebot.sql.user import get_user, get_real_user
+from profdumbledorebot.sql.user import get_user, get_real_user, get_user_by_name
+from profdumbledorebot.sql.group import set_plant_alerted, delete_plant, get_poi
 from profdumbledorebot.sql.welcome import get_welcome_settings
 
 MATCH_MD = re.compile(r'\*(.*?)\*|'
@@ -111,12 +112,59 @@ def replace(user_id, name=None, admin=False, frce=False):
 
     return replace_pogo
 
+def replace_plants(plant_type):
+    plant = ""
+    if plant_type == 0:
+        plant = "You shouldn't be seeing this 👀"
+    elif plant_type == 1:
+        plant = "Ajenjo"
+    elif plant_type == 2:
+        plant = "Campanilla de invierno"
+    elif plant_type == 3:
+        plant = "Grano de sopóforo"
+    elif plant_type == 4:
+        plant = "Raíz de jengibre"
+    elif plant_type == 5:
+        plant = "Coclearia"
+    elif plant_type == 6:
+        plant = "Raíz de valeriana"
+    elif plant_type == 7:
+        plant = "Raíz amarga"
+    elif plant_type == 8:
+        plant = "Ligústico"
+    elif plant_type == 9:
+        plant = "Tármica"
+    elif plant_type == 10:
+        plant = "Hongo saltarín"
+    return plant
 
 class DeleteContext:
   def __init__(self, chat_id, message_id):
     self.chat_id = chat_id
     self.message_id = message_id
 
+class SendContext:
+  def __init__(self, chat_id, message_text):
+    self.chat_id = chat_id
+    self.message_text = message_text
+
+class AlertPlantContext:
+  def __init__(self, chat_id, message_text, alerted, plant_id):
+    self.chat_id = chat_id
+    self.message_text = message_text
+    self.alerted = alerted
+    self.plant_id = plant_id
+
+class DeletePlantContext:
+  def __init__(self, plant_id):
+    self.plant_id = plant_id
+
+class AlertFortressContext:
+  def __init__(self, chat_id, message_text, message_id, poi_id):
+    self.chat_id = chat_id
+    self.message_text = message_text
+    self.message_id = message_id
+    self.poi_id = poi_id
 
 def callback_delete(bot, job):
     try:
@@ -128,6 +176,87 @@ def callback_delete(bot, job):
     except:
         return
 
+def callback_send(bot, job):
+    try:
+        bot.sendMessage(
+            chat_id=job.context.chat_id, 
+            text=job.context.message_text,
+            parse_mode=telegram.ParseMode.MARKDOWN,
+            disable_web_page_preview=True
+        )
+        return
+    except:
+        return
+
+def callback_AlertPlant(bot, job):
+    try:
+        if job.context.alerted:
+            set_plant_alerted(job.context.plant_id)
+        bot.sendMessage(
+            chat_id=job.context.chat_id, 
+            text=job.context.message_text,
+            parse_mode=telegram.ParseMode.MARKDOWN,
+            disable_web_page_preview=True
+        )
+        return
+    except:
+        return
+
+def callback_DeletePlant(bot, job):
+    try:
+        try:
+            alert15PlantJob = job_queue.get_jobs_by_name("{}_plantJob15".format(job.context.plant_id))
+            alert15PlantJob[0].schedule_removal()
+        except:
+            pass
+        try:
+            alertPlantJob = job_queue.get_jobs_by_name("{}_plantJob".format(job.context.plant_id))
+            alertPlantJob[0].schedule_removal()
+        except:
+            pass
+        delete_plant(job.context.plant_id)
+        return
+    except:
+        return
+
+#Zero width char:​
+def callback_AlertFortress(bot, job):
+    try:
+        poi_id = job.context.poi_id
+        poi = get_poi(poi_id)
+        lat = poi.latitude
+        lon = poi.longitude
+        button_list = [
+            [(InlineKeyboardButton("🙋‍♀️ Voy", callback_data=f'fort_yes_{poi.id}')),
+            (InlineKeyboardButton("✅ Estoy", callback_data=f'fort_here_{poi.id}')),
+            (InlineKeyboardButton("🕒 Tardo", callback_data=f'fort_late_{poi.id}')),
+            (InlineKeyboardButton("🙅‍♀️ No voy", callback_data=f'fort_no_{poi.id}'))],
+            [(InlineKeyboardButton("📍 Ubicación", callback_data=f'fort_ubi_{poi.id}')),
+            (InlineKeyboardButton("⚠️​ Aviso", callback_data=f'fort_alert_{poi.id}'))]
+        ]
+        fort_message = bot.edit_message_reply_markup(
+            chat_id=job.context.chat_id,
+            message_id=job.context.message_id,
+            reply_markup=InlineKeyboardMarkup(button_list)
+        )
+        ent = fort_message.parse_entities(["mention"])
+        for mention in ent:
+            username = fort_message.parse_entity(mention)
+            string = r'\n(🙋‍♀️|✅|🕒|🙅‍♀️) (🍮|⚔|🐾|📚) (\d|\d\d) {}'.format(username)
+            search = re.search(string, fort_message.text)
+            if search.group(1) == "🙅‍♀️":
+                pass
+            user = get_user_by_name(username[1:])
+            bot.sendMessage(
+                chat_id=user.id,
+                text=job.context.message_text,
+                parse_mode=telegram.ParseMode.MARKDOWN,
+                disable_web_page_preview=True
+            )
+        return
+    except:
+        return
+
 def delete_message(chat_id, message_id, bot):
     try:
         bot.deleteMessage(chat_id=chat_id, message_id=message_id)
@@ -135,6 +264,17 @@ def delete_message(chat_id, message_id, bot):
 
     except:
         return False
+
+def message_url(message, message_id, text):
+    if message.chat.username:
+        chat_username = message.chat.username
+        chat_text = f"[{text}](https://t.me/{chat_username}/{message_id})"
+    elif str(message.chat.id)[:4] == "-100":
+        chat_username = "c/" + str(message.chat.id)[4:]
+        chat_text = f"[{text}](https://t.me/{chat_username}/{message_id})"
+    else:
+        chat_text = f"{text}"
+    return chat_text
 
 
 def build_keyboard(buttons):
@@ -403,10 +543,6 @@ def get_settings_keyboard(chat_id, keyboard="main"):
     #2.GROUP SETTINGS
     elif keyboard == "general":
         group = get_group_settings(chat_id)
-        if group.jokes == 1:
-            jokes_text = "✅ Chistes"
-        else:
-            jokes_text = "▪️ Chistes"
         if group.games == 1:
             games_text = "✅ Juegos"
         else:
@@ -433,7 +569,6 @@ def get_settings_keyboard(chat_id, keyboard="main"):
             warn_text = "Limite de warns: 100"
 
         settings_keyboard = [
-            [InlineKeyboardButton(jokes_text, callback_data='settings_general_jokes')],
             [InlineKeyboardButton(games_text, callback_data='settings_general_games')],
             [InlineKeyboardButton(hard_text, callback_data='settings_general_hard')],
             [InlineKeyboardButton(reply_on_group_text, callback_data='settings_general_reply')],
@@ -696,3 +831,8 @@ def create_needed_paths():
             os.makedirs(directory)
 
     return True
+
+def ensure_escaped(username):
+    if username.find("_") != -1 and username.find("\\_") == -1:
+        username = username.replace("_","\\_")
+    return username

@@ -50,7 +50,7 @@ def get_real_user(user_id):
         session.close()
 
 
-@MWT(timeout=60*60)
+#@MWT(timeout=60*60)
 def get_user_by_name(username):
     try:    
         session = get_session()
@@ -165,3 +165,23 @@ def set_fc(fc, user_id):
         session.commit()
         session.close()
 
+def update_user_points(user_id, points=0, read_only=False):
+    with LOCK:
+        try:
+            if read_only:
+                session = get_session()
+                user = get_unique_from_query(session.query(User).filter(User.id == user_id))
+                if user.games_points == None:
+                    user.games_points = 0
+                return user.games_points
+            else:
+                session = get_session()
+                user = get_unique_from_query(session.query(User).filter(User.id == user_id))
+                if user.games_points == None:
+                    user.games_points = 0
+                if user.games_points == 0:
+                    return
+                user.games_points += points
+        finally:
+            session.commit()
+            session.close()

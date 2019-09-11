@@ -27,6 +27,10 @@ import os
 import signal
 import sys
 from logging.handlers import TimedRotatingFileHandler
+from datetime import timedelta
+from time import time
+import pickle
+from threading import Event
 
 from telegram.ext import Updater, CommandHandler, MessageHandler, InlineQueryHandler, CallbackQueryHandler, Filters
 
@@ -42,7 +46,70 @@ import profdumbledorebot.rules as rules
 import profdumbledorebot.settings as settings
 import profdumbledorebot.supportmethods as support
 import profdumbledorebot.tablas as tablas
+import profdumbledorebot.games as games
+import profdumbledorebot.greenhouses as greenhouses
+import profdumbledorebot.welcome as welcome
+import profdumbledorebot.sighting as sighting
+import profdumbledorebot.fortress as fortress
+import profdumbledorebot.nelu as nelu
 
+JOBS_PICKLE = 'job_tuples.pickle'
+
+def load_jobs(jq):
+    now = time()
+
+    with open(JOBS_PICKLE, 'rb') as fp:
+        while True:
+            try:
+                next_t, job = pickle.load(fp)
+            except EOFError:
+                break  # Loaded all job tuples
+
+            # Create threading primitives
+            enabled = job._enabled
+            removed = job._remove
+
+            job._enabled = Event()
+            job._remove = Event()
+
+            if enabled:
+                job._enabled.set()
+
+            if removed:
+                job._remove.set()
+
+            next_t -= now  # Convert from absolute to relative time
+
+            jq._put(job, next_t)
+
+def save_jobs(jq):
+    if jq:
+        job_tuples = jq._queue.queue
+    else:
+        job_tuples = []
+
+    with open(JOBS_PICKLE, 'wb') as fp:
+        for next_t, job in job_tuples:
+            # Back up objects
+            _job_queue = job._job_queue
+            _remove = job._remove
+            _enabled = job._enabled
+
+            # Replace un-pickleable threading primitives
+            job._job_queue = None  # Will be reset in jq.put
+            job._remove = job.removed  # Convert to boolean
+            job._enabled = job.enabled  # Convert to boolean
+
+            # Pickle the job
+            pickle.dump((next_t, job), fp)
+
+            # Restore objects
+            job._job_queue = _job_queue
+            job._remove = _remove
+            job._enabled = _enabled
+
+def save_jobs_job(job, context):
+    save_jobs(context.job_queue)
 
 def start_bot():
     signal.signal(signal.SIGINT, support.cleanup)
@@ -97,7 +164,32 @@ def start_bot():
 
     dispatcher.add_error_handler(support.error_callback)
 
+    #dispatcher.add_handler(CommandHandler('games', games.games_cmd, Filters.group))
+    #dispatcher.add_handler(CommandHandler('duel', games.duel_cmd, Filters.group))
+    dispatcher.add_handler(CallbackQueryHandler(games.btn, pattern=r"^g\*"))
+
+    dispatcher.add_handler(CommandHandler('nelu', nelu.nelu_cmd, Filters.group, pass_job_queue=True))
+    dispatcher.add_handler(CallbackQueryHandler(nelu.nelu_btn, pattern=r"^nelu_"))
+
+    dispatcher.add_handler(CommandHandler('fort', fortress.fort_list_cmd, Filters.user(int(config["telegram"]["ranking_admin_id"])) | Filters.user(int(config["telegram"]["saray"])) | Filters.user(int(config["telegram"]["ansett"])), pass_args=True))
+    dispatcher.add_handler(CallbackQueryHandler(fortress.fort_btn, pattern=r"^fort_", pass_job_queue=True))
+
+    dispatcher.add_handler(CommandHandler('avistamiento', sighting.sighting_cmd, Filters.user(int(config["telegram"]["ranking_admin_id"])) | Filters.user(int(config["telegram"]["saray"])) | Filters.user(int(config["telegram"]["ansett"]))))
+    dispatcher.add_handler(CallbackQueryHandler(sighting.sighting_btn, pattern=r"^sighting_"))
+
+    dispatcher.add_handler(CommandHandler('add_plant', greenhouses.add_ingredients_cmd, Filters.user(int(config["telegram"]["ranking_admin_id"])) | Filters.user(int(config["telegram"]["saray"])) | Filters.user(int(config["telegram"]["ansett"])), pass_args=True))
+    dispatcher.add_handler(CommandHandler('rm_plant', greenhouses.rem_plant_cmd, Filters.user(int(config["telegram"]["ranking_admin_id"])) | Filters.user(int(config["telegram"]["saray"])) | Filters.user(int(config["telegram"]["ansett"])), pass_args=True, pass_job_queue=True))
+    dispatcher.add_handler(CommandHandler('plantaciones', greenhouses.plants_list_cmd, Filters.user(int(config["telegram"]["ranking_admin_id"])) | Filters.user(int(config["telegram"]["saray"])) | Filters.user(int(config["telegram"]["ansett"]))))
+    dispatcher.add_handler(CallbackQueryHandler(greenhouses.gh_btn, pattern=r"^gh_", pass_job_queue=True))
+
+    dispatcher.add_handler(CommandHandler('add_poi', profdumbledorebot.add_poi_cmd, Filters.user(int(config["telegram"]["ranking_admin_id"])) | Filters.user(int(config["telegram"]["saray"])) | Filters.user(int(config["telegram"]["ansett"])), pass_args=True))
+    dispatcher.add_handler(CommandHandler('rm_poi', profdumbledorebot.rem_poi_cmd, Filters.user(int(config["telegram"]["ranking_admin_id"])) | Filters.user(int(config["telegram"]["saray"])) | Filters.user(int(config["telegram"]["ansett"])), pass_args=True))
+    dispatcher.add_handler(CommandHandler('poi_list', profdumbledorebot.poi_list_cmd, Filters.user(int(config["telegram"]["ranking_admin_id"])) | Filters.user(int(config["telegram"]["saray"])) | Filters.user(int(config["telegram"]["ansett"]))))
+    dispatcher.add_handler(CallbackQueryHandler(profdumbledorebot.poi_btn, pattern=r"^poi_"))
+
     dispatcher.add_handler(CommandHandler(['midepollas','flipaos'], profdumbledorebot.ranking_spain_cmd, Filters.chat(int(config["telegram"]["spain_id"])) & Filters.user(int(config["telegram"]["ranking_admin_id"]))))
+    dispatcher.add_handler(CommandHandler('puntos', profdumbledorebot.points_cmd, Filters.user(int(config["telegram"]["ranking_admin_id"])) | Filters.user(int(config["telegram"]["saray"])) | Filters.user(int(config["telegram"]["ansett"]))))
+    dispatcher.add_handler(CommandHandler('ranking', profdumbledorebot.private_ranking_cmd, Filters.user(int(config["telegram"]["ranking_admin_id"])) | Filters.user(int(config["telegram"]["saray"])) | Filters.user(int(config["telegram"]["ansett"]))))
 
     dispatcher.add_handler(CommandHandler('ping', profdumbledorebot. ping_cmd))
     dispatcher.add_handler(CommandHandler(['fclist','fc'], profdumbledorebot.fclist_cmd, Filters.group))
@@ -129,6 +221,7 @@ def start_bot():
     dispatcher.add_handler(CommandHandler('kick', admin.kick_cmd, Filters.group, pass_args=True))
     dispatcher.add_handler(CommandHandler('warn', admin.warn_cmd, Filters.group, pass_args=True))
     dispatcher.add_handler(CommandHandler('unban', admin.unban_cmd, Filters.group, pass_args=True))
+    #dispatcher.add_handler(CommandHandler('mute', admin.mute_cmd, Filters.group, pass_args=True))
     #dispatcher.add_handler(CommandHandler('unwarn', unwarn_cmd, Filters.group, pass_args=True))
 
     dispatcher.add_handler(CommandHandler('uv', admin.uv_cmd, Filters.group, pass_args=True))
@@ -149,6 +242,7 @@ def start_bot():
     dispatcher.add_handler(CommandHandler('settings', settings.settings, Filters.group))
     dispatcher.add_handler(CommandHandler('set_pince', nanny.set_nanny, Filters.group)) 
     dispatcher.add_handler(CommandHandler('set_welcome', settings.set_welcome, Filters.group))
+    dispatcher.add_handler(CommandHandler('test_welcome', welcome.test_welcome, Filters.group))
     dispatcher.add_handler(CommandHandler('set_zone', settings.set_zone, Filters.group, pass_args=True))
     dispatcher.add_handler(CommandHandler('set_cooldown', settings.set_cooldown, Filters.group, pass_args=True))
     dispatcher.add_handler(CommandHandler('set_maxmembers', settings.set_maxmembers, Filters.group, pass_args=True))
@@ -173,7 +267,17 @@ def start_bot():
     dispatcher.add_handler(CallbackQueryHandler(settings.settingsbutton))
     
     job_queue = updater.job_queue
+    job_queue.run_repeating(save_jobs_job, timedelta(minutes=1))
+    try:
+        load_jobs(job_queue)
+
+    except FileNotFoundError:
+        # First run
+        pass
+
     updater.start_polling(timeout=25)
     
+    save_jobs(job_queue)
+
     sys.exit(0)
 

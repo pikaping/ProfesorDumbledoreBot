@@ -9,3 +9,4 @@ profdumbledorebot/sql/ccmd.py
 build/*
 dist/*
 profdumbledorebot.egg-info/*
+profdumbledorebot/*.json

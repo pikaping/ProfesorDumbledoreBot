@@ -36,12 +36,13 @@ from profdumbledorebot.config import get_config
 from profdumbledorebot.model import ValidationRequiered, Houses, Professions
 from profdumbledorebot.sql.admin import get_particular_admin, get_admin_from_linked, get_admin, set_admin_settings
 from profdumbledorebot.sql.rules import has_rules
-from profdumbledorebot.sql.settings import get_join_settings
+from profdumbledorebot.sql.settings import get_join_settings, get_group_settings
 from profdumbledorebot.sql.support import are_banned
 from profdumbledorebot.sql.user import get_user
 from profdumbledorebot.sql.usergroup import exists_user_group, set_user_group, join_group, message_counter
 from profdumbledorebot.sql.welcome import get_welc_pref
 from profdumbledorebot.welcome import send_welcome
+from profdumbledorebot.games import games_cmd
 
 
 @run_async
@@ -357,6 +358,9 @@ def process_group_message(bot, update, job_queue):
         set_user_group(user_id, chat_id)
         
     message_counter(user_id, chat_id)
+    if get_group_settings(chat_id).games == True and (chat_type == 'supergroup' or chat_type == 'group'):
+        games_cmd(bot, update)
+
     if text is None or msg.photo is None:
         if msg and msg.document:
             nanny.process_gif(bot, update, job_queue)
@@ -391,8 +395,11 @@ def process_group_message(bot, update, job_queue):
 
     if text is not None and re.search("@admin(?!\w)", text) is not None:
         replace_pogo = support.replace(user_id, message.from_user.first_name)
+
+        chat_text = support.message_url(message, message.message_id, message.chat.title)
+
         message_text=("ℹ️ {}\n👤 {} ha enviado una alerta a los administradores\n\nMensaje: {}").format(
-            message.chat.title,
+            chat_text,
             replace_pogo,
             text
         )
@@ -411,12 +418,12 @@ def process_group_message(bot, update, job_queue):
                 config = get_config()
                 adm_bot = Bot(token=config["telegram"]["admin_token"])
                 replace_pogo = support.replace(user_id, message.from_user.first_name)
-                message_text = ("ℹ️ {}\n👤 {} {}").format(message.chat.title, replace_pogo, text)
+                message_text = ("ℹ️ {}\n👤 {} {}").format(chat_text, replace_pogo, text)
                 adm_bot.sendMessage(chat_id=admin.id, text=message_text,
                                 parse_mode=telegram.ParseMode.MARKDOWN)
             elif admin is not None and admin.admin:
                 replace_pogo = support.replace(user_id, message.from_user.first_name)
-                message_text = ("ℹ️ {}\n👤 {} {}").format(message.chat.title, replace_pogo, text)
+                message_text = ("ℹ️ {}\n👤 {} {}").format(chat_text, replace_pogo, text)
                 bot.sendMessage(chat_id=admin.id, text=message_text,
                                 parse_mode=telegram.ParseMode.MARKDOWN)
 '''
