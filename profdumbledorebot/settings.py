@@ -31,7 +31,7 @@ from telegram.ext.dispatcher import run_async
 
 import profdumbledorebot.supportmethods as support
 from profdumbledorebot.sql.admin import set_admin_settings, set_ladmin_settings
-from profdumbledorebot.sql.group import get_group
+from profdumbledorebot.sql.group import get_group, commit_group
 from profdumbledorebot.sql.news import is_news_subscribed, rm_news_subscription, set_news_subscription
 from profdumbledorebot.sql.settings import set_max_members, set_general_settings, set_join_settings, set_nanny_settings, \
     set_welcome_cooldown
@@ -108,7 +108,9 @@ def set_zone(bot, update, args=None):
     if args is None or len(args) != 1 or len(args[0]) < 3 or len(args[0]) > 60:
         bot.sendMessage(
             chat_id=chat_id,
-            text=("❌ Me siento un poco perdida ahora mismo. Debes pasarme un nombre de zona horaria en inglés, por ejemplo, `America/Montevideo` o `Europe/Madrid`."))
+            text=("❌ Me siento un poco perdido ahora mismo. Debes pasarme un nombre de zona horaria en inglés, por ejemplo, `America/Montevideo` o `Europe/Madrid`."),
+            parse_mode=telegram.ParseMode.MARKDOWN
+        )
         return
 
     tz = support.get_unified_timezone(args[0])
@@ -117,8 +119,10 @@ def set_zone(bot, update, args=None):
         commit_group(chat_id, timezone=tz[0])
         bot.sendMessage(
             chat_id=chat_id,
-            text="👌 Perfecto! Ya se que hora es. *{}*.".format(group.timezone))
-        now = datetime.now(timezone(group.timezone)).strftime("%H:%M")
+            text="👌 Perfecto! Zona horaria cambiada de *{0}* a *{1}*.".format(group.timezone, tz[0]),
+            parse_mode=telegram.ParseMode.MARKDOWN
+        )
+        now = datetime.now(timezone(tz[0])).strftime("%H:%M")
         bot.sendMessage(
             chat_id=chat_id,
             text="🕒 Por favor, comprueba que la hora sea correcta: {}".format(now))
@@ -229,7 +233,6 @@ def settingsbutton(bot, update):
         "settings_goto_main": "main"
     }
     settings_general = {
-        "settings_general_jokes": "jokes",
         "settings_general_games": "games",
         "settings_general_hard": "hard",
         "settings_general_reply": "reply",
@@ -366,6 +369,29 @@ def settingsbutton(bot, update):
         bot.answerCallbackQuery(
             text="Has eliminado un ban.", callback_query_id=update.callback_query.id, show_alert="true")
         text="Ban retirado por @{}.".format(user_username)
+        bot.edit_message_text(
+            text=text,
+            chat_id=chat_id,
+            message_id=message_id,
+            parse_mode=telegram.ParseMode.HTML,
+            disable_web_page_preview=True
+        )
+        return
+
+    match = re.match(r"rm_mute\((.+?)\)", query.data)
+    if match:
+        if not support.is_admin(chat_id, user_id, bot):
+            bot.answerCallbackQuery(
+                text="Solo los administradores del grupo pueden desmutear usuarios.",
+                callback_query_id=update.callback_query.id,
+                show_alert="true"
+            )
+            return
+        us_id = match.group(1)
+        bot.restrict_chat_member(chat_id, us_id, can_send_messages=True, can_send_media_messages=True, can_send_other_messages=True, can_add_web_page_previews=True)
+        bot.answerCallbackQuery(
+            text="El usuario ha sido desmuteado.", callback_query_id=update.callback_query.id, show_alert="true")
+        text="Usuario desmuteado por @{}.".format(user_username)
         bot.edit_message_text(
             text=text,
             chat_id=chat_id,

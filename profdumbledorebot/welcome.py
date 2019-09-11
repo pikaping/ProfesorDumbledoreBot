@@ -32,7 +32,7 @@ from profdumbledorebot.config import get_config
 from profdumbledorebot.model import Types
 from profdumbledorebot.sql.rules import has_rules
 
-VALID_WELCOME_FORMATTERS = ['nombre', 'apellido', 'nombre_completo', 'usuario', 'id', 'count', 'title', 'hpwu', 'mention']
+VALID_WELCOME_FORMATTERS = ['nombre', 'apellido', 'nombrecompleto', 'usuario', 'id', 'count', 'title', 'hpwu', 'mention']
 
 
 def send_welcome(bot, update):
@@ -78,7 +78,7 @@ def send_welcome(bot, update):
                 res = valid_format.format(nombre=escape_markdown(first_name),
                                           apellido=escape_markdown(new_mem.last_name or first_name),
                                           hpwu=support.replace(new_mem.id, first_name),
-                                          nombre_completo=escape_markdown(fullname), usuario=username, mention=mention,
+                                          nombrecompleto=escape_markdown(fullname), usuario=username, mention=mention,
                                           count=count, title=escape_markdown(chat.title), id=new_mem.id)
                 buttons = welcome_sql.get_welc_buttons(chat.id)
                 keyb = support.build_keyboard(buttons)
@@ -135,3 +135,67 @@ def send(bot, chat_id, message, keyboard):
                                                       parse_mode=telegram.ParseMode.MARKDOWN)
     return msg
 
+def test_welcome(bot, update):
+    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    support.delete_message(chat_id, message.message_id, bot)
+
+    ENUM_FUNC_MAP = {
+        Types.TEXT.value: bot.sendMessage,
+        Types.BUTTON_TEXT.value: bot.sendMessage,
+        Types.STICKER.value: bot.sendSticker,
+        Types.DOCUMENT.value: bot.sendDocument,
+        Types.PHOTO.value: bot.sendPhoto,
+        Types.AUDIO.value: bot.sendAudio,
+        Types.VOICE.value: bot.sendVoice,
+        Types.VIDEO.value: bot.sendVideo
+    }
+
+    should_welc, cust_welcome, welc_type = welcome_sql.get_welc_pref(chat_id)
+    if should_welc:
+        sent = None
+
+        if welc_type != Types.TEXT and welc_type != Types.BUTTON_TEXT:
+            msg = ENUM_FUNC_MAP[welc_type](chat_id, cust_welcome)
+            return msg
+
+        first_name = "Profesor Dumbledore"
+
+        if cust_welcome:
+            fullname = first_name
+            count = message.chat.get_members_count()
+            mention = mention_markdown(627223390, first_name)
+            username = "@" + escape_markdown("ProfesorDumbledoreBot")
+
+            valid_format = support.escape_invalid_curly_brackets(cust_welcome, VALID_WELCOME_FORMATTERS)
+            res = valid_format.format(nombre=escape_markdown(first_name),
+                                        apellido=escape_markdown(first_name),
+                                        hpwu=support.replace(627223390, first_name),
+                                        nombrecompleto=escape_markdown(fullname), usuario=username, mention=mention,
+                                        count=count, title=escape_markdown(message.chat.title), id=627223390)
+            buttons = welcome_sql.get_welc_buttons(chat_id)
+            keyb = support.build_keyboard(buttons)
+            if has_rules(chat_id):
+                config = get_config()
+                url = "t.me/{}?start={}".format(
+                    config["telegram"]["bot_alias"],
+                    chat_id)
+                keyb.append([InlineKeyboardButton("Normas", url=url)])
+        else:
+            return
+
+        keyboard = InlineKeyboardMarkup(keyb)
+
+        for btn in buttons:
+            if btn.same_line:
+                cust_welcome = cust_welcome + "\n[{0}](buttonurl://{1}:same)".format(btn.name, btn.url)
+            else:
+                cust_welcome = cust_welcome + "\n[{0}](buttonurl://{1})".format(btn.name, btn.url)
+
+        bot.sendMessage(
+            chat_id=chat_id,
+            text=cust_welcome,
+            disable_web_page_preview=True, 
+            disable_notification=True
+        )
+        sent = send(bot, chat_id, res, keyboard)
+        return sent

@@ -102,11 +102,11 @@ def list_btn(bot, update):
     text = re.sub(string, "", text)
 
     if data == "list_join":
-        text = escape_markdown(text) + "\n{0} - {1} - {2} - @{3}".format(
+        text = text + "\n{0} - {1} - {2} - @{3}".format(
             text_team,
             user.level,
             text_prof,
-            escape_markdown("{}".format(username))
+            username
         )
 
     button_list = [[
@@ -117,7 +117,6 @@ def list_btn(bot, update):
         text=text,
         chat_id=chat_id,
         message_id=message_id,
-        parse_mode=telegram.ParseMode.MARKDOWN,
         reply_markup=InlineKeyboardMarkup(button_list),
         disable_web_page_preview=True)
 
@@ -202,9 +201,10 @@ def listrefloat_cmd(bot, update):
 
     bot.sendMessage(
         chat_id=chat_id,
-        text=escape_markdown(text),
+        text=text,
         parse_mode=telegram.ParseMode.MARKDOWN,
-        reply_markup=InlineKeyboardMarkup(button_list)
+        reply_markup=InlineKeyboardMarkup(button_list),
+        disable_web_page_preview=True
     )
     support.delete_message(chat_id, message.reply_to_message.message_id, bot)
 

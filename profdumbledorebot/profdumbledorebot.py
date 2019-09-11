@@ -32,11 +32,13 @@ from telegram.ext.dispatcher import run_async
 import profdumbledorebot.sql.user as user_sql
 import profdumbledorebot.supportmethods as support
 from profdumbledorebot.config import get_config
-from profdumbledorebot.model import Houses, Professions
+from profdumbledorebot.model import Houses, Professions, PortalType
 from profdumbledorebot.rules import send_rules
+from profdumbledorebot.admin import last_run
 from profdumbledorebot.sql.settings import get_group_settings
 from profdumbledorebot.sql.support import are_banned
 from profdumbledorebot.sql.usergroup import get_users_from_group
+from profdumbledorebot.sql.group import create_poi, get_poi_list, delete_poi
 
 
 @run_async
@@ -286,72 +288,6 @@ def fclist_cmd(bot, update):
     bot.sendMessage(
         chat_id=user_id,
         text=text,
-        parse_mode=telegram.ParseMode.MARKDOWN
-    )
-
-@run_async
-def ranking_spain_cmd(bot, update):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
-    support.delete_message(chat_id, message.message_id, bot)
-    config = get_config()
-
-    if are_banned(user_id, chat_id):
-        return
-
-    main = user_sql.get_user(user_id)
-    count = 0
-    text = "🏆 **Ranking de {0}** 🏆\n".format(message.chat.title)
-    user_list = []
-
-    users = get_users_from_group(chat_id)
-    for user_data in users:
-        try:
-            data = support.get_usergroup_tlg(chat_id, user_data.user_id, bot)
-        except:
-            data = None
-            pass
-        if data is None or (data and data.status not in ['kicked','left'] and not data.user.is_bot):
-            user = user_sql.get_user(user_data.user_id)
-            if user and not user.banned and user.ranking:
-                if user.house is Houses.GRYFFINDOR.value:
-                    text_team = "❤️🦁"
-                elif user.house is Houses.HUFFLEPUFF.value:
-                    text_team = "💛🦡"
-                elif user.house is Houses.RAVENCLAW.value:
-                    text_team = "💙🦅"
-                elif user.house is Houses.SLYTHERIN.value:
-                    text_team = "💚🐍"
-                elif user.house is Houses.NONE.value:
-                    text_team = "💜🙈"
-                if user.profession is Professions.PROFESSOR.value:
-                    text_prof = "📚"
-                elif user.profession is Professions.MAGIZOOLOGIST.value:
-                    text_prof = "🐾"
-                elif user.profession is Professions.AUROR.value:
-                    text_prof = "⚔️"
-                elif user.profession is Professions.NONE.value:
-                    text_prof = "🍮"
-
-                user_list.append("[@{0}](tg://user?id={1}) - {2} - {3} - {4}".format(
-                    user.alias,
-                    user.id,
-                    text_team,
-                    user.level,
-                    text_prof
-                ))
-
-                count += 1
-
-    sorted_user = sorted(user_list, key=lambda x: int(x.split(' - ')[2]), reverse=True)
-    if count >= 1:
-        sorted_user[0] = "\n🥇 " + sorted_user[0] + "\n"
-    if count >= 2:
-        sorted_user[1] = "🥈 " + sorted_user[1] + "\n"
-    if count >= 3:
-        sorted_user[2] = "🥉 " + sorted_user[2] + "\n"
-    bot.sendMessage(
-        chat_id=int(config["telegram"]["ranking_id"]),
-        text=text + '\n'.join(sorted_user[:100]),
         parse_mode=telegram.ParseMode.MARKDOWN
     )
 
@@ -913,3 +849,376 @@ def register_btn(bot, update):
         return
         '''
 
+
+@run_async
+def ranking_spain_cmd(bot, update):
+    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    support.delete_message(chat_id, message.message_id, bot)
+    config = get_config()
+
+    if are_banned(user_id, chat_id):
+        return
+
+    main = user_sql.get_user(user_id)
+    count = 0
+    text = "🏆 *Ranking de {0}* 🏆\n".format(message.chat.title)
+    user_list = []
+
+    users = get_users_from_group(chat_id)
+    for user_data in users:
+        try:
+            data = support.get_usergroup_tlg(chat_id, user_data.user_id, bot)
+        except:
+            data = None
+            pass
+        if data is None or (data and data.status not in ['kicked','left'] and not data.user.is_bot):
+            user = user_sql.get_user(user_data.user_id)
+            if user and not user.banned and user.ranking:
+                if user.house is Houses.GRYFFINDOR.value:
+                    text_team = "❤️🦁"
+                elif user.house is Houses.HUFFLEPUFF.value:
+                    text_team = "💛🦡"
+                elif user.house is Houses.RAVENCLAW.value:
+                    text_team = "💙🦅"
+                elif user.house is Houses.SLYTHERIN.value:
+                    text_team = "💚🐍"
+                elif user.house is Houses.NONE.value:
+                    text_team = "💜🙈"
+                if user.profession is Professions.PROFESSOR.value:
+                    text_prof = "📚"
+                elif user.profession is Professions.MAGIZOOLOGIST.value:
+                    text_prof = "🐾"
+                elif user.profession is Professions.AUROR.value:
+                    text_prof = "⚔️"
+                elif user.profession is Professions.NONE.value:
+                    text_prof = "🍮"
+
+                user_list.append("[@{0}](tg://user?id={1}) - {2} - {3} - {4}".format(
+                    user.alias,
+                    user.id,
+                    text_team,
+                    user.level,
+                    text_prof
+                ))
+
+                count += 1
+
+    sorted_user = sorted(user_list, key=lambda x: int(x.split(' - ')[2]), reverse=True)
+    if count >= 1:
+        sorted_user[0] = "\n🥇 " + sorted_user[0] + "\n"
+    if count >= 2:
+        sorted_user[1] = "🥈 " + sorted_user[1] + "\n"
+    if count >= 3:
+        sorted_user[2] = "🥉 " + sorted_user[2] + "\n"
+    bot.sendMessage(
+        chat_id=int(config["telegram"]["ranking_id"]),
+        text=text + '\n'.join(sorted_user[:100]),
+        parse_mode=telegram.ParseMode.MARKDOWN
+    )
+
+@run_async
+def private_ranking_cmd(bot, update):
+    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    support.delete_message(chat_id, message.message_id, bot)
+    config = get_config()
+
+    if are_banned(user_id, chat_id):
+        return
+
+    main = user_sql.get_user(user_id)
+    if main is None:
+        return
+
+    if not main.ranking:
+        return
+
+    if last_run(user_id, 'ranking'):
+        bot.sendMessage(
+            chat_id=chat_id,
+            text="Hecho.",
+            parse_mode=telegram.ParseMode.MARKDOWN)
+        return
+
+    count = 0
+    text = "🏆 *Ranking de {0}* 🏆\n".format(message.chat.title)
+    user_list = []
+
+    users = get_users_from_group(chat_id)
+    for user_data in users:
+        try:
+            data = support.get_usergroup_tlg(chat_id, user_data.user_id, bot)
+        except:
+            data = None
+            pass
+        if data is None or (data and data.status not in ['kicked','left'] and not data.user.is_bot):
+            user = user_sql.get_user(user_data.user_id)
+            if user and not user.banned and user.ranking:
+                if user.house is Houses.GRYFFINDOR.value:
+                    text_team = "❤️🦁"
+                elif user.house is Houses.HUFFLEPUFF.value:
+                    text_team = "💛🦡"
+                elif user.house is Houses.RAVENCLAW.value:
+                    text_team = "💙🦅"
+                elif user.house is Houses.SLYTHERIN.value:
+                    text_team = "💚🐍"
+                elif user.house is Houses.NONE.value:
+                    text_team = "💜🙈"
+                if user.profession is Professions.PROFESSOR.value:
+                    text_prof = "📚"
+                elif user.profession is Professions.MAGIZOOLOGIST.value:
+                    text_prof = "🐾"
+                elif user.profession is Professions.AUROR.value:
+                    text_prof = "⚔️"
+                elif user.profession is Professions.NONE.value:
+                    text_prof = "🍮"
+
+                if user.id == user_id:
+                    user_list.append("*@{0} - {1} - {2} - {3}*".format(
+                    user.alias,
+                    text_team,
+                    user.level,
+                    text_prof
+                ))
+                else:
+                    user_list.append("[@{0}](tg://user?id={1}) - {2} - {3} - {4}".format(
+                        user.alias,
+                        user.id,
+                        text_team,
+                        user.level,
+                        text_prof
+                    ))
+
+                count += 1
+
+    sorted_user = sorted(user_list, key=lambda x: int(x.split(' - ')[2]), reverse=True)
+    count = 0
+    for user in sorted_user:
+        if count == 0:
+            sorted_user[0] = "\n🥇 " + sorted_user[0] + "\n"
+            count += 1
+            continue
+        if count == 1:
+            sorted_user[1] = "🥈 " + sorted_user[1] + "\n"
+            count += 1
+            continue
+        if count == 2:
+            sorted_user[2] = "🥉 " + sorted_user[2] + "\n"
+            count += 1
+            continue
+        
+        sorted_user[count] = str(count+1) + ". " + sorted_user[count]
+
+        count += 1
+
+    matching = [i for i, s in enumerate(sorted_user) if user_sql.get_user(user_id).alias in s]
+
+    if matching[0] <= 10:
+        ranking_text = sorted_user[:10]
+    else:
+        ranking_text = sorted_user[:10]
+        ranking_text.append("\n\n✨✨✨✨✨\n\n")
+        if not matching[0]-2 <= 9:
+            ranking_text.append(sorted_user[matching[0]-2])
+        if not matching[0]-1 <= 9:
+            ranking_text.append(sorted_user[matching[0]-1])
+        ranking_text.append(sorted_user[matching[0]])
+        try:
+            if not matching[0]+1 <= len(sorted_user)-2:
+                ranking_text.append(sorted_user[matching[0]+1])
+            if not matching[0]+2 <= len(sorted_user)-1:
+                ranking_text.append(sorted_user[matching[0]+2])
+        except:
+            pass
+
+    bot.sendMessage(
+        chat_id=user_id,
+        text=text + ''.join(ranking_text),
+        parse_mode=telegram.ParseMode.MARKDOWN
+    )
+
+
+@run_async
+def points_cmd(bot, update):
+    logging.debug("%s", update)
+    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    user_username = message.from_user.username
+
+    if are_banned(chat_id, user_id):
+        return
+
+    user = user_sql.get_real_user(user_id)
+    if user is None:
+        bot.sendMessage(
+            chat_id=chat_id,
+            text="❌ Debes registrarte para usar este comando.",
+            parse_mode=telegram.ParseMode.MARKDOWN
+        )
+        return
+
+    text = "Actualmente tienes {} puntos.".format(user_sql.update_user_points(user_id, read_only=True))
+
+    bot.sendMessage(
+        chat_id=chat_id,
+        text=text,
+        parse_mode=telegram.ParseMode.MARKDOWN)
+
+@run_async
+def add_poi_cmd(bot, update, args=None):
+    logging.debug("%s", update)
+    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    support.delete_message(chat_id, message.message_id, bot)
+
+    if are_banned(chat_id, user_id):
+        return
+
+    user = user_sql.get_real_user(user_id)
+    if user is None:
+        bot.sendMessage(
+            chat_id=chat_id,
+            text="❌ Debes registrarte para usar este comando.",
+            parse_mode=telegram.ParseMode.MARKDOWN
+        )
+        return
+
+    if args is not None and len(args)!=0:
+        if message.reply_to_message is not None:
+            if message.reply_to_message.location is not None:
+                support.delete_message(chat_id, message.reply_to_message.message_id, bot)
+                lat = message.reply_to_message.location.latitude
+                lon = message.reply_to_message.location.longitude
+
+                button_list = [
+                [InlineKeyboardButton("🌱 Invernadero", callback_data='poi_greenhouse_{}'.format(user_id)),
+                InlineKeyboardButton("🏰 Fortaleza", callback_data='poi_fortress_{}'.format(user_id))],
+                [InlineKeyboardButton("❌ Cancelar", callback_data='poi_cancel_{}'.format(user_id))]]
+
+                bot.send_venue(
+                    chat_id=chat_id,
+                    title=' '.join(args),
+                    address="¿Qué tipo de POI quieres añadir?",
+                    latitude=lat,
+                    longitude=lon,
+                    reply_markup=InlineKeyboardMarkup(button_list)
+                )
+
+@run_async
+def rem_poi_cmd(bot, update, args=None):
+    logging.debug("%s", update)
+    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    support.delete_message(chat_id, message.message_id, bot)
+
+    if are_banned(chat_id, user_id) or not support.is_admin(chat_id, user_id, bot):
+        return
+
+    user = user_sql.get_real_user(user_id)
+    if user is None:
+        bot.sendMessage(
+            chat_id=chat_id,
+            text="❌ Debes registrarte para usar este comando.",
+            parse_mode=telegram.ParseMode.MARKDOWN
+        )
+        return
+
+    if args is not None and len(args)!=0:
+        if re.match(r"^[0-9]{10}$", args[0]):
+            delete_poi(args[0])
+            
+            bot.sendMessage(
+            chat_id=chat_id,
+            text="POI eliminado correctamente.",
+            parse_mode=telegram.ParseMode.MARKDOWN
+            )
+
+@run_async
+def poi_list_cmd(bot, update, args=None):
+    logging.debug("%s", update)
+    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    support.delete_message(chat_id, message.message_id, bot)
+
+    if are_banned(chat_id, user_id):
+        return
+
+    user = user_sql.get_real_user(user_id)
+    if user is None:
+        bot.sendMessage(
+            chat_id=chat_id,
+            text="❌ Debes registrarte para usar este comando.",
+            parse_mode=telegram.ParseMode.MARKDOWN
+        )
+        return
+
+    text = "Lista de POIs:\n"
+    count = 0
+    poi_list = get_poi_list(chat_id)
+    for poi in poi_list:
+        if poi.portal_type is PortalType.GREENHOUSE.value:
+            poi_type = "🌱"
+        elif poi.portal_type is PortalType.FORTRESS.value:
+            poi_type = "🏰"
+        elif poi.portal_type is PortalType.NONE.value:
+            poi_type = "🍮"
+        text = text + "\n#{0} {1} - [{2}](https://maps.google.com/maps?q={3},{4})".format(
+            poi.id,
+            poi_type,
+            poi.name,
+            poi.latitude,
+            poi.longitude
+        )
+
+        count += 1
+        if count == 100:
+            pass
+    
+    if chat_type != "private":
+        group = get_group_settings(chat_id)
+        if group.reply_on_group:
+            dest_id = chat_id
+        else:
+            dest_id = user_id
+    else:
+        dest_id = user_id
+
+    bot.sendMessage(
+            chat_id=dest_id,
+            text=text,
+            parse_mode=telegram.ParseMode.MARKDOWN,
+            disable_web_page_preview=True
+        )
+    
+
+def poi_btn(bot, update):
+    query = update.callback_query
+    data = query.data
+    user = update.effective_user
+    user_id = query.from_user.id
+    text = query.message.text
+    chat_id = query.message.chat.id
+    message_id = query.message.message_id
+    name = query.message.venue.title
+    lat = query.message.location.latitude
+    lon = query.message.location.longitude
+
+    if are_banned(user_id, chat_id):
+        return
+
+    queryData = data.split("_")
+    userBtn = queryData[2]
+
+    if userBtn == str(user_id) or support.is_admin(chat_id, user_id, bot):
+        if queryData[1] == "greenhouse":
+            create_poi(name, lat, lon, PortalType.GREENHOUSE.value, chat_id, user_id)
+            bot.delete_message(
+                chat_id=chat_id,
+                message_id=message_id)
+            return
+        elif queryData[1] == "fortress":
+            create_poi(name, lat, lon, PortalType.FORTRESS.value, chat_id, user_id)
+            bot.delete_message(
+                chat_id=chat_id,
+                message_id=message_id)
+            return
+        elif queryData[1] == "cancel":
+            bot.delete_message(
+                chat_id=chat_id,
+                message_id=message_id)
+            return
