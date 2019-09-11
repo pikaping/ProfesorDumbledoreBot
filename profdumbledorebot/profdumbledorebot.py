@@ -291,7 +291,6 @@ def fclist_cmd(bot, update):
         parse_mode=telegram.ParseMode.MARKDOWN
     )
 
-
 @run_async
 def set_friendid_cmd(bot, update, args=None):
     chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
