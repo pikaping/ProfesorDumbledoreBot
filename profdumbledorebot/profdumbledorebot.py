@@ -913,7 +913,7 @@ def ranking_spain_cmd(bot, update):
         sorted_user[2] = "🥉 " + sorted_user[2] + "\n"
     bot.sendMessage(
         chat_id=int(config["telegram"]["ranking_id"]),
-        text=text + '\n'.join(sorted_user),
+        text=text + '\n'.join(sorted_user[:100]),
         parse_mode=telegram.ParseMode.MARKDOWN
     )
 

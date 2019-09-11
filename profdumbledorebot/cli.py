@@ -267,7 +267,7 @@ def start_bot():
     dispatcher.add_handler(CallbackQueryHandler(settings.settingsbutton))
     
     job_queue = updater.job_queue
-    job_queue.run_repeating(save_jobs_job, timedelta(minutes=1))
+    job_queue.run_repeating(save_jobs_job, timedelta(hours=1))
     try:
         load_jobs(job_queue)
 
