@@ -168,7 +168,7 @@ def start_bot():
     #dispatcher.add_handler(CommandHandler('duel', games.duel_cmd, Filters.group))
     dispatcher.add_handler(CallbackQueryHandler(games.btn, pattern=r"^g\*"))
 
-    dispatcher.add_handler(CommandHandler('nelu', nelu.nelu_cmd, Filters.group, pass_job_queue=True))
+    dispatcher.add_handler(CommandHandler('nelu', nelu.nelu_cmd, Filters.user(int(config["telegram"]["saray"])), pass_job_queue=True))
     dispatcher.add_handler(CallbackQueryHandler(nelu.nelu_btn, pattern=r"^nelu_"))
 
     dispatcher.add_handler(CommandHandler('fort', fortress.fort_list_cmd, Filters.user(int(config["telegram"]["ranking_admin_id"])) | Filters.user(int(config["telegram"]["saray"])) | Filters.user(int(config["telegram"]["ansett"])), pass_args=True))
