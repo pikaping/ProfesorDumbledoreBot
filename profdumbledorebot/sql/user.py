@@ -50,7 +50,7 @@ def get_real_user(user_id):
         session.close()
 
 
-@MWT(timeout=60*60)
+#@MWT(timeout=60*60)
 def get_user_by_name(username):
     try:    
         session = get_session()
@@ -179,6 +179,8 @@ def update_user_points(user_id, points=0, read_only=False):
                 user = get_unique_from_query(session.query(User).filter(User.id == user_id))
                 if user.games_points == None:
                     user.games_points = 0
+                if user.games_points == 0:
+                    return
                 user.games_points += points
         finally:
             session.commit()
