@@ -932,13 +932,10 @@ def private_ranking_cmd(bot, update):
     if not main.ranking:
         return
 
-    if last_run(user_id, 'ranking'):
-        bot.sendMessage(
-            chat_id=chat_id,
-            text="Hecho.",
-            parse_mode=telegram.ParseMode.MARKDOWN)
+    '''
+    if last_run(user_id + chat_id, 'ranking'):
         return
-
+    '''
     count = 0
     text = "🏆 *Ranking de {0}* 🏆\n".format(message.chat.title)
     user_list = []
@@ -1002,11 +999,11 @@ def private_ranking_cmd(bot, update):
             count += 1
             continue
         if count == 2:
-            sorted_user[2] = "🥉 " + sorted_user[2] + "\n"
+            sorted_user[2] = "🥉 " + sorted_user[2]
             count += 1
             continue
         
-        sorted_user[count] = str(count+1) + ". " + sorted_user[count]
+        sorted_user[count] = "\n" + str(count+1) + ". " + sorted_user[count]
 
         count += 1
 
@@ -1016,7 +1013,7 @@ def private_ranking_cmd(bot, update):
         ranking_text = sorted_user[:10]
     else:
         ranking_text = sorted_user[:10]
-        ranking_text.append("\n\n✨✨✨✨✨\n\n")
+        ranking_text.append("\n\n✨✨✨✨✨\n")
         if not matching[0]-2 <= 9:
             ranking_text.append(sorted_user[matching[0]-2])
         if not matching[0]-1 <= 9:

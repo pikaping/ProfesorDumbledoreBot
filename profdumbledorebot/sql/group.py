@@ -113,16 +113,14 @@ def update_group_points(group_id, points=0, read_only=False):
             if read_only:
                 session = get_session()
                 group = get_unique_from_query(session.query(model.Group).filter(model.Group.id == group_id))
-                if group.games_points == None:
+                if group.games_points is None:
                     group.games_points = 0
                 return group.games_points
             else:
                 session = get_session()
                 group = get_unique_from_query(session.query(model.Group).filter(model.Group.id == group_id))
-                if group.games_points == None:
+                if group.games_points is None:
                     group.games_points = 0
-                if group.games_points == 0:
-                    return
                 group.games_points += points
         finally:
             session.commit()

@@ -310,7 +310,9 @@ def last_run(id, cmdtype):
 
         if lastpress is not None:
             difftime = datetime.now() - lastpress
-            if difftime.days == 0:
+            seconds = difftime.total_seconds()
+            minutes = divmod(seconds, 3600)[0]
+            if minutes == 0:
                 return True
             else:
                 ranking_check[str(id)] = datetime.now()
