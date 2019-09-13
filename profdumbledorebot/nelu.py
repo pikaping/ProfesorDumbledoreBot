@@ -40,7 +40,7 @@ from profdumbledorebot.sql.user import get_user, get_real_user, get_user_by_name
 from profdumbledorebot.sql.usergroup import exists_user_group, set_user_group, join_group, message_counter
 from profdumbledorebot.sql.group import get_poi_list, set_plant, get_plant_list, get_poi, delete_plant, get_group, get_plant
 from profdumbledorebot.admin import last_run
-from profdumbledorebot.games import grag_cmd
+from profdumbledorebot.games import grag_cmd, whosaid_cmd
 
 with open('/var/local/profdumbledore/json/nelu.json') as file:
     nelu_json = json.load(file)
@@ -51,17 +51,17 @@ def nelu_cmd(bot, update, job_queue):
     support.delete_message(chat_id, message.message_id, bot)
     realchat = chat_id
 
-    chat_id = -1001413955692
+    chat_id = 0
+    nelu_id = 0
     a1_object = support.SendContext(chat_id, "60")
-    a1time = datetime.now().replace(hour=16, minute=10, second=1)
-    
+    a1time = datetime.now().replace(hour=21, minute=00, second=1)
     job_queue.run_once(
         support.callback_send, 
         a1time,
         context=a1_object
     )
     a1_object = support.SendContext(chat_id, "30")
-    a1time = datetime.now().replace(hour=16, minute=10, second=1)
+    a1time = datetime.now().replace(hour=21, minute=30, second=1)
     
     job_queue.run_once(
         support.callback_send, 
@@ -69,7 +69,7 @@ def nelu_cmd(bot, update, job_queue):
         context=a1_object
     )
     a1_object = support.SendContext(chat_id, "15")
-    a1time = datetime.now().replace(hour=16, minute=11, second=1)
+    a1time = datetime.now().replace(hour=21, minute=45, second=1)
     
     job_queue.run_once(
         support.callback_send, 
@@ -77,7 +77,7 @@ def nelu_cmd(bot, update, job_queue):
         context=a1_object
     )
     a1_object = support.SendContext(chat_id, "14")
-    a1time = datetime.now().replace(hour=16, minute=12, second=1)
+    a1time = datetime.now().replace(hour=21, minute=46, second=1)
     
     job_queue.run_once(
         support.callback_send, 
@@ -85,7 +85,7 @@ def nelu_cmd(bot, update, job_queue):
         context=a1_object
     )
     a1_object = support.SendContext(chat_id, "13")
-    a1time = datetime.now().replace(hour=16, minute=13, second=1)
+    a1time = datetime.now().replace(hour=21, minute=47, second=1)
     
     job_queue.run_once(
         support.callback_send, 
@@ -93,7 +93,7 @@ def nelu_cmd(bot, update, job_queue):
         context=a1_object
     )
     a1_object = support.SendContext(chat_id, "12")
-    a1time = datetime.now().replace(hour=16, minute=14, second=1)
+    a1time = datetime.now().replace(hour=21, minute=48, second=1)
     
     job_queue.run_once(
         support.callback_send, 
@@ -101,7 +101,7 @@ def nelu_cmd(bot, update, job_queue):
         context=a1_object
     )
     a1_object = support.SendContext(chat_id, "11")
-    a1time = datetime.now().replace(hour=16, minute=15, second=1)
+    a1time = datetime.now().replace(hour=21, minute=49, second=1)
     
     job_queue.run_once(
         support.callback_send, 
@@ -109,7 +109,7 @@ def nelu_cmd(bot, update, job_queue):
         context=a1_object
     )
     a1_object = support.SendContext(chat_id, "10")
-    a1time = datetime.now().replace(hour=16, minute=16, second=1)
+    a1time = datetime.now().replace(hour=21, minute=50, second=1)
     
     job_queue.run_once(
         support.callback_send, 
@@ -117,7 +117,7 @@ def nelu_cmd(bot, update, job_queue):
         context=a1_object
     )
     a1_object = support.SendContext(chat_id, "9")
-    a1time = datetime.now().replace(hour=16, minute=17, second=1)
+    a1time = datetime.now().replace(hour=21, minute=51, second=1)
     
     job_queue.run_once(
         support.callback_send, 
@@ -125,7 +125,7 @@ def nelu_cmd(bot, update, job_queue):
         context=a1_object
     )
     a1_object = support.SendContext(chat_id, "8")
-    a1time = datetime.now().replace(hour=16, minute=18, second=1)
+    a1time = datetime.now().replace(hour=21, minute=52, second=1)
     
     job_queue.run_once(
         support.callback_send, 
@@ -133,7 +133,7 @@ def nelu_cmd(bot, update, job_queue):
         context=a1_object
     )
     a1_object = support.SendContext(chat_id, "7")
-    a1time = datetime.now().replace(hour=16, minute=19, second=1)
+    a1time = datetime.now().replace(hour=21, minute=53, second=1)
     
     job_queue.run_once(
         support.callback_send, 
@@ -141,7 +141,7 @@ def nelu_cmd(bot, update, job_queue):
         context=a1_object
     )
     a1_object = support.SendContext(chat_id, "6")
-    a1time = datetime.now().replace(hour=16, minute=20, second=1)
+    a1time = datetime.now().replace(hour=21, minute=54, second=1)
     
     job_queue.run_once(
         support.callback_send, 
@@ -149,7 +149,7 @@ def nelu_cmd(bot, update, job_queue):
         context=a1_object
     )
     a1_object = support.SendContext(chat_id, "5")
-    a1time = datetime.now().replace(hour=16, minute=21, second=1)
+    a1time = datetime.now().replace(hour=21, minute=55, second=1)
     
     job_queue.run_once(
         support.callback_send, 
@@ -157,7 +157,7 @@ def nelu_cmd(bot, update, job_queue):
         context=a1_object
     )
     a1_object = support.SendContext(chat_id, "4")
-    a1time = datetime.now().replace(hour=16, minute=22, second=1)
+    a1time = datetime.now().replace(hour=21, minute=56, second=1)
     
     job_queue.run_once(
         support.callback_send, 
@@ -165,7 +165,7 @@ def nelu_cmd(bot, update, job_queue):
         context=a1_object
     )
     a1_object = support.SendContext(chat_id, "3")
-    a1time = datetime.now().replace(hour=16, minute=23, second=1)
+    a1time = datetime.now().replace(hour=21, minute=57, second=1)
     
     job_queue.run_once(
         support.callback_send, 
@@ -173,7 +173,7 @@ def nelu_cmd(bot, update, job_queue):
         context=a1_object
     )
     a1_object = support.SendContext(chat_id, "2")
-    a1time = datetime.now().replace(hour=16, minute=24, second=1)
+    a1time = datetime.now().replace(hour=21, minute=58, second=1)
     
     job_queue.run_once(
         support.callback_send, 
@@ -181,28 +181,28 @@ def nelu_cmd(bot, update, job_queue):
         context=a1_object
     )
     a1_object = support.SendContext(chat_id, "1")
-    a1time = datetime.now().replace(hour=16, minute=25, second=1)
+    a1time = datetime.now().replace(hour=21, minute=59, second=1)
     
     job_queue.run_once(
         support.callback_send, 
         a1time,
         context=a1_object
     )
-    a1_object = support.SendContext(chat_id, "¡Muchas felicidades @nelulita! 🦉✉️ En tu chat privado una lechuza ha dejado una carta , ¿Por qué no le echas un vistazo?")
-    a1time = datetime.now().replace(hour=17, minute=24, second=0, microsecond=250000)
+    a1_object = support.SendContext(chat_id, "¡Muchas felicidades @nelulita! 🦉✉️ He mandado una lechuza con una carta para tí , ¿Por qué no le echas un vistazo cuando llegue?")
+    a1time = datetime.now().replace(hour=22, minute=00, second=0, microsecond=250000)
     job_queue.run_once(
         support.callback_send, 
         a1time,
         context=a1_object
     )
 
-    a1_object = support.SendContext(137997412, "🦉✉️ Bienvenida de nuevo a Hogwarts @nelulita, me gustaría que nos conociésemos en mi despacho al final del primer día de clases. No olvide que Hagrid la está esperando en la estación. https://t.me/joinchat/H1N0wBeA28423yBKPKBGSA")
+    a1_object = support.SendContext(nelu_id, "🦉✉️ Bienvenida de nuevo a Hogwarts @nelulita, me gustaría que nos conociésemos en mi despacho al final del primer día de clases. \nNo olvide que Hagrid la está esperando en la estación. https://t.me/joinchat/H1N0wBeA28423yBKPKBGSA \n\n- Albus Dumbledore")
+    a1time = datetime.now().replace(day=12, hour=5, minute=00, second=1)
     job_queue.run_once(
         support.callback_send, 
         a1time,
         context=a1_object
     )
-    
     count = 0
     bot.send_message(
         chat_id=realchat,
@@ -250,7 +250,7 @@ def nelu_btn(bot, update):
             bot.send_message(
             chat_id=chat_id,
             text=nelu_json[count]["frase"],
-            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text=nelu_json[count]["button"], url="https://t.me/joinchat/H1N0wBMjP8jKI4xXeY5Zgg")]])
+            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text=nelu_json[count]["button"], url="")]])
             )
             count += 1
             bot.send_message(
@@ -268,7 +268,7 @@ def nelu_btn(bot, update):
             bot.send_message(
             chat_id=chat_id,
             text=nelu_json[count]["frase"],
-            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text=nelu_json[count]["button"], url="https://t.me/joinchat/H1N0wBVFC2MV4y20HcT29A")]])
+            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text=nelu_json[count]["button"], url="")]])
             )
             count += 1
             bot.send_message(
@@ -282,7 +282,7 @@ def nelu_btn(bot, update):
             bot.send_message(
             chat_id=chat_id,
             text=nelu_json[count]["frase"],
-            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text=nelu_json[count]["button"], url="https://t.me/joinchat/H1N0wBTxWZB2git3eW1Cbw")]])
+            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text=nelu_json[count]["button"], url="")]])
             )
             count += 1
             bot.send_message(
@@ -305,7 +305,7 @@ def nelu_btn(bot, update):
             bot.send_message(
             chat_id=chat_id,
             text=nelu_json[count]["frase"],
-            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text=nelu_json[count]["button"], url="https://t.me/joinchat/H1N0wBae7otmt5ILRF_bGA")]])
+            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text=nelu_json[count]["button"], url="")]])
             )
             bot.send_message(
             chat_id=chat_id,
@@ -323,7 +323,7 @@ def nelu_btn(bot, update):
             bot.send_message(
             chat_id=chat_id,
             text=nelu_json[count]["frase"],
-            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text=nelu_json[count]["button"], url="https://t.me/joinchat/H1N0wBfS9IObpoWs374Whg")]])
+            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text=nelu_json[count]["button"], url="")]])
             )
             count += 1
             bot.send_message(
@@ -337,7 +337,7 @@ def nelu_btn(bot, update):
             bot.send_message(
             chat_id=chat_id,
             text=nelu_json[count]["frase"],
-            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text=nelu_json[count]["button"], url="https://t.me/joinchat/H1N0wBfS9IObpoWs374Whg")]])
+            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text=nelu_json[count]["button"], url="")]])
             )
             count += 1
             bot.send_message(
@@ -351,7 +351,7 @@ def nelu_btn(bot, update):
             bot.send_message(
             chat_id=chat_id,
             text=nelu_json[count]["frase"],
-            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text=nelu_json[count]["button"], url="https://t.me/joinchat/H1N0wBX8DVY2qid2lhGYbQ")]])
+            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text=nelu_json[count]["button"], url="")]])
             )
             count += 1
             bot.send_message(
@@ -365,7 +365,7 @@ def nelu_btn(bot, update):
             bot.send_message(
             chat_id=chat_id,
             text=nelu_json[count]["frase"],
-            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text=nelu_json[count]["button"], url="https://t.me/joinchat/H1N0wBVTtjcFWqpzDyzSsQ")]])
+            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text=nelu_json[count]["button"], url="")]])
             )
             return
         elif count == 45:

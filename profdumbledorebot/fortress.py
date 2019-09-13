@@ -22,6 +22,7 @@
 ############################################################################
 
 import re
+import logging
 import time
 import random
 from geopy.distance import great_circle
@@ -142,75 +143,78 @@ def fort_btn(bot, update, job_queue):
 
     queryData = data.split("_")
 
-    if queryData[2] == str(user_id) or support.is_admin(chat_id, user_id, bot):
-        if queryData[1] == "addubi":
-            group = get_group(chat_id)
-            group_tz = group.timezone
-            tz = pytz.timezone(group_tz)
+    if len(queryData) == 5:
+        if queryData[3] == str(user_id) or support.is_admin(chat_id, user_id, bot):
+            if queryData[1] == "addubi":
+                group = get_group(chat_id)
+                group_tz = group.timezone
+                tz = pytz.timezone(group_tz)
 
-            try:
-                userTime = datetime.strptime(queryData[4], '%d/%H:%M')
-                userDatetime = datetime.now().replace(day=userTime.day, hour=userTime.hour, minute=userTime.minute, second=0)
-                dateText = f"el *{userDatetime.day}/{userDatetime.month}* a las *{userDatetime.hour}:{userDatetime.minute}*"
-            except:
-                userTime = datetime.strptime(queryData[4], '%H:%M')
-                userDatetime = datetime.now().replace(hour=userTime.hour, minute=userTime.minute, second=0)
-                dateText = f"a las *{userDatetime.hour}:{userDatetime.minute}*"
+                try:
+                    userTime = datetime.strptime(queryData[4], '%d/%H:%M')
+                    userDatetime = datetime.now().replace(day=userTime.day, hour=userTime.hour, minute=userTime.minute, second=0)
+                    dateText = f"el *{userDatetime.day}/{userDatetime.month}* a las *{userDatetime.hour}:{userDatetime.minute}*"
+                except:
+                    userTime = datetime.strptime(queryData[4], '%H:%M')
+                    userDatetime = datetime.now().replace(hour=userTime.hour, minute=userTime.minute, second=0)
+                    dateText = f"a las *{userDatetime.hour}:{userDatetime.minute}*"
 
-            userAsLocal = tz.localize(userDatetime)
-            userAsLocal = userAsLocal.astimezone(pytz.utc)
+                userAsLocal = tz.localize(userDatetime)
+                userAsLocal = userAsLocal.astimezone(pytz.utc)
 
-            if datetime.now(pytz.utc) > userAsLocal:
-                userAsLocal = userAsLocal + timedelta(days=1)
-                userDatetime = userDatetime + timedelta(days=1)
-                dateText = f"el *{userDatetime.day}/{userDatetime.month}* a las *{userDatetime.hour}:{userDatetime.minute}*"
+                if datetime.now(pytz.utc) > userAsLocal:
+                    userAsLocal = userAsLocal + timedelta(days=1)
+                    userDatetime = userDatetime + timedelta(days=1)
+                    dateText = f"el *{userDatetime.day}/{userDatetime.month}* a las *{userDatetime.hour}:{userDatetime.minute}*"
 
-            userAsLocal30 = userAsLocal - timedelta(minutes=1)
-            #userAsLocal30 = userAsLocal30.time()
-            #userAsLocalTime = userAsLocal.time()
+                userAsLocal30 = userAsLocal - timedelta(minutes=1)
+                #userAsLocal30 = userAsLocal30.time()
+                #userAsLocalTime = userAsLocal.time()
 
-            userAsLocal = userAsLocal.replace(tzinfo=None)
+                userAsLocal = userAsLocal.replace(tzinfo=None)
 
-            poi = get_poi(queryData[2])
-            lat = poi.latitude
-            lon = poi.longitude
+                poi = get_poi(queryData[2])
+                lat = poi.latitude
+                lon = poi.longitude
 
-            button_list = [
-                [(InlineKeyboardButton("🙋‍♀️ Voy", callback_data=f'fort_yes_{poi.id}')),
-                (InlineKeyboardButton("✅ Estoy", callback_data=f'fort_here_{poi.id}')),
-                (InlineKeyboardButton("🕒 Tardo", callback_data=f'fort_late_{poi.id}')),
-                (InlineKeyboardButton("🙅‍♀️ No voy", callback_data=f'fort_no_{poi.id}'))],
-                [(InlineKeyboardButton("📍 Ubicación", callback_data=f'fort_ubi_{poi.id}')),
-                (InlineKeyboardButton("⚠️ Aviso", callback_data=f'fort_alert_{poi.id}'))]
-            ]
+                button_list = [
+                    [(InlineKeyboardButton("🙋‍♀️ Voy", callback_data=f'fort_yes_{poi.id}')),
+                    (InlineKeyboardButton("✅ Estoy", callback_data=f'fort_here_{poi.id}')),
+                    (InlineKeyboardButton("🕒 Tardo", callback_data=f'fort_late_{poi.id}')),
+                    (InlineKeyboardButton("🙅‍♀️ No voy", callback_data=f'fort_no_{poi.id}'))],
+                    [(InlineKeyboardButton("📍 Ubicación", callback_data=f'fort_ubi_{poi.id}')),
+                    (InlineKeyboardButton("⚠️ Aviso", callback_data=f'fort_alert_{poi.id}'))]
+                ]
 
-            text = "Fortaleza en [{0}](https://maps.google.com/maps?q={1},{2}) {3}\n\nLista:".format(poi.name, lat, lon, dateText)
+                text = "Fortaleza en [{0}](https://maps.google.com/maps?q={1},{2}) {3}\n\nLista:".format(poi.name, lat, lon, dateText)
 
-            fort_msg = bot.sendMessage(
-                chat_id=chat_id,
-                text=text,
-                parse_mode=telegram.ParseMode.MARKDOWN,
-                disable_web_page_preview=True,
-                reply_markup=InlineKeyboardMarkup(button_list)
-            )
+                fort_msg = bot.sendMessage(
+                    chat_id=chat_id,
+                    text=text,
+                    parse_mode=telegram.ParseMode.MARKDOWN,
+                    disable_web_page_preview=True,
+                    reply_markup=InlineKeyboardMarkup(button_list)
+                )
 
-            chat_url = support.message_url(message, fort_msg.message_id, "desafío")
+                chat_url = support.message_url(message, fort_msg.message_id, "desafío")
 
-            f_object = support.AlertFortressContext(chat_id, f"¡Mago de *{message.chat.title}*, en 30 minutos tendrá lugar un {chat_url} que pondrá a prueba tus habilidades como mago en [{poi.name}](https://maps.google.com/maps?q={lat},{lon})!", fort_msg.message_id, poi.id)
-            job_queue.run_once(
-                support.callback_AlertFortress, 
-                userAsLocal,
-                context=f_object
-            )
+                f_object = support.AlertFortressContext(chat_id, f"¡Mago de *{message.chat.title}*, en 30 minutos tendrá lugar un {chat_url} que pondrá a prueba tus habilidades como mago en [{poi.name}](https://maps.google.com/maps?q={lat},{lon})!", fort_msg.message_id, poi.id)
+                job_queue.run_once(
+                    support.callback_AlertFortress, 
+                    userAsLocal,
+                    context=f_object
+                )
 
-            bot.delete_message(
-                chat_id=chat_id,
-                message_id=message_id)
-            return
-        elif queryData[1] == "cancel":
-            bot.delete_message(
-                chat_id=chat_id,
-                message_id=message_id)
+                bot.delete_message(
+                    chat_id=chat_id,
+                    message_id=message_id)
+                return
+            elif queryData[1] == "cancel":
+                bot.delete_message(
+                    chat_id=chat_id,
+                    message_id=message_id)
+                return
+        else:
             return
 
     poi_id = queryData[2]
@@ -251,11 +255,11 @@ def fort_btn(bot, update, job_queue):
             ent = message.parse_entities(["mention"])
             chat_url = support.message_url(message, message_id, "fortaleza")
             for mention in ent:
-                username = message.parse_entity(mention)
-                user = get_user_by_name(username[1:])
+                usermention = message.parse_entity(mention)
+                user = get_user_by_name(usermention[1:])
                 bot.sendMessage(
                     chat_id=user.id,
-                    text=f"Alerta para la {chat_url} en [{poi.name}](https://maps.google.com/maps?q={lat},{lon}) enviada por {username}",
+                    text=f"Alerta para la {chat_url} en [{poi.name}](https://maps.google.com/maps?q={lat},{lon}) enviada por @{username}",
                     parse_mode=telegram.ParseMode.MARKDOWN,
                     disable_web_page_preview=True
                 )

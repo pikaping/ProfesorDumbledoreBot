@@ -15,7 +15,6 @@ from profdumbledorebot.sql.group import group_message_counter, update_group_poin
 @run_async
 def games_cmd(bot, update):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
-    support.delete_message(chat_id, message.message_id, bot)
 
     if are_banned(user_id, chat_id):
         return
@@ -24,16 +23,17 @@ def games_cmd(bot, update):
     if user is None:
         return
 
-    print(text)
+    return
 
     if text[0] == "/games":
         games = ["grageas", "quien dijo"]
         if text in games:
             print("hola")
 
+    '''
     if last_run(chat_id, 'games'):
         return
-    
+    '''
     group_message_counter(chat_id)
     if (group_message_counter(chat_id, read_only=True) is randrange(2, 6)) or (group_message_counter(chat_id, read_only=True) >= 6):
         group_message_counter(chat_id, reset=True)
@@ -113,7 +113,7 @@ def btn(bot, update):
 
         if listaPalabras[1] == "success":
             update_user_points(user_id, 3)
-            update_group_points(user_id, 3)
+            update_group_points(chat_id, 3)
             bot.edit_message_text(
                 text=texto + "\n\n@" + username + " ha acertado!",
                 chat_id=chat_id,
