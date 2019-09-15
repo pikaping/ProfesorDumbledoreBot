@@ -57,7 +57,8 @@ def list_cmd(bot, update):
         chat_id=chat_id,
         text=out,
         parse_mode=telegram.ParseMode.MARKDOWN,
-        reply_markup=InlineKeyboardMarkup(button_list))
+        reply_markup=InlineKeyboardMarkup(button_list),
+        disable_web_page_preview=True)
 
 
 def list_btn(bot, update):
