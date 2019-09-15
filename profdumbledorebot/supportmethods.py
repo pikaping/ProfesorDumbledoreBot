@@ -83,7 +83,7 @@ def replace(user_id, name=None, admin=False, frce=False):
     if user and user.alias is not None:
         text_alias = escape_markdown("@{}".format(user.alias))
     elif name is not None:
-        text_alias = escape_markdown(name)
+        text_alias = f"[{escape_markdown(name)}](tg://user?id={user_id})"
     else:
         text_alias = "_Desconocido_"
 

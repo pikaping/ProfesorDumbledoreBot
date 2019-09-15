@@ -609,7 +609,7 @@ def passport_btn(bot, update):
         user_sql.del_user(user_id)
         support.delete_message(chat_id, message_id, bot)
         bot.sendMessage(
-            chat_id=dest_id,
+            chat_id=chat_id,
             text="Tu perfil ha sido eliminado.",
             parse_mode=telegram.ParseMode.MARKDOWN
         )

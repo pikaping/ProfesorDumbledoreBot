@@ -66,16 +66,16 @@ def add_ingredients_cmd(bot, update, args=None):
                 reg = re.match(r"(([0-1]?[0-9])|([0-9])|([2][0-3])):([0-5][0-9])", args[0]).group()
                 if reg:
                     button_list = [
-                    [InlineKeyboardButton("Ajenjo", callback_data='gh_addplant_1_{0}_{1}'.format(user_id, reg)),
-                    InlineKeyboardButton("Campanilla de invierno", callback_data='gh_addplant_2_{0}_{1}'.format(user_id, reg))],
-                    [InlineKeyboardButton("Grano de sopóforo", callback_data='gh_addplant_3_{0}_{1}'.format(user_id, reg)),
-                    InlineKeyboardButton("Raíz de jengibre", callback_data='gh_addplant_4_{0}_{1}'.format(user_id, reg))],
-                    [InlineKeyboardButton("Coclearia", callback_data='gh_addplant_5_{0}_{1}'.format(user_id, reg)),
-                    InlineKeyboardButton("Raíz de valeriana", callback_data='gh_addplant_6_{0}_{1}'.format(user_id, reg))],
-                    [InlineKeyboardButton("Raíz amarga", callback_data='gh_addplant_7_{0}_{1}'.format(user_id, reg)),
-                    InlineKeyboardButton("Ligústico", callback_data='gh_addplant_8_{0}_{1}'.format(user_id, reg))],
-                    [InlineKeyboardButton("Tármica", callback_data='gh_addplant_9_{0}_{1}'.format(user_id, reg)),
-                    InlineKeyboardButton("Hongo saltarín", callback_data='gh_addplant_10_{0}_{1}'.format(user_id, reg))],
+                    [InlineKeyboardButton("Ajenjo", callback_data='gh_addplant_1_{0}_{1}'.format(user_id, reg))],
+                    [InlineKeyboardButton("Campanilla de invierno", callback_data='gh_addplant_2_{0}_{1}'.format(user_id, reg))],
+                    [InlineKeyboardButton("Grano de sopóforo", callback_data='gh_addplant_3_{0}_{1}'.format(user_id, reg))],
+                    [InlineKeyboardButton("Raíz de jengibre", callback_data='gh_addplant_4_{0}_{1}'.format(user_id, reg))],
+                    [InlineKeyboardButton("Coclearia", callback_data='gh_addplant_5_{0}_{1}'.format(user_id, reg))],
+                    [InlineKeyboardButton("Raíz de valeriana", callback_data='gh_addplant_6_{0}_{1}'.format(user_id, reg))],
+                    [InlineKeyboardButton("Raíz amarga", callback_data='gh_addplant_7_{0}_{1}'.format(user_id, reg))],
+                    [InlineKeyboardButton("Ligústico", callback_data='gh_addplant_8_{0}_{1}'.format(user_id, reg))],
+                    [InlineKeyboardButton("Tármica", callback_data='gh_addplant_9_{0}_{1}'.format(user_id, reg))],
+                    [InlineKeyboardButton("Hongo saltarín", callback_data='gh_addplant_10_{0}_{1}'.format(user_id, reg))],
                     [InlineKeyboardButton("❌ Cancelar", callback_data='gh_cancel_{}'.format(user_id))]]
 
                     bot.send_venue(
