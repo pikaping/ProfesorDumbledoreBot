@@ -1065,7 +1065,7 @@ def add_poi_cmd(bot, update, args=None):
     chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if are_banned(chat_id, user_id):
+    if are_banned(chat_id, user_id) or not support.is_admin(chat_id, user_id, bot):
         return
 
     user = user_sql.get_real_user(user_id)

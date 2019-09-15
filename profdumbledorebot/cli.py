@@ -171,7 +171,7 @@ def start_bot():
     #dispatcher.add_handler(CommandHandler('nelu', nelu.nelu_cmd, Filters.user(int(config["telegram"]["saray"])), pass_job_queue=True))
     #dispatcher.add_handler(CallbackQueryHandler(nelu.nelu_btn, pattern=r"^nelu_"))
 
-    dispatcher.add_handler(CommandHandler('fort', fortress.fort_list_cmd, Filters.group & Filters.chat(int(config["telegram"]["beta_group"])), pass_args=True))
+    dispatcher.add_handler(CommandHandler(['fort','fortaleza'], fortress.fort_list_cmd, Filters.group & Filters.chat(int(config["telegram"]["beta_group"])), pass_args=True))
     dispatcher.add_handler(CallbackQueryHandler(fortress.fort_btn, pattern=r"^fort_", pass_job_queue=True))
 
     dispatcher.add_handler(CommandHandler('avistamiento', sighting.sighting_cmd, Filters.group & Filters.chat(int(config["telegram"]["beta_group"]))))
@@ -179,7 +179,7 @@ def start_bot():
 
     dispatcher.add_handler(CommandHandler('add_plant', greenhouses.add_ingredients_cmd, Filters.group & Filters.chat(int(config["telegram"]["beta_group"])), pass_args=True))
     dispatcher.add_handler(CommandHandler('rm_plant', greenhouses.rem_plant_cmd, Filters.group & Filters.chat(int(config["telegram"]["beta_group"])), pass_args=True, pass_job_queue=True))
-    dispatcher.add_handler(CommandHandler('plantaciones', greenhouses.plants_list_cmd, Filters.group & Filters.chat(int(config["telegram"]["beta_group"]))))
+    dispatcher.add_handler(CommandHandler(['plantaciones','plant_list'], greenhouses.plants_list_cmd, Filters.group & Filters.chat(int(config["telegram"]["beta_group"]))))
     dispatcher.add_handler(CallbackQueryHandler(greenhouses.gh_btn, pattern=r"^gh_", pass_job_queue=True))
 
     dispatcher.add_handler(CommandHandler('add_poi', profdumbledorebot.add_poi_cmd, Filters.group & Filters.chat(int(config["telegram"]["beta_group"])), pass_args=True))
