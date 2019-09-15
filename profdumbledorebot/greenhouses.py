@@ -22,15 +22,16 @@
 ############################################################################
 
 import re
+import logging
 import time
+import random
+from geopy.distance import great_circle
+from datetime import datetime, timedelta, time, timezone
+import pytz
 
 import telegram
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Bot
 from telegram.ext.dispatcher import run_async
-
-from geopy.distance import great_circle
-from datetime import datetime, timedelta, time, timezone
-import pytz
 
 import profdumbledorebot.supportmethods as support
 from profdumbledorebot.model import PortalType
@@ -160,33 +161,33 @@ def gh_btn(bot, update, job_queue):
             userAsLocalTime = userAsLocal.time()
             userAsLocalDPTime = userAsLocalDeletePlant.time()
 
-            plant = support.replace_plants(int(queryData[2]))
+            plant = support.replace_plants(int(queryData[3]))
 
             setPlant = set_plant(queryData[2], queryData[3], chat_id, userDatetime, userAsLocalDeletePlant)
-            laPutaPlanta = get_plant(setPlant)
+            thePlant = get_plant(setPlant)
 
             poi = get_poi(queryData[2])
-            ap_object = support.AlertPlantContext(chat_id, "¡Magos de *{0}*, en 15 minutos se podrá recoger *{1}* en [{2}](https://maps.google.com/maps?q={3},{4})!".format(query.message.chat.title, plant, poi.name, poi.latitude, poi.longitude), False, laPutaPlanta.id)
+            ap_object = support.AlertPlantContext(chat_id, "¡Magos de *{0}*, en 15 minutos se podrá recoger *{1}* en [{2}](https://maps.google.com/maps?q={3},{4})!".format(query.message.chat.title, plant, poi.name, poi.latitude, poi.longitude), False, thePlant.id)
             job_queue.run_once(
                 support.callback_AlertPlant, 
                 userAsLocal15,
                 context=ap_object,
-                name="{}_plantJob15".format(laPutaPlanta.id)
+                name="{}_plantJob15".format(thePlant.id)
             )
 
-            ap_object = support.AlertPlantContext(chat_id, "¡Magos de *{0}*, ya se puede recoger *{1}* en [{2}](https://maps.google.com/maps?q={3},{4})!".format(query.message.chat.title, plant, poi.name, poi.latitude, poi.longitude), True, laPutaPlanta.id)
+            ap_object = support.AlertPlantContext(chat_id, "¡Magos de *{0}*, ya se puede recoger *{1}* en [{2}](https://maps.google.com/maps?q={3},{4})!".format(query.message.chat.title, plant, poi.name, poi.latitude, poi.longitude), True, thePlant.id)
             job_queue.run_once(
                 support.callback_AlertPlant, 
                 userAsLocalTime,
                 context=ap_object,
-                name="{}_plantJob".format(laPutaPlanta.id)
+                name="{}_plantJob".format(thePlant.id)
             )
-            dp_object = support.DeletePlantContext(laPutaPlanta.id)
+            dp_object = support.DeletePlantContext(thePlant.id)
             job_queue.run_once(
                 support.callback_DeletePlant,
                 userAsLocalDPTime,
                 context=dp_object,
-                name="{}_plantJobDelete".format(laPutaPlanta.id)
+                name="{}_plantJobDelete".format(thePlant.id)
             )
 
             bot.delete_message(
@@ -222,18 +223,22 @@ def plants_list_cmd(bot, update, args=None):
         plantName = support.replace_plants(plant.plant_type)
         poi = get_poi(plant.portal)
         if plant.alerted:
-            text = text + "\n- #{0} *{1}* - ⚠️ {2} ⚠️ - _{3}_".format(
+            text = text + "\n- #{0} *{1}* - ⚠️ {2} ⚠️ - [{3}](https://maps.google.com/maps?q={4},{5})".format(
                 plant.id,
                 plantName,
                 f"{plant.grow_end.hour:02}:{plant.grow_end.minute:02}",
-                poi.name
+                poi.name,
+                poi.latitude,
+                poi.longitude
             )
         else:
-            text = text + "\n- #{0} *{1}* - {2} - _{3}_".format(
+            text = text + "\n- #{0} *{1}* - {2} - [{3}](https://maps.google.com/maps?q={4},{5})".format(
                 plant.id,
                 plantName,
                 f"{plant.grow_end.hour:02}:{plant.grow_end.minute:02}",
-                poi.name
+                poi.name,
+                poi.latitude,
+                poi.longitude
             )
 
     bot.sendMessage(
@@ -290,9 +295,7 @@ def dist_calc(point, list_of_points):
     return str(dist)
 
 def sort_list(list1, list2): 
-  
-    zipped_pairs = zip(list2, list1) 
-  
-    z = [x for _, x in sorted(zipped_pairs)] 
-      
-    return z 
+    zipped_pairs = zip(list2, list1)
+    z = [x for _, x in sorted(zipped_pairs)]
+
+    return z

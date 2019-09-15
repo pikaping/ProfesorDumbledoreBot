@@ -228,11 +228,11 @@ def callback_AlertFortress(bot, job):
         lon = poi.longitude
         button_list = [
             [(InlineKeyboardButton("🙋‍♀️ Voy", callback_data=f'fort_yes_{poi.id}')),
-            (InlineKeyboardButton("✅ Estoy", callback_data=f'fort_here_{poi.id}')),
             (InlineKeyboardButton("🕒 Tardo", callback_data=f'fort_late_{poi.id}')),
             (InlineKeyboardButton("🙅‍♀️ No voy", callback_data=f'fort_no_{poi.id}'))],
-            [(InlineKeyboardButton("📍 Ubicación", callback_data=f'fort_ubi_{poi.id}')),
-            (InlineKeyboardButton("⚠️​ Aviso", callback_data=f'fort_alert_{poi.id}'))]
+            [(InlineKeyboardButton("✅ Estoy", callback_data=f'fort_here_{poi.id}')),
+            (InlineKeyboardButton("📍 Ubicación", callback_data=f'fort_ubi_{poi.id}')),
+            (InlineKeyboardButton("⚠️ ​Aviso", callback_data=f'fort_alert_{poi.id}'))]
         ]
         fort_message = bot.edit_message_reply_markup(
             chat_id=job.context.chat_id,
