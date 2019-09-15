@@ -409,7 +409,8 @@ def process_group_message(bot, update, job_queue):
                 bot.sendMessage(
                     chat_id=admin.user.id,
                     text=message_text,
-                    parse_mode=telegram.ParseMode.MARKDOWN
+                    parse_mode=telegram.ParseMode.MARKDOWN,
+                    disable_web_page_preview=True
                 )
         ladmin = get_particular_admin(chat_id)
         if ladmin is not None and ladmin.admin:
@@ -420,12 +421,12 @@ def process_group_message(bot, update, job_queue):
                 replace_pogo = support.replace(user_id, message.from_user.first_name)
                 message_text = ("ℹ️ {}\n👤 {} {}").format(chat_text, replace_pogo, text)
                 adm_bot.sendMessage(chat_id=admin.id, text=message_text,
-                                parse_mode=telegram.ParseMode.MARKDOWN)
+                                parse_mode=telegram.ParseMode.MARKDOWN, disable_web_page_preview=True)
             elif admin is not None and admin.admin:
                 replace_pogo = support.replace(user_id, message.from_user.first_name)
                 message_text = ("ℹ️ {}\n👤 {} {}").format(chat_text, replace_pogo, text)
                 bot.sendMessage(chat_id=admin.id, text=message_text,
-                                parse_mode=telegram.ParseMode.MARKDOWN)
+                                parse_mode=telegram.ParseMode.MARKDOWN, disable_web_page_preview=True)
 '''
     if text and len(text) < 31:
         commands = get_commands(chat_id)
