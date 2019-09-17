@@ -136,6 +136,10 @@ def replace_plants(plant_type):
         plant = "Tármica"
     elif plant_type == 10:
         plant = "Hongo saltarín"
+    elif plant_type == 11:
+        plant = "Cristoforiana"
+    elif plant_type == 12:
+        plant = "Trompeta de ángel"
     return plant
 
 class DeleteContext:

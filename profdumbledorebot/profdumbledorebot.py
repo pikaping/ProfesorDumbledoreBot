@@ -1116,15 +1116,29 @@ def rem_poi_cmd(bot, update, args=None):
         )
         return
 
-    if args is not None and len(args)!=0:
-        if re.match(r"^[0-9]{10}$", args[0]):
-            delete_poi(args[0])
-            
-            bot.sendMessage(
+    try:
+        if args is not None and len(args)!=0:
+            if re.match(r"^[0-9]{10}$", args[0]):
+                delete_poi(poi_id=args[0])
+                
+                bot.sendMessage(
+                chat_id=chat_id,
+                text="POI eliminado correctamente.",
+                parse_mode=telegram.ParseMode.MARKDOWN
+                )
+            elif args[0] == "all":
+                delete_poi(group_id=chat_id)
+                bot.sendMessage(
+                chat_id=chat_id,
+                text="Todos los POIs eliminados correctamente.",
+                parse_mode=telegram.ParseMode.MARKDOWN
+                )
+    except:
+        bot.sendMessage(
             chat_id=chat_id,
-            text="POI eliminado correctamente.",
+            text="Para poder eliminar todos los POIs tienes que eliminar antes las plantaciones activas.",
             parse_mode=telegram.ParseMode.MARKDOWN
-            )
+        )
 
 @run_async
 def poi_list_cmd(bot, update, args=None):
@@ -1165,18 +1179,12 @@ def poi_list_cmd(bot, update, args=None):
         count += 1
         if count == 100:
             pass
-    
-    if chat_type != "private":
-        group = get_group_settings(chat_id)
-        if group.reply_on_group:
-            dest_id = chat_id
-        else:
-            dest_id = user_id
-    else:
-        dest_id = user_id
+
+    if not list(poi_list):
+        text= "❌ No hay POIs registrados."
 
     bot.sendMessage(
-            chat_id=dest_id,
+            chat_id=user_id,
             text=text,
             parse_mode=telegram.ParseMode.MARKDOWN,
             disable_web_page_preview=True

@@ -184,12 +184,12 @@ def start_bot():
 
     dispatcher.add_handler(CommandHandler('add_poi', profdumbledorebot.add_poi_cmd, Filters.group & Filters.chat(int(config["telegram"]["beta_group"])), pass_args=True))
     dispatcher.add_handler(CommandHandler('rm_poi', profdumbledorebot.rem_poi_cmd, Filters.group & Filters.chat(int(config["telegram"]["beta_group"])), pass_args=True))
-    dispatcher.add_handler(CommandHandler('poi_list', profdumbledorebot.poi_list_cmd, Filters.group & Filters.chat(int(config["telegram"]["beta_group"]))))
+    dispatcher.add_handler(CommandHandler('poi_list', profdumbledorebot.poi_list_cmd, Filters.group & Filters.chat(int(config["telegram"]["beta_group"])))
     dispatcher.add_handler(CallbackQueryHandler(profdumbledorebot.poi_btn, pattern=r"^poi_"))
 
     dispatcher.add_handler(CommandHandler(['midepollas','flipaos'], profdumbledorebot.ranking_spain_cmd, Filters.chat(int(config["telegram"]["spain_id"])) & Filters.user(int(config["telegram"]["ranking_admin_id"]))))
     dispatcher.add_handler(CommandHandler('puntos', profdumbledorebot.points_cmd, Filters.private))
-    dispatcher.add_handler(CommandHandler('ranking', profdumbledorebot.private_ranking_cmd, Filters.group & Filters.chat(int(config["telegram"]["beta_group"]))))
+    dispatcher.add_handler(CommandHandler('ranking', profdumbledorebot.private_ranking_cmd, Filters.group))
 
     dispatcher.add_handler(CommandHandler('ping', profdumbledorebot. ping_cmd))
     dispatcher.add_handler(CommandHandler(['fclist','fc'], profdumbledorebot.fclist_cmd, Filters.group))

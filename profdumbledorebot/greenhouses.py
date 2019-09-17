@@ -76,6 +76,8 @@ def add_ingredients_cmd(bot, update, args=None):
                     [InlineKeyboardButton("Ligústico", callback_data='gh_addplant_8_{0}_{1}'.format(user_id, reg))],
                     [InlineKeyboardButton("Tármica", callback_data='gh_addplant_9_{0}_{1}'.format(user_id, reg))],
                     [InlineKeyboardButton("Hongo saltarín", callback_data='gh_addplant_10_{0}_{1}'.format(user_id, reg))],
+                    [InlineKeyboardButton("Cristoforiana", callback_data='gh_addplant_11_{0}_{1}'.format(user_id, reg))],
+                    [InlineKeyboardButton("Trompeta de ángel", callback_data='gh_addplant_12_{0}_{1}'.format(user_id, reg))],
                     [InlineKeyboardButton("❌ Cancelar", callback_data='gh_cancel_{}'.format(user_id))]]
 
                     bot.send_venue(
@@ -219,6 +221,15 @@ def plants_list_cmd(bot, update, args=None):
 
     text = "Lista de plantaciones en *{}*:\n".format(message.chat.title)
     plants_list = get_plant_list(chat_id)
+    if not list(plants_list):
+        bot.sendMessage(
+            chat_id=user_id,
+            text="❌ No hay plantaciones registradas.",
+            parse_mode=telegram.ParseMode.MARKDOWN,
+            disable_web_page_preview=True
+        )
+        return
+    count = 0
     for plant in plants_list:
         plantName = support.replace_plants(plant.plant_type)
         poi = get_poi(plant.portal)
@@ -240,6 +251,9 @@ def plants_list_cmd(bot, update, args=None):
                 poi.latitude,
                 poi.longitude
             )
+        count += 1
+        if count == 100:
+            pass
 
     bot.sendMessage(
             chat_id=user_id,
@@ -267,21 +281,47 @@ def rem_plant_cmd(bot, update, job_queue, args=None):
 
     if args is not None and len(args)!=0:
         if re.match(r"^[0-9]{0,10}$", args[0]):
-            alert15PlantJob = job_queue.get_jobs_by_name("{}_plantJob15".format(args[0]))
-            alertPlantJob = job_queue.get_jobs_by_name("{}_plantJob".format(args[0]))
-            deletePlantJob = job_queue.get_jobs_by_name("{}_plantJobDelete".format(args[0]))
-            alert15PlantJob[0].schedule_removal()
-            alertPlantJob[0].schedule_removal()
-            deletePlantJob[0].schedule_removal()
+            try:
+                alert15PlantJob = job_queue.get_jobs_by_name("{}_plantJob15".format(args[0]))
+                alert15PlantJob[0].schedule_removal()
+            except:
+                pass
+            try:
+                alertPlantJob = job_queue.get_jobs_by_name("{}_plantJob".format(args[0]))
+                alertPlantJob[0].schedule_removal()
+            except:
+                pass
+            try:
+                deletePlantJob = job_queue.get_jobs_by_name("{}_plantJobDelete".format(args[0]))
+                deletePlantJob[0].schedule_removal()
+            except:
+                pass
 
-            delete_plant(args[0])
+            delete_plant(plant_id=args[0])
             bot.sendMessage(
             chat_id=chat_id,
             text="Plantación eliminada correctamente.",
             parse_mode=telegram.ParseMode.MARKDOWN
             )
         elif args[0] == "all":
-            delete_plant(group_id=chat_id)
+            plants = delete_plant(group_id=chat_id)
+            for plant in plants:
+                logging.debug("%s", plant.plant_type)
+                try:
+                    alert15PlantJob = job_queue.get_jobs_by_name("{}_plantJob15".format(plant.id))
+                    alert15PlantJob[0].schedule_removal()
+                except:
+                    continue
+                try:
+                    alertPlantJob = job_queue.get_jobs_by_name("{}_plantJob".format(plant.id))
+                    alertPlantJob[0].schedule_removal()
+                except:
+                    continue
+                try:
+                    deletePlantJob = job_queue.get_jobs_by_name("{}_plantJobDelete".format(plant.id))
+                    deletePlantJob[0].schedule_removal()
+                except:
+                    continue
             bot.sendMessage(
             chat_id=chat_id,
             text="Todas las plantaciones eliminadas correctamente.",
