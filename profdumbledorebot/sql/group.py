@@ -121,6 +121,8 @@ def update_group_points(group_id, points=0, read_only=False):
                 group = get_unique_from_query(session.query(model.Group).filter(model.Group.id == group_id))
                 if group.games_points is None:
                     group.games_points = 0
+                if group.games_points == 0:
+                    return
                 group.games_points += points
         finally:
             session.commit()
@@ -148,10 +150,13 @@ def get_poi_list(group_id, poi_type=None):
     finally:
         session.close()
 
-def delete_poi(poi_id):
+def delete_poi(poi_id=None, group_id=None):
     with LOCK:
         session = get_session()
-        session.query(model.Portals).filter(model.Portals.id == poi_id).delete()
+        if group_id:
+            session.query(model.Portals).filter(model.Portals.group_id == group_id).delete()
+        elif poi_id:
+            session.query(model.Portals).filter(model.Portals.id == poi_id).delete()
         session.commit()
         session.close()
         return
@@ -188,9 +193,14 @@ def delete_plant(plant_id=None, group_id=None):
     with LOCK:
         session = get_session()
         if group_id:
-            session.query(model.Plants).filter(model.Plants.group_id == group_id).delete()
+            plants = session.query(model.Plants).filter(model.Plants.group_id == int(group_id))
+            plantas = plants
+            session.query(model.Plants).filter(model.Plants.group_id == int(group_id)).delete()
+            session.commit()
+            session.close()
+            return plantas
         elif plant_id:
-            session.query(model.Plants).filter(model.Plants.id == plant_id).delete()
+            session.query(model.Plants).filter(model.Plants.id == int(plant_id)).delete()
         session.commit()
         session.close()
         return

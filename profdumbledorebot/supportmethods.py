@@ -83,7 +83,7 @@ def replace(user_id, name=None, admin=False, frce=False):
     if user and user.alias is not None:
         text_alias = escape_markdown("@{}".format(user.alias))
     elif name is not None:
-        text_alias = escape_markdown(name)
+        text_alias = f"[{escape_markdown(name)}](tg://user?id={user_id})"
     else:
         text_alias = "_Desconocido_"
 
@@ -136,6 +136,10 @@ def replace_plants(plant_type):
         plant = "Tármica"
     elif plant_type == 10:
         plant = "Hongo saltarín"
+    elif plant_type == 11:
+        plant = "Cristoforiana"
+    elif plant_type == 12:
+        plant = "Trompeta de ángel"
     return plant
 
 class DeleteContext:
@@ -228,11 +232,11 @@ def callback_AlertFortress(bot, job):
         lon = poi.longitude
         button_list = [
             [(InlineKeyboardButton("🙋‍♀️ Voy", callback_data=f'fort_yes_{poi.id}')),
-            (InlineKeyboardButton("✅ Estoy", callback_data=f'fort_here_{poi.id}')),
             (InlineKeyboardButton("🕒 Tardo", callback_data=f'fort_late_{poi.id}')),
             (InlineKeyboardButton("🙅‍♀️ No voy", callback_data=f'fort_no_{poi.id}'))],
-            [(InlineKeyboardButton("📍 Ubicación", callback_data=f'fort_ubi_{poi.id}')),
-            (InlineKeyboardButton("⚠️​ Aviso", callback_data=f'fort_alert_{poi.id}'))]
+            [(InlineKeyboardButton("✅ Estoy", callback_data=f'fort_here_{poi.id}')),
+            (InlineKeyboardButton("📍 Ubicación", callback_data=f'fort_ubi_{poi.id}')),
+            (InlineKeyboardButton("⚠️ ​Aviso", callback_data=f'fort_alert_{poi.id}'))]
         ]
         fort_message = bot.edit_message_reply_markup(
             chat_id=job.context.chat_id,

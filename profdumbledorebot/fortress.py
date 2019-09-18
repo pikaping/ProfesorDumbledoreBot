@@ -73,7 +73,7 @@ def fort_list_cmd(bot, update, args=None):
                     regDay = re.match(r"(([0-2][0-9])|([1-9])|([3][0-1]))\/(([0-1]?[0-9])|([0-9])|([2][0-3])):([0-5][0-9])", args[0]).group()
                 if reg:
                     poi_list = get_poi_list(chat_id, PortalType.FORTRESS.value)
-                    poi_sorted = sort_list(poi_list, dist_calc(coords, poi_list))
+                    poi_sorted = sort_list(poi_list, coords)
 
                     button_list = []
                     if len(poi_sorted) >= 1:
@@ -96,9 +96,10 @@ def fort_list_cmd(bot, update, args=None):
                         longitude=lon,
                         reply_markup=InlineKeyboardMarkup(button_list)
                     )
+                    return
                 elif regDay:
                     poi_list = get_poi_list(chat_id, PortalType.FORTRESS.value)
-                    poi_sorted = sort_list(poi_list, dist_calc(coords, poi_list))
+                    poi_sorted = sort_list(poi_list, coords)
 
                     button_list = []
                     if len(poi_sorted) >= 1:
@@ -121,6 +122,18 @@ def fort_list_cmd(bot, update, args=None):
                         longitude=lon,
                         reply_markup=InlineKeyboardMarkup(button_list)
                     )
+                    return
+        bot.sendMessage(
+            chat_id=chat_id,
+            text="❌ Debes responder a una ubicación para crear la fortaleza.",
+            parse_mode=telegram.ParseMode.MARKDOWN
+        )
+    else:
+        bot.sendMessage(
+            chat_id=chat_id,
+            text="❌ Debes indicar una hora para crear la fortaleza.",
+            parse_mode=telegram.ParseMode.MARKDOWN
+        )
 
 def fort_btn(bot, update, job_queue):
     query = update.callback_query
@@ -139,6 +152,7 @@ def fort_btn(bot, update, job_queue):
 
     user = get_user(user_id)
     if user is None:
+        bot.answer_callback_query(query.id, "❌ Debes registrarte para usar esta función.", show_alert=True)
         return
 
     queryData = data.split("_")
@@ -153,11 +167,11 @@ def fort_btn(bot, update, job_queue):
                 try:
                     userTime = datetime.strptime(queryData[4], '%d/%H:%M')
                     userDatetime = datetime.now().replace(day=userTime.day, hour=userTime.hour, minute=userTime.minute, second=0)
-                    dateText = f"el *{userDatetime.day}/{userDatetime.month}* a las *{userDatetime.hour}:{userDatetime.minute}*"
+                    dateText = f"el *{userDatetime.day}/{userDatetime.month}* a las *{userDatetime.hour:02}:{userDatetime.minute:02}*"
                 except:
                     userTime = datetime.strptime(queryData[4], '%H:%M')
                     userDatetime = datetime.now().replace(hour=userTime.hour, minute=userTime.minute, second=0)
-                    dateText = f"a las *{userDatetime.hour}:{userDatetime.minute}*"
+                    dateText = f"a las *{userDatetime.hour:02}:{userDatetime.minute:02}*"
 
                 userAsLocal = tz.localize(userDatetime)
                 userAsLocal = userAsLocal.astimezone(pytz.utc)
@@ -165,9 +179,9 @@ def fort_btn(bot, update, job_queue):
                 if datetime.now(pytz.utc) > userAsLocal:
                     userAsLocal = userAsLocal + timedelta(days=1)
                     userDatetime = userDatetime + timedelta(days=1)
-                    dateText = f"el *{userDatetime.day}/{userDatetime.month}* a las *{userDatetime.hour}:{userDatetime.minute}*"
+                    dateText = f"el *{userDatetime.day}/{userDatetime.month}* a las *{userDatetime.hour:02}:{userDatetime.minute:02}*"
 
-                userAsLocal30 = userAsLocal - timedelta(minutes=1)
+                userAsLocal30 = userAsLocal - timedelta(minutes=30)
                 #userAsLocal30 = userAsLocal30.time()
                 #userAsLocalTime = userAsLocal.time()
 
@@ -179,10 +193,10 @@ def fort_btn(bot, update, job_queue):
 
                 button_list = [
                     [(InlineKeyboardButton("🙋‍♀️ Voy", callback_data=f'fort_yes_{poi.id}')),
-                    (InlineKeyboardButton("✅ Estoy", callback_data=f'fort_here_{poi.id}')),
                     (InlineKeyboardButton("🕒 Tardo", callback_data=f'fort_late_{poi.id}')),
                     (InlineKeyboardButton("🙅‍♀️ No voy", callback_data=f'fort_no_{poi.id}'))],
-                    [(InlineKeyboardButton("📍 Ubicación", callback_data=f'fort_ubi_{poi.id}')),
+                    [(InlineKeyboardButton("✅ Estoy", callback_data=f'fort_here_{poi.id}')),
+                    (InlineKeyboardButton("📍 Ubicación", callback_data=f'fort_ubi_{poi.id}')),
                     (InlineKeyboardButton("⚠️ Aviso", callback_data=f'fort_alert_{poi.id}'))]
                 ]
 
@@ -209,12 +223,24 @@ def fort_btn(bot, update, job_queue):
                     chat_id=chat_id,
                     message_id=message_id)
                 return
-            elif queryData[1] == "cancel":
-                bot.delete_message(
-                    chat_id=chat_id,
-                    message_id=message_id)
-                return
+
         else:
+            bot.answer_callback_query(
+                callback_query_id=query.id,
+                text="Sólo un administrador o el usuario que ha creado el aviso puede pulsar ese botón.",
+                show_alert=True)
+            return
+    if queryData[1] == "cancel":
+        if queryData[2] == str(user_id) or support.is_admin(chat_id, user_id, bot):
+                    bot.delete_message(
+                        chat_id=chat_id,
+                        message_id=message_id)
+                    return
+        else:
+            bot.answer_callback_query(
+                    callback_query_id=query.id,
+                    text="Sólo un administrador o el usuario que ha creado el aviso puede pulsar ese botón.",
+                    show_alert=True)
             return
 
     poi_id = queryData[2]
@@ -223,12 +249,12 @@ def fort_btn(bot, update, job_queue):
     lon = poi.longitude
 
     button_list = [
-        [(InlineKeyboardButton("🙋‍♀️ Voy", callback_data=f'fort_yes_{poi_id}')),
-        (InlineKeyboardButton("✅ Estoy", callback_data=f'fort_here_{poi_id}')),
-        (InlineKeyboardButton("🕒 Tardo", callback_data=f'fort_late_{poi_id}')),
-        (InlineKeyboardButton("🙅‍♀️ No voy", callback_data=f'fort_no_{poi_id}'))],
-        [(InlineKeyboardButton("📍 Ubicación", callback_data=f'fort_ubi_{poi_id}')),
-        (InlineKeyboardButton("⚠️ Aviso", callback_data=f'fort_alert_{poi_id}'))]
+        [(InlineKeyboardButton("🙋‍♀️ Voy", callback_data=f'fort_yes_{poi.id}')),
+        (InlineKeyboardButton("🕒 Tardo", callback_data=f'fort_late_{poi.id}')),
+        (InlineKeyboardButton("🙅‍♀️ No voy", callback_data=f'fort_no_{poi.id}'))],
+        [(InlineKeyboardButton("✅ Estoy", callback_data=f'fort_here_{poi.id}')),
+        (InlineKeyboardButton("📍 Ubicación", callback_data=f'fort_ubi_{poi.id}')),
+        (InlineKeyboardButton("⚠️ Aviso", callback_data=f'fort_alert_{poi.id}'))]
     ]
 
     string = r'\n(🙋‍♀️|✅|🕒|🙅‍♀️) (🍮|⚔|🐾|📚) (\d|\d\d) @{}'.format(username)
@@ -263,6 +289,8 @@ def fort_btn(bot, update, job_queue):
                     parse_mode=telegram.ParseMode.MARKDOWN,
                     disable_web_page_preview=True
                 )
+        else:
+            bot.answer_callback_query(query.id, "❌ Debes apuntarte para poder enviar una alerta.", show_alert=True)
         return
 
 
@@ -294,16 +322,10 @@ def fort_btn(bot, update, job_queue):
         reply_markup=InlineKeyboardMarkup(button_list),
         disable_web_page_preview=True)
 
-def dist_calc(point, list_of_points):
-    dist = []
-    for coord in list_of_points:
-        dist.append(great_circle(point, str(coord.latitude) + ", " + str(coord.longitude)).meters)
-    return str(dist)
+def dist_calc(point, point2):
+    dist = great_circle(point, str(point2.latitude) + ", " + str(point2.longitude)).meters
+    return dist
 
-def sort_list(list1, list2): 
-  
-    zipped_pairs = zip(list2, list1) 
-  
-    z = [x for _, x in sorted(zipped_pairs)] 
-      
-    return z 
+def sort_list(list1, point):
+    sorted_list = sorted(list1, key=lambda x: dist_calc(point, x))
+    return sorted_list

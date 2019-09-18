@@ -609,7 +609,7 @@ def passport_btn(bot, update):
         user_sql.del_user(user_id)
         support.delete_message(chat_id, message_id, bot)
         bot.sendMessage(
-            chat_id=dest_id,
+            chat_id=chat_id,
             text="Tu perfil ha sido eliminado.",
             parse_mode=telegram.ParseMode.MARKDOWN
         )
@@ -1065,7 +1065,7 @@ def add_poi_cmd(bot, update, args=None):
     chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if are_banned(chat_id, user_id):
+    if are_banned(chat_id, user_id) or not support.is_admin(chat_id, user_id, bot):
         return
 
     user = user_sql.get_real_user(user_id)
@@ -1116,15 +1116,29 @@ def rem_poi_cmd(bot, update, args=None):
         )
         return
 
-    if args is not None and len(args)!=0:
-        if re.match(r"^[0-9]{10}$", args[0]):
-            delete_poi(args[0])
-            
-            bot.sendMessage(
+    try:
+        if args is not None and len(args)!=0:
+            if re.match(r"^[0-9]{10}$", args[0]):
+                delete_poi(poi_id=args[0])
+                
+                bot.sendMessage(
+                chat_id=chat_id,
+                text="POI eliminado correctamente.",
+                parse_mode=telegram.ParseMode.MARKDOWN
+                )
+            elif args[0] == "all":
+                delete_poi(group_id=chat_id)
+                bot.sendMessage(
+                chat_id=chat_id,
+                text="Todos los POIs eliminados correctamente.",
+                parse_mode=telegram.ParseMode.MARKDOWN
+                )
+    except:
+        bot.sendMessage(
             chat_id=chat_id,
-            text="POI eliminado correctamente.",
+            text="Para poder eliminar todos los POIs tienes que eliminar antes las plantaciones activas.",
             parse_mode=telegram.ParseMode.MARKDOWN
-            )
+        )
 
 @run_async
 def poi_list_cmd(bot, update, args=None):
@@ -1165,18 +1179,12 @@ def poi_list_cmd(bot, update, args=None):
         count += 1
         if count == 100:
             pass
-    
-    if chat_type != "private":
-        group = get_group_settings(chat_id)
-        if group.reply_on_group:
-            dest_id = chat_id
-        else:
-            dest_id = user_id
-    else:
-        dest_id = user_id
+
+    if not list(poi_list):
+        text= "❌ No hay POIs registrados."
 
     bot.sendMessage(
-            chat_id=dest_id,
+            chat_id=user_id,
             text=text,
             parse_mode=telegram.ParseMode.MARKDOWN,
             disable_web_page_preview=True

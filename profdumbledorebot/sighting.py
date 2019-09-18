@@ -33,7 +33,7 @@ from datetime import datetime
 
 import profdumbledorebot.supportmethods as support
 from profdumbledorebot.sql.support import are_banned
-from profdumbledorebot.sql.user import get_user
+from profdumbledorebot.sql.user import get_user, get_real_user
 from profdumbledorebot.sql.group import get_group
 
 @run_async
@@ -43,6 +43,15 @@ def sighting_cmd(bot, update):
     support.delete_message(chat_id, message.message_id, bot)
 
     if are_banned(user_id, chat_id):
+        return
+
+    user = get_real_user(user_id)
+    if user is None:
+        bot.sendMessage(
+            chat_id=chat_id,
+            text="❌ Debes registrarte para usar este comando.",
+            parse_mode=telegram.ParseMode.MARKDOWN
+        )
         return
 
     if message.reply_to_message is not None:
@@ -93,6 +102,7 @@ def sighting_btn(bot, update):
     user = get_user(user_id)
 
     if user is None:
+        bot.answer_callback_query(query.id, "❌ Debes registrarte para usar esta función.", show_alert=True)
         return
 
     if re.match(r"^sighting_ubi_", data):
