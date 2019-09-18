@@ -73,7 +73,7 @@ def fort_list_cmd(bot, update, args=None):
                     regDay = re.match(r"(([0-2][0-9])|([1-9])|([3][0-1]))\/(([0-1]?[0-9])|([0-9])|([2][0-3])):([0-5][0-9])", args[0]).group()
                 if reg:
                     poi_list = get_poi_list(chat_id, PortalType.FORTRESS.value)
-                    poi_sorted = sort_list(poi_list, dist_calc(coords, poi_list))
+                    poi_sorted = sort_list(poi_list, coords)
 
                     button_list = []
                     if len(poi_sorted) >= 1:
@@ -99,7 +99,7 @@ def fort_list_cmd(bot, update, args=None):
                     return
                 elif regDay:
                     poi_list = get_poi_list(chat_id, PortalType.FORTRESS.value)
-                    poi_sorted = sort_list(poi_list, dist_calc(coords, poi_list))
+                    poi_sorted = sort_list(poi_list, coords)
 
                     button_list = []
                     if len(poi_sorted) >= 1:
@@ -225,6 +225,10 @@ def fort_btn(bot, update, job_queue):
                 return
 
         else:
+            bot.answer_callback_query(
+                callback_query_id=query.id,
+                text="Sólo un administrador o el usuario que ha creado el aviso puede pulsar ese botón.",
+                show_alert=True)
             return
     if queryData[2] == str(user_id) or support.is_admin(chat_id, user_id, bot):
         if queryData[1] == "cancel":
@@ -232,6 +236,12 @@ def fort_btn(bot, update, job_queue):
                         chat_id=chat_id,
                         message_id=message_id)
                     return
+    else:
+        bot.answer_callback_query(
+                callback_query_id=query.id,
+                text="Sólo un administrador o el usuario que ha creado el aviso puede pulsar ese botón.",
+                show_alert=True)
+        return
 
     poi_id = queryData[2]
     poi = get_poi(poi_id)
@@ -312,13 +322,10 @@ def fort_btn(bot, update, job_queue):
         reply_markup=InlineKeyboardMarkup(button_list),
         disable_web_page_preview=True)
 
-def dist_calc(point, list_of_points):
-    dist = []
-    for coord in list_of_points:
-        dist.append(great_circle(point, str(coord.latitude) + ", " + str(coord.longitude)).meters)
-    return str(dist)
+def dist_calc(point, point2):
+    dist = great_circle(point, str(point2.latitude) + ", " + str(point2.longitude)).meters
+    return dist
 
-def sort_list(list1, list2):
-    zipped_pairs = zip(list2, list1)
-    z = [x for _, x in sorted(zipped_pairs)]
-    return z
+def sort_list(list1, point):
+    sorted_list = sorted(list1, key=lambda x: dist_calc(point, x))
+    return sorted_list

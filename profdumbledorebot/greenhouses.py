@@ -115,7 +115,7 @@ def gh_btn(bot, update, job_queue):
                 message_id=message_id)
             
             poi_list = get_poi_list(chat_id, PortalType.GREENHOUSE.value)
-            poi_sorted = sort_list(poi_list, dist_calc(coords, poi_list))
+            poi_sorted = sort_list(poi_list, coords)
 
             button_list = []
             if len(poi_sorted) >= 1:
@@ -201,6 +201,11 @@ def gh_btn(bot, update, job_queue):
                 chat_id=chat_id,
                 message_id=message_id)
             return
+    else:
+        bot.answer_callback_query(
+                callback_query_id=query.id,
+                text="Sólo un administrador o el usuario que ha creado el aviso puede pulsar ese botón.",
+                show_alert=True)
 
 @run_async
 def plants_list_cmd(bot, update, args=None):
@@ -328,14 +333,10 @@ def rem_plant_cmd(bot, update, job_queue, args=None):
             parse_mode=telegram.ParseMode.MARKDOWN
             )
 
-def dist_calc(point, list_of_points):
-    dist = []
-    for coord in list_of_points:
-        dist.append(great_circle(point, str(coord.latitude) + ", " + str(coord.longitude)).meters)
-    return str(dist)
+def dist_calc(point, point2):
+    dist = great_circle(point, str(point2.latitude) + ", " + str(point2.longitude)).meters
+    return dist
 
-def sort_list(list1, list2): 
-    zipped_pairs = zip(list2, list1)
-    z = [x for _, x in sorted(zipped_pairs)]
-
-    return z
+def sort_list(list1, point):
+    sorted_list = sorted(list1, key=lambda x: dist_calc(point, x))
+    return sorted_list

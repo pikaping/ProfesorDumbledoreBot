@@ -193,14 +193,14 @@ def delete_plant(plant_id=None, group_id=None):
     with LOCK:
         session = get_session()
         if group_id:
-            plants = session.query(model.Plants).filter(model.Plants.group_id == group_id)
+            plants = session.query(model.Plants).filter(model.Plants.group_id == int(group_id))
             plantas = plants
-            session.query(model.Plants).filter(model.Plants.group_id == group_id).delete()
+            session.query(model.Plants).filter(model.Plants.group_id == int(group_id)).delete()
             session.commit()
             session.close()
             return plantas
         elif plant_id:
-            session.query(model.Plants).filter(model.Plants.id == plant_id).delete()
+            session.query(model.Plants).filter(model.Plants.id == int(plant_id)).delete()
         session.commit()
         session.close()
         return
