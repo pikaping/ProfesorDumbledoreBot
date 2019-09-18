@@ -66,19 +66,19 @@ def add_ingredients_cmd(bot, update, args=None):
                 reg = re.match(r"(([0-1]?[0-9])|([0-9])|([2][0-3])):([0-5][0-9])", args[0]).group()
                 if reg:
                     button_list = [
-                    [InlineKeyboardButton("Ajenjo", callback_data='gh_addplant_1_{0}_{1}'.format(user_id, reg))],
-                    [InlineKeyboardButton("Campanilla de invierno", callback_data='gh_addplant_2_{0}_{1}'.format(user_id, reg))],
-                    [InlineKeyboardButton("Grano de sopóforo", callback_data='gh_addplant_3_{0}_{1}'.format(user_id, reg))],
-                    [InlineKeyboardButton("Raíz de jengibre", callback_data='gh_addplant_4_{0}_{1}'.format(user_id, reg))],
-                    [InlineKeyboardButton("Coclearia", callback_data='gh_addplant_5_{0}_{1}'.format(user_id, reg))],
-                    [InlineKeyboardButton("Raíz de valeriana", callback_data='gh_addplant_6_{0}_{1}'.format(user_id, reg))],
-                    [InlineKeyboardButton("Raíz amarga", callback_data='gh_addplant_7_{0}_{1}'.format(user_id, reg))],
-                    [InlineKeyboardButton("Ligústico", callback_data='gh_addplant_8_{0}_{1}'.format(user_id, reg))],
-                    [InlineKeyboardButton("Tármica", callback_data='gh_addplant_9_{0}_{1}'.format(user_id, reg))],
-                    [InlineKeyboardButton("Hongo saltarín", callback_data='gh_addplant_10_{0}_{1}'.format(user_id, reg))],
-                    [InlineKeyboardButton("Cristoforiana", callback_data='gh_addplant_11_{0}_{1}'.format(user_id, reg))],
-                    [InlineKeyboardButton("Trompeta de ángel", callback_data='gh_addplant_12_{0}_{1}'.format(user_id, reg))],
-                    [InlineKeyboardButton("❌ Cancelar", callback_data='gh_cancel_{}'.format(user_id))]]
+                    [InlineKeyboardButton("Ajenjo", callback_data='gh_addplant_1_{0}_{1}'.format(reg, user_id))],
+                    [InlineKeyboardButton("Campanilla de invierno", callback_data='gh_addplant_2_{0}_{1}'.format(reg, user_id))],
+                    [InlineKeyboardButton("Grano de sopóforo", callback_data='gh_addplant_3_{0}_{1}'.format(reg, user_id))],
+                    [InlineKeyboardButton("Raíz de jengibre", callback_data='gh_addplant_4_{0}_{1}'.format(reg, user_id))],
+                    [InlineKeyboardButton("Coclearia", callback_data='gh_addplant_5_{0}_{1}'.format(reg, user_id))],
+                    [InlineKeyboardButton("Raíz de valeriana", callback_data='gh_addplant_6_{0}_{1}'.format(reg, user_id))],
+                    [InlineKeyboardButton("Raíz amarga", callback_data='gh_addplant_7_{0}_{1}'.format(reg, user_id))],
+                    [InlineKeyboardButton("Ligústico", callback_data='gh_addplant_8_{0}_{1}'.format(reg, user_id))],
+                    [InlineKeyboardButton("Tármica", callback_data='gh_addplant_9_{0}_{1}'.format(reg, user_id))],
+                    [InlineKeyboardButton("Hongo saltarín", callback_data='gh_addplant_10_{0}_{1}'.format(reg, user_id))],
+                    [InlineKeyboardButton("Cristoforiana", callback_data='gh_addplant_11_{0}_{1}'.format(reg, user_id))],
+                    [InlineKeyboardButton("Trompeta de ángel", callback_data='gh_addplant_12_{0}_{1}'.format(reg, user_id))],
+                    [InlineKeyboardButton("❌ Cancelar", callback_data='gh_cancel_._._{}'.format(user_id))]]
 
                     bot.send_venue(
                         chat_id=chat_id,
@@ -106,7 +106,7 @@ def gh_btn(bot, update, job_queue):
         return
 
     queryData = data.split("_")
-    userBtn = queryData[2]
+    userBtn = queryData[4]
 
     if userBtn == str(user_id) or support.is_admin(chat_id, user_id, bot):
         if queryData[1] == "addplant":
@@ -119,22 +119,22 @@ def gh_btn(bot, update, job_queue):
 
             button_list = []
             if len(poi_sorted) >= 1:
-                button_list.append([InlineKeyboardButton(poi_sorted[0].name, callback_data='gh_addubi_{0}_{1}_{2}_{3}'.format(poi_sorted[0].id, queryData[2], user_id, queryData[4]))])
+                button_list.append([InlineKeyboardButton(poi_sorted[0].name, callback_data='gh_addubi_{0}_{1}_{2}_{3}'.format(poi_sorted[0].id, queryData[2], user_id, queryData[3]))])
             if len(poi_sorted) >= 2:
-                button_list.append([InlineKeyboardButton(poi_sorted[1].name, callback_data='gh_addubi_{0}_{1}_{2}_{3}'.format(poi_sorted[1].id, queryData[2], user_id, queryData[4]))])
+                button_list.append([InlineKeyboardButton(poi_sorted[1].name, callback_data='gh_addubi_{0}_{1}_{2}_{3}'.format(poi_sorted[1].id, queryData[2], user_id, queryData[3]))])
             if len(poi_sorted) >= 3:
-                button_list.append([InlineKeyboardButton(poi_sorted[2].name, callback_data='gh_addubi_{0}_{1}_{2}_{3}'.format(poi_sorted[2].id, queryData[2], user_id, queryData[4]))])
+                button_list.append([InlineKeyboardButton(poi_sorted[2].name, callback_data='gh_addubi_{0}_{1}_{2}_{3}'.format(poi_sorted[2].id, queryData[2], user_id, queryData[3]))])
             if len(poi_sorted) >= 4:
-                button_list.append([InlineKeyboardButton(poi_sorted[3].name, callback_data='gh_addubi_{0}_{1}_{2}_{3}'.format(poi_sorted[3].id, queryData[2], user_id, queryData[4]))])
+                button_list.append([InlineKeyboardButton(poi_sorted[3].name, callback_data='gh_addubi_{0}_{1}_{2}_{3}'.format(poi_sorted[3].id, queryData[2], user_id, queryData[3]))])
             if len(poi_sorted) >= 5:
-                button_list.append([InlineKeyboardButton(poi_sorted[4].name, callback_data='gh_addubi_{0}_{1}_{2}_{3}'.format(poi_sorted[4].id, queryData[2], user_id, queryData[4]))])
-            button_list.append([InlineKeyboardButton("❌ Cancelar", callback_data='gh_cancel_{}'.format(user_id))])
+                button_list.append([InlineKeyboardButton(poi_sorted[4].name, callback_data='gh_addubi_{0}_{1}_{2}_{3}'.format(poi_sorted[4].id, queryData[2], user_id, queryData[3]))])
+            button_list.append([InlineKeyboardButton("❌ Cancelar", callback_data='gh_cancel_._._{}'.format(user_id))])
 
             plant = support.replace_plants(int(queryData[2]))
 
             bot.send_venue(
                     chat_id=chat_id,
-                    title=plant + " " + queryData[4],
+                    title=plant + " " + queryData[3],
                     address="¿En qué invernadero está plantado?",
                     latitude=lat,
                     longitude=lon,
