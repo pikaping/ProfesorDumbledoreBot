@@ -230,18 +230,18 @@ def fort_btn(bot, update, job_queue):
                 text="Sólo un administrador o el usuario que ha creado el aviso puede pulsar ese botón.",
                 show_alert=True)
             return
-    if queryData[2] == str(user_id) or support.is_admin(chat_id, user_id, bot):
-        if queryData[1] == "cancel":
+    if queryData[1] == "cancel":
+        if queryData[2] == str(user_id) or support.is_admin(chat_id, user_id, bot):
                     bot.delete_message(
                         chat_id=chat_id,
                         message_id=message_id)
                     return
-    else:
-        bot.answer_callback_query(
-                callback_query_id=query.id,
-                text="Sólo un administrador o el usuario que ha creado el aviso puede pulsar ese botón.",
-                show_alert=True)
-        return
+        else:
+            bot.answer_callback_query(
+                    callback_query_id=query.id,
+                    text="Sólo un administrador o el usuario que ha creado el aviso puede pulsar ese botón.",
+                    show_alert=True)
+            return
 
     poi_id = queryData[2]
     poi = get_poi(poi_id)
