@@ -1118,7 +1118,7 @@ def rem_poi_cmd(bot, update, args=None):
 
     try:
         if args is not None and len(args)!=0:
-            if re.match(r"^[0-9]{10}$", args[0]):
+            if re.match(r"^[0-9]{1,10}$", args[0]):
                 delete_poi(poi_id=args[0])
                 
                 bot.sendMessage(
