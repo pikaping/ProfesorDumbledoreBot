@@ -194,7 +194,7 @@ def fort_btn(bot, update, job_queue):
                 button_list = [
                     [(InlineKeyboardButton("🙋‍♀️ Voy", callback_data=f'fort_yes_{poi.id}')),
                     (InlineKeyboardButton("🕒 Tardo", callback_data=f'fort_late_{poi.id}')),
-                    (InlineKeyboardButton("🙅‍♀️ No voy", callback_data=f'fort_no_{poi.id}'))],
+                    (InlineKeyboardButton("❌ No voy", callback_data=f'fort_no_{poi.id}'))],
                     [(InlineKeyboardButton("✅ Estoy", callback_data=f'fort_here_{poi.id}')),
                     (InlineKeyboardButton("📍 Ubicación", callback_data=f'fort_ubi_{poi.id}')),
                     (InlineKeyboardButton("⚠️ Aviso", callback_data=f'fort_alert_{poi.id}'))]
@@ -251,13 +251,13 @@ def fort_btn(bot, update, job_queue):
     button_list = [
         [(InlineKeyboardButton("🙋‍♀️ Voy", callback_data=f'fort_yes_{poi.id}')),
         (InlineKeyboardButton("🕒 Tardo", callback_data=f'fort_late_{poi.id}')),
-        (InlineKeyboardButton("🙅‍♀️ No voy", callback_data=f'fort_no_{poi.id}'))],
+        (InlineKeyboardButton("❌ No voy", callback_data=f'fort_no_{poi.id}'))],
         [(InlineKeyboardButton("✅ Estoy", callback_data=f'fort_here_{poi.id}')),
         (InlineKeyboardButton("📍 Ubicación", callback_data=f'fort_ubi_{poi.id}')),
         (InlineKeyboardButton("⚠️ Aviso", callback_data=f'fort_alert_{poi.id}'))]
     ]
 
-    string = r'\n(🙋‍♀️|✅|🕒|🙅‍♀️) (🍮|⚔|🐾|📚) (\d|\d\d) @{}'.format(username)
+    string = r'\n(🙋‍♀️|✅|🕒|❌) (🍮|⚔|🐾|📚) (\d|\d\d) @{}'.format(username)
 
 
     if queryData[1] == "ubi":
@@ -312,7 +312,7 @@ def fort_btn(bot, update, job_queue):
     elif queryData[1] == "late":
         text = markdown_text + f"\n🕒 {text_prof} {user.level} @{username}"
     elif queryData[1] == "no":
-        text = markdown_text + f"\n🙅‍♀️ {text_prof} {user.level} @{username}"
+        text = markdown_text + f"\n❌ {text_prof} {user.level} @{username}"
     
     bot.edit_message_text(
         text=text,

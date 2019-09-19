@@ -302,16 +302,15 @@ def rem_plant_cmd(bot, update, job_queue, args=None):
             except:
                 pass
 
-            delete_plant(plant_id=args[0])
+            delete_plant(plant_id=args[0], group_id=chat_id)
             bot.sendMessage(
             chat_id=chat_id,
             text="Plantación eliminada correctamente.",
             parse_mode=telegram.ParseMode.MARKDOWN
             )
         elif args[0] == "all":
-            plants = delete_plant(group_id=chat_id)
+            plants = delete_plant(group_id=chat_id, group=True)
             for plant in plants:
-                logging.debug("%s", plant.plant_type)
                 try:
                     alert15PlantJob = job_queue.get_jobs_by_name("{}_plantJob15".format(plant.id))
                     alert15PlantJob[0].schedule_removal()

@@ -150,13 +150,13 @@ def get_poi_list(group_id, poi_type=None):
     finally:
         session.close()
 
-def delete_poi(poi_id=None, group_id=None):
+def delete_poi(poi_id=None, group_id=None, group=False):
     with LOCK:
         session = get_session()
-        if group_id:
+        if group:
             session.query(model.Portals).filter(model.Portals.group_id == group_id).delete()
         elif poi_id:
-            session.query(model.Portals).filter(model.Portals.id == poi_id).delete()
+            session.query(model.Portals).filter(and_(model.Portals.id == poi_id), model.Portals.group_id == group_id).delete()
         session.commit()
         session.close()
         return
@@ -189,18 +189,18 @@ def set_plant_alerted(plant_id):
         session.close()
         return
 
-def delete_plant(plant_id=None, group_id=None):
+def delete_plant(plant_id=None, group_id=None, group=False):
     with LOCK:
         session = get_session()
-        if group_id:
+        if group:
             plants = session.query(model.Plants).filter(model.Plants.group_id == int(group_id))
             plantas = plants
             session.query(model.Plants).filter(model.Plants.group_id == int(group_id)).delete()
             session.commit()
             session.close()
             return plantas
-        elif plant_id:
-            session.query(model.Plants).filter(model.Plants.id == int(plant_id)).delete()
+        else:
+            session.query(model.Plants).filter(and_(model.Plants.id == int(plant_id), model.Plants.group_id == int(group_id))).delete()
         session.commit()
         session.close()
         return
