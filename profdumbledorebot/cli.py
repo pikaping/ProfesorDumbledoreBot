@@ -172,6 +172,8 @@ def start_bot():
     #dispatcher.add_handler(CallbackQueryHandler(nelu.nelu_btn, pattern=r"^nelu_"))
 
     dispatcher.add_handler(CommandHandler(['fort','fortaleza'], fortress.fort_list_cmd, Filters.group, pass_args=True))
+    #dispatcher.add_handler(CommandHandler(['fort_refloat', 'fortrefloat'], fortress.fort_refloat_cmd, Filters.group))
+    dispatcher.add_handler(CommandHandler(['fort_delete', 'fortremove', 'rm_fort'], fortress.fort_remove_cmd, Filters.group))
     dispatcher.add_handler(CallbackQueryHandler(fortress.fort_btn, pattern=r"^fort_", pass_job_queue=True))
 
     dispatcher.add_handler(CommandHandler('avistamiento', sighting.sighting_cmd, Filters.group & Filters.chat(int(config["telegram"]["beta_group"]))))

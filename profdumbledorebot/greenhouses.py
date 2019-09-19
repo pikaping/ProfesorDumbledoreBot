@@ -302,10 +302,13 @@ def rem_plant_cmd(bot, update, job_queue, args=None):
             except:
                 pass
 
-            delete_plant(plant_id=args[0], group_id=chat_id)
+            if delete_plant(plant_id=args[0], group_id=chat_id):
+                text = "Plantación eliminada correctamente."
+            else:
+                text = "❌ No se pudo eliminar la plantación."
             bot.sendMessage(
             chat_id=chat_id,
-            text="Plantación eliminada correctamente.",
+            text=text,
             parse_mode=telegram.ParseMode.MARKDOWN
             )
         elif args[0] == "all":

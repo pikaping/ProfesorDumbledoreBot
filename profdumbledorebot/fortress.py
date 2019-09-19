@@ -278,17 +278,19 @@ def fort_btn(bot, update, job_queue):
                 show_alert=True)
             return
         if re.search(string, markdown_text):
-            search = re.search(string, markdown_text)
-            if search.group(0) == "❌":
-                pass
             ent = message.parse_entities(["mention"])
             chat_url = support.message_url(message, message_id, "fortaleza")
             for mention in ent:
+                username = message.parse_entity(mention)
+                string = r'\n(🙋‍♀️|✅|🕒|❌) (🍮|⚔|🐾|📚) (\d|\d\d) {}'.format(username)
+                search = re.search(string, markdown_text)
+                if search.group(1) == "❌":
+                    continue
                 usermention = message.parse_entity(mention)
                 user = get_user_by_name(usermention[1:])
                 bot.sendMessage(
                     chat_id=user.id,
-                    text=f"Alerta para la {chat_url} en [{poi.name}](https://maps.google.com/maps?q={lat},{lon}) enviada por @{username}",
+                    text=f"Alerta para la {chat_url} en [{poi.name}](https://maps.google.com/maps?q={lat},{lon}) enviada por {username}",
                     parse_mode=telegram.ParseMode.MARKDOWN,
                     disable_web_page_preview=True
                 )
@@ -324,6 +326,71 @@ def fort_btn(bot, update, job_queue):
         parse_mode=telegram.ParseMode.MARKDOWN,
         reply_markup=InlineKeyboardMarkup(button_list),
         disable_web_page_preview=True)
+
+@run_async
+def fort_remove_cmd(bot, update):
+    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    support.delete_message(chat_id, message.message_id, bot)
+
+    REGLIST = re.compile(
+    r'Lista:')
+    
+    if message.reply_to_message is None or message.reply_to_message.chat.id != chat_id:
+        return
+
+    if message.reply_to_message.from_user.id != bot.id:
+        return
+
+    if are_banned(user_id, chat_id) or not support.is_admin(chat_id, user_id, bot):
+        return
+
+    text = message.reply_to_message.text
+    if REGLIST.search(text) is None:
+        return
+
+    support.delete_message(chat_id, message.reply_to_message.message_id, bot)
+
+'''
+@run_async
+def fort_refloat_cmd(bot, update):
+    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    support.delete_message(chat_id, message.message_id, bot)
+
+    REGLIST = re.compile(
+    r'Lista:')
+    
+    if message.reply_to_message is None or message.reply_to_message.chat.id != chat_id:
+        return
+
+    if message.reply_to_message.from_user.id != bot.id:
+        return
+
+    if are_banned(user_id, chat_id) or not support.is_admin(chat_id, user_id, bot):
+        return
+
+    text = message.reply_to_message.text
+    if REGLIST.search(text) is None:
+        return
+
+    text = message.reply_to_message.text
+    button_list = [
+        [(InlineKeyboardButton("🙋‍♀️ Voy", callback_data=f'fort_yes_{poi.id}')),
+        (InlineKeyboardButton("🕒 Tardo", callback_data=f'fort_late_{poi.id}')),
+        (InlineKeyboardButton("❌ No voy", callback_data=f'fort_no_{poi.id}'))],
+        [(InlineKeyboardButton("✅ Estoy", callback_data=f'fort_here_{poi.id}')),
+        (InlineKeyboardButton("📍 Ubicación", callback_data=f'fort_ubi_{poi.id}')),
+        (InlineKeyboardButton("⚠️ Aviso", callback_data=f'fort_alert_{poi.id}'))]
+    ]
+
+    bot.sendMessage(
+        chat_id=chat_id,
+        text=text,
+        parse_mode=telegram.ParseMode.MARKDOWN,
+        reply_markup=InlineKeyboardMarkup(button_list),
+        disable_web_page_preview=True
+    )
+    support.delete_message(chat_id, message.reply_to_message.message_id, bot)
+'''
 
 def dist_calc(point, point2):
     dist = great_circle(point, str(point2.latitude) + ", " + str(point2.longitude)).meters

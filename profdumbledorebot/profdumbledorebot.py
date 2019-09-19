@@ -1119,11 +1119,13 @@ def rem_poi_cmd(bot, update, args=None):
     try:
         if args is not None and len(args)!=0:
             if re.match(r"^[0-9]{1,10}$", args[0]):
-                delete_poi(poi_id=args[0], group_id=chat_id)
-                
+                if delete_poi(poi_id=args[0], group_id=chat_id):
+                    text = "POI eliminado correctamente."
+                else:
+                    text = "❌ No se pudo eliminar el POI."
                 bot.sendMessage(
                 chat_id=chat_id,
-                text="POI eliminado correctamente.",
+                text=text,
                 parse_mode=telegram.ParseMode.MARKDOWN
                 )
             elif args[0] == "all":
