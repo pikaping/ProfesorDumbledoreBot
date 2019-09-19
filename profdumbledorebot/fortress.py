@@ -278,6 +278,9 @@ def fort_btn(bot, update, job_queue):
                 show_alert=True)
             return
         if re.search(string, markdown_text):
+            search = re.search(string, markdown_text)
+            if search.group(0) == "❌":
+                pass
             ent = message.parse_entities(["mention"])
             chat_url = support.message_url(message, message_id, "fortaleza")
             for mention in ent:

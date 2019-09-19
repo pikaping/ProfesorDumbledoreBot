@@ -248,7 +248,7 @@ def callback_AlertFortress(bot, job):
             username = fort_message.parse_entity(mention)
             string = r'\n(🙋‍♀️|✅|🕒|❌) (🍮|⚔|🐾|📚) (\d|\d\d) {}'.format(username)
             search = re.search(string, fort_message.text)
-            if search.group(1) == "❌":
+            if search.group(0) == "❌":
                 pass
             user = get_user_by_name(username[1:])
             bot.sendMessage(
