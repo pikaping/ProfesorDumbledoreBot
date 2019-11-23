@@ -116,7 +116,7 @@ def replace(user_id, name=None, admin=False, frce=False):
         )
 
     if admin:
-        replace_pogo = replace_pogo + " `{1}`".format(user_id)
+        replace_pogo = replace_pogo + " `{0}`".format(user_id)
 
     return replace_pogo
 
