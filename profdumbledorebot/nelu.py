@@ -255,7 +255,7 @@ def nelu_btn(bot, update):
             count += 1
             bot.send_message(
             chat_id=-1001411652944,
-            text="🏆 Copa de las Casas 🏆\n\n🥇 Gryffindor  - ❤️🦁 - 893247324 puntos\n\n🥈 Ravenclaw  - 💙🦅 - 194 puntos\n\n🥉 Hufflepuff- 💛🦡 - 166 puntos\n\n💩 Slytherin - 💚🐍 - 3 puntos"
+            text="🏆 Copa de las Casas 🏆\n\n🥇 Gryffindor  - 🦁 - 893247324 puntos\n\n🥈 Ravenclaw  - 🦅 - 194 puntos\n\n🥉 Hufflepuff- 🦡 - 166 puntos\n\n💩 Slytherin - 🐍 - 3 puntos"
             )
             bot.send_message(
             chat_id=-1001411652944,

@@ -24,6 +24,7 @@
 import logging
 import re
 from datetime import datetime
+import random
 
 import telegram
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
@@ -189,11 +190,13 @@ def whois_cmd(bot, update, args=None):
                 replied_id = user.id
 
     elif args is not None and len(args)== 1:
+        args[0] = re.sub("@", "", args[0])
         user = user_sql.get_user_by_name(args[0])
         if user is not None:
             replied_id = user.id
-        elif args[0].isDigit():
-            replied_id = user_id
+        elif args[0].isdigit():
+            user = user_sql.get_user(args[0])
+            replied_id = user.id
 
     else:
         return
@@ -238,8 +241,8 @@ def fclist_cmd(bot, update):
         return
 
     main = user_sql.get_user(user_id)
-    count = 0
     text = "**Listado de Friend Codes:**"
+    friends = []
 
     if main is None or not main.fclists or main.friend_id is None:
         text = "❌ No cumples los requisitos para solicitar el listado."
@@ -250,6 +253,14 @@ def fclist_cmd(bot, update):
         return
 
     users = get_users_from_group(chat_id)
+    if(users.count() == 0):
+        text = "¡Vaya! Parece que nadie ha hablado en este grupo 🧐"
+        bot.sendMessage(
+            chat_id=user_id,
+            text=text,
+            parse_mode=telegram.ParseMode.MARKDOWN
+        )
+        return
     for user_data in users:
         try:
             data = support.get_usergroup_tlg(chat_id, user_data.user_id, bot)
@@ -260,31 +271,26 @@ def fclist_cmd(bot, update):
             user = user_sql.get_user(user_data.user_id)
             if user and not user.banned and user.friend_id and user.fclists:
                 if user.house is Houses.GRYFFINDOR.value:
-                    text_team = "❤️🦁"
+                    text_team = "🦁"
                 elif user.house is Houses.HUFFLEPUFF.value:
-                    text_team = "💛🦡"
+                    text_team = "🦡"
                 elif user.house is Houses.RAVENCLAW.value:
-                    text_team = "💙🦅"
+                    text_team = "🦅"
                 elif user.house is Houses.SLYTHERIN.value:
-                    text_team = "💚🐍"
+                    text_team = "🐍"
                 elif user.house is Houses.NONE.value:
-                    text_team = "💜🙈"
+                    text_team = "🙈"
 
-                text = text + "\n{0}[{1}](tg://user?id={2}) `{3}`".format(
+                friends.append("\n{0}[{1}](tg://user?id={2}) `{3}`".format(
                     text_team,
                     user.alias,
                     user.id,
                     user.friend_id
-                )
-                count += 1
-                if count == 100:
-                    bot.sendMessage(
-                        chat_id=user_id,
-                        text=text,
-                        parse_mode=telegram.ParseMode.MARKDOWN
-                    )
-                    count = 0
+                ))
 
+    random.shuffle(friends)
+    friends = "".join(friends[:30])
+    text = text + friends
     bot.sendMessage(
         chat_id=user_id,
         text=text,
@@ -395,7 +401,7 @@ def passport_cmd(bot, update):
         reply_markup=reply_markup)
 
 
-REGPRIV = re.compile(r'^profile_edit_([a-z0-9]{1,3})(_([0-9]{1,2})|)')
+REGPRIV = re.compile(r'^profile_edit_([a-z0-9]{1,3})(_([a-z0-9]{1,3})|)(_([0-9]{1,3})|)')
 
 @run_async
 def passport_btn(bot, update):
@@ -481,13 +487,76 @@ def passport_btn(bot, update):
 
     elif data == "profile_edit_lvl":
         button_list = [
-            [InlineKeyboardButton("1-10", callback_data='profile_edit_btn_0'),
-            InlineKeyboardButton("11-20", callback_data='profile_edit_btn_10'),
-            InlineKeyboardButton("21-30", callback_data='profile_edit_btn_20')],
-            [InlineKeyboardButton("31-40", callback_data='profile_edit_btn_30'),
-            InlineKeyboardButton("41-50", callback_data='profile_edit_btn_40'),
-            InlineKeyboardButton("51-60", callback_data='profile_edit_btn_50')],
-            [InlineKeyboardButton("« Volver", callback_data='profile_back')]]
+            [InlineKeyboardButton("🧙 Nivel del personaje", callback_data='profile_edit_lvl_pj')],
+            [InlineKeyboardButton("🛡 Nivel de profesión", callback_data='profile_edit_lvl_prf')],
+            [InlineKeyboardButton("🏰 Nivel de fortaleza", callback_data='profile_edit_lvl_frt')],
+            [InlineKeyboardButton("« Volver", callback_data='profile_edit')]]
+
+        bot.edit_message_reply_markup(
+            chat_id=chat_id,
+            message_id=message_id,
+            reply_markup=InlineKeyboardMarkup(button_list))
+        return
+
+    elif data == "profile_edit_lvl_pj":
+        button_list = [
+            [InlineKeyboardButton("1-10", callback_data='profile_edit_btn_pj_0'),
+            InlineKeyboardButton("11-20", callback_data='profile_edit_btn_pj_10'),
+            InlineKeyboardButton("21-30", callback_data='profile_edit_btn_pj_20')],
+            [InlineKeyboardButton("31-40", callback_data='profile_edit_btn_pj_30'),
+            InlineKeyboardButton("41-50", callback_data='profile_edit_btn_pj_40'),
+            InlineKeyboardButton("51-60", callback_data='profile_edit_btn_pj_50')],
+            [InlineKeyboardButton("« Volver", callback_data='profile_edit_lvl')]]
+
+        bot.edit_message_reply_markup(
+            chat_id=chat_id,
+            message_id=message_id,
+            reply_markup=InlineKeyboardMarkup(button_list))
+        return
+
+    elif data == "profile_edit_lvl_prf":
+        button_list = [
+            [InlineKeyboardButton("1", callback_data='profile_edit_lvl_prf_1'),
+            InlineKeyboardButton("2", callback_data='profile_edit_lvl_prf_2'),
+            InlineKeyboardButton("3", callback_data='profile_edit_lvl_prf_3'),
+            InlineKeyboardButton("4", callback_data='profile_edit_lvl_prf_4'),
+            InlineKeyboardButton("5", callback_data='profile_edit_lvl_prf_5')],
+            [InlineKeyboardButton("6", callback_data='profile_edit_lvl_prf_6'),
+            InlineKeyboardButton("7", callback_data='profile_edit_lvl_prf_7'),
+            InlineKeyboardButton("8", callback_data='profile_edit_lvl_prf_8'),
+            InlineKeyboardButton("9", callback_data='profile_edit_lvl_prf_9'),
+            InlineKeyboardButton("10", callback_data='profile_edit_lvl_prf_10')],
+            [InlineKeyboardButton("11", callback_data='profile_edit_lvl_prf_11'),
+            InlineKeyboardButton("12", callback_data='profile_edit_lvl_prf_12'),
+            InlineKeyboardButton("13", callback_data='profile_edit_lvl_prf_13'),
+            InlineKeyboardButton("14", callback_data='profile_edit_lvl_prf_14'),
+            InlineKeyboardButton("15", callback_data='profile_edit_lvl_prf_15')],
+            [InlineKeyboardButton("« Volver", callback_data='profile_edit_lvl')]]
+
+        bot.edit_message_reply_markup(
+            chat_id=chat_id,
+            message_id=message_id,
+            reply_markup=InlineKeyboardMarkup(button_list))
+        return
+
+    elif data == "profile_edit_lvl_frt":
+        button_list = [
+            [InlineKeyboardButton("1-10", callback_data='profile_edit_btn_frt_0'),
+            InlineKeyboardButton("11-20", callback_data='profile_edit_btn_frt_10'),
+            InlineKeyboardButton("21-30", callback_data='profile_edit_btn_frt_20')],
+            [InlineKeyboardButton("31-40", callback_data='profile_edit_btn_frt_30'),
+            InlineKeyboardButton("41-50", callback_data='profile_edit_btn_frt_40'),
+            InlineKeyboardButton("51-60", callback_data='profile_edit_btn_frt_50')],
+            [InlineKeyboardButton("61-70", callback_data='profile_edit_btn_frt_60'),
+            InlineKeyboardButton("71-80", callback_data='profile_edit_btn_frt_70'),
+            InlineKeyboardButton("81-90", callback_data='profile_edit_btn_frt_80')],
+            [InlineKeyboardButton("91-100", callback_data='profile_edit_btn_frt_90'),
+            InlineKeyboardButton("101-110", callback_data='profile_edit_btn_frt_100'),
+            InlineKeyboardButton("111-120", callback_data='profile_edit_btn_frt_110')],
+            [InlineKeyboardButton("121-130", callback_data='profile_edit_btn_frt_120'),
+            InlineKeyboardButton("131-140", callback_data='profile_edit_btn_frt_130'),
+            InlineKeyboardButton("141-150", callback_data='profile_edit_btn_frt_140')],
+            [InlineKeyboardButton("« Volver", callback_data='profile_edit_lvl')]]
 
         bot.edit_message_reply_markup(
             chat_id=chat_id,
@@ -497,11 +566,11 @@ def passport_btn(bot, update):
 
     elif data == "profile_edit_hse":
         button_list = [
-            [InlineKeyboardButton("❤️🦁 Gryffindor", callback_data='profile_edit_hse_1')],
-            [InlineKeyboardButton("💛🦡 Hufflepuff", callback_data='profile_edit_hse_2')],
-            [InlineKeyboardButton("💙🦅 Ravenclaw", callback_data='profile_edit_hse_3')],
-            [InlineKeyboardButton("💚🐍 Slytherin", callback_data='profile_edit_hse_4')],
-            [InlineKeyboardButton("« Volver", callback_data='profile_back')]]
+            [InlineKeyboardButton("🦁 Gryffindor", callback_data='profile_edit_hse_1')],
+            [InlineKeyboardButton("🦡 Hufflepuff", callback_data='profile_edit_hse_2')],
+            [InlineKeyboardButton("🦅 Ravenclaw", callback_data='profile_edit_hse_3')],
+            [InlineKeyboardButton("🐍 Slytherin", callback_data='profile_edit_hse_4')],
+            [InlineKeyboardButton("« Volver", callback_data='profile_edit')]]
 
         bot.edit_message_reply_markup(
             chat_id=chat_id,
@@ -514,7 +583,7 @@ def passport_btn(bot, update):
             [InlineKeyboardButton("Team Harry", callback_data='profile_edit_tea_2')],
             [InlineKeyboardButton("Team Ron", callback_data='profile_edit_tea_1')],
             [InlineKeyboardButton("Team Hermione", callback_data='profile_edit_tea_3')],
-            [InlineKeyboardButton("« Volver", callback_data='profile_back')]]
+            [InlineKeyboardButton("« Volver", callback_data='profile_edit')]]
 
         bot.edit_message_reply_markup(
             chat_id=chat_id,
@@ -527,7 +596,7 @@ def passport_btn(bot, update):
             [InlineKeyboardButton("⚔ Auror", callback_data='profile_edit_prf_3')],
             [InlineKeyboardButton("🐾 Magizoologo", callback_data='profile_edit_prf_2')],
             [InlineKeyboardButton("📚 Profesor", callback_data='profile_edit_prf_1')],
-            [InlineKeyboardButton("« Volver", callback_data='profile_back')]]
+            [InlineKeyboardButton("« Volver", callback_data='profile_edit')]]
 
         bot.edit_message_reply_markup(
             chat_id=chat_id,
@@ -538,7 +607,7 @@ def passport_btn(bot, update):
     elif data == "profile_edit_del":
         button_list = [
             [InlineKeyboardButton("🗑 Confirmar", callback_data='profile_edit_del_1')],
-            [InlineKeyboardButton("« Volver", callback_data='profile_back')]]
+            [InlineKeyboardButton("« Volver", callback_data='profile_edit')]]
 
         bot.edit_message_reply_markup(
             chat_id=chat_id,
@@ -618,23 +687,38 @@ def passport_btn(bot, update):
     match = REGPRIV.match(query.data)
     if match:
         par = match.group(1)
-        val = match.group(3)        
+        typ = match.group(3) 
+        val = match.group(5)        
     else:
         return
 
     if par == "btn":
-        button_list = [
-            [InlineKeyboardButton("{}".format(1+int(val)), callback_data='profile_edit_lvl_{}'.format(1+int(val))),
-            InlineKeyboardButton("{}".format(2+int(val)), callback_data='profile_edit_lvl_{}'.format(2+int(val))),
-            InlineKeyboardButton("{}".format(3+int(val)), callback_data='profile_edit_lvl_{}'.format(3+int(val))),
-            InlineKeyboardButton("{}".format(4+int(val)), callback_data='profile_edit_lvl_{}'.format(4+int(val))),
-            InlineKeyboardButton("{}".format(5+int(val)), callback_data='profile_edit_lvl_{}'.format(5+int(val)))],
-            [InlineKeyboardButton("{}".format(6+int(val)), callback_data='profile_edit_lvl_{}'.format(6+int(val))),
-            InlineKeyboardButton("{}".format(7+int(val)), callback_data='profile_edit_lvl_{}'.format(7+int(val))),
-            InlineKeyboardButton("{}".format(8+int(val)), callback_data='profile_edit_lvl_{}'.format(8+int(val))),
-            InlineKeyboardButton("{}".format(9+int(val)), callback_data='profile_edit_lvl_{}'.format(9+int(val))),
-            InlineKeyboardButton("{}".format(10+int(val)), callback_data='profile_edit_lvl_{}'.format(10+int(val)))],
-            [InlineKeyboardButton("« Volver", callback_data='profile_back')]]
+        if typ == "pj":
+            button_list = [
+                [InlineKeyboardButton("{}".format(1+int(val)), callback_data='profile_edit_lvl_pj_{}'.format(1+int(val))),
+                InlineKeyboardButton("{}".format(2+int(val)), callback_data='profile_edit_lvl_pj_{}'.format(2+int(val))),
+                InlineKeyboardButton("{}".format(3+int(val)), callback_data='profile_edit_lvl_pj_{}'.format(3+int(val))),
+                InlineKeyboardButton("{}".format(4+int(val)), callback_data='profile_edit_lvl_pj_{}'.format(4+int(val))),
+                InlineKeyboardButton("{}".format(5+int(val)), callback_data='profile_edit_lvl_pj_{}'.format(5+int(val)))],
+                [InlineKeyboardButton("{}".format(6+int(val)), callback_data='profile_edit_lvl_pj_{}'.format(6+int(val))),
+                InlineKeyboardButton("{}".format(7+int(val)), callback_data='profile_edit_lvl_pj_{}'.format(7+int(val))),
+                InlineKeyboardButton("{}".format(8+int(val)), callback_data='profile_edit_lvl_pj_{}'.format(8+int(val))),
+                InlineKeyboardButton("{}".format(9+int(val)), callback_data='profile_edit_lvl_pj_{}'.format(9+int(val))),
+                InlineKeyboardButton("{}".format(10+int(val)), callback_data='profile_edit_lvl_pj_{}'.format(10+int(val)))],
+                [InlineKeyboardButton("« Volver", callback_data='profile_edit_lvl_pj')]]
+        elif typ == "frt":
+            button_list = [
+                [InlineKeyboardButton("{}".format(1+int(val)), callback_data='profile_edit_lvl_frt_{}'.format(1+int(val))),
+                InlineKeyboardButton("{}".format(2+int(val)), callback_data='profile_edit_lvl_frt_{}'.format(2+int(val))),
+                InlineKeyboardButton("{}".format(3+int(val)), callback_data='profile_edit_lvl_frt_{}'.format(3+int(val))),
+                InlineKeyboardButton("{}".format(4+int(val)), callback_data='profile_edit_lvl_frt_{}'.format(4+int(val))),
+                InlineKeyboardButton("{}".format(5+int(val)), callback_data='profile_edit_lvl_frt_{}'.format(5+int(val)))],
+                [InlineKeyboardButton("{}".format(6+int(val)), callback_data='profile_edit_lvl_frt_{}'.format(6+int(val))),
+                InlineKeyboardButton("{}".format(7+int(val)), callback_data='profile_edit_lvl_frt_{}'.format(7+int(val))),
+                InlineKeyboardButton("{}".format(8+int(val)), callback_data='profile_edit_lvl_frt_{}'.format(8+int(val))),
+                InlineKeyboardButton("{}".format(9+int(val)), callback_data='profile_edit_lvl_frt_{}'.format(9+int(val))),
+                InlineKeyboardButton("{}".format(10+int(val)), callback_data='profile_edit_lvl_frt_{}'.format(10+int(val)))],
+                [InlineKeyboardButton("« Volver", callback_data='profile_edit_lvl_frt')]]
 
         bot.edit_message_reply_markup(
             chat_id=chat_id,
@@ -711,7 +795,12 @@ def passport_btn(bot, update):
         return
 
     elif par == "lvl":
-        user_sql.commit_user(user_id, level=val)
+        if typ == "pj":
+            user_sql.commit_user(user_id, level=val)
+        elif typ == "prf":
+            user_sql.commit_user(user_id, profession_level=val)
+        elif typ == "frt":
+            user_sql.commit_user(user_id, fort_level=val)
         output = (
         "Bienvenido {}, este es tu pasaporte del ministerio, aquí podrás editar "
         "tu información de perfil y los ajustes con Dumbledore entre otras funciones.".format(support.replace(user_id, frce=True)))
@@ -777,11 +866,11 @@ def register_btn(bot, update):
     elif par == "lvl":
         user_sql.commit_user(user_id, level=val)
         button_list = [
-            [InlineKeyboardButton("❤️🦁 Gryffindor", callback_data='reg_hse_1')],
-            [InlineKeyboardButton("💛🦡 Hufflepuff", callback_data='reg_hse_2')],
-            [InlineKeyboardButton("💙🦅 Ravenclaw", callback_data='reg_hse_3')],
-            [InlineKeyboardButton("💚🐍 Slytherin", callback_data='reg_hse_4')],
-            [InlineKeyboardButton("💜🙈 Sin casa", callback_data='reg_hse_0')]]
+            [InlineKeyboardButton("🦁 Gryffindor", callback_data='reg_hse_1')],
+            [InlineKeyboardButton("🦡 Hufflepuff", callback_data='reg_hse_2')],
+            [InlineKeyboardButton("🦅 Ravenclaw", callback_data='reg_hse_3')],
+            [InlineKeyboardButton("🐍 Slytherin", callback_data='reg_hse_4')],
+            [InlineKeyboardButton("🙈 Sin casa", callback_data='reg_hse_0')]]
 
         bot.edit_message_text(
             text="¿Cual es tu casa de hogwarts?",
@@ -875,15 +964,15 @@ def ranking_spain_cmd(bot, update):
             user = user_sql.get_user(user_data.user_id)
             if user and not user.banned and user.ranking:
                 if user.house is Houses.GRYFFINDOR.value:
-                    text_team = "❤️🦁"
+                    text_team = "🦁"
                 elif user.house is Houses.HUFFLEPUFF.value:
-                    text_team = "💛🦡"
+                    text_team = "🦡"
                 elif user.house is Houses.RAVENCLAW.value:
-                    text_team = "💙🦅"
+                    text_team = "🦅"
                 elif user.house is Houses.SLYTHERIN.value:
-                    text_team = "💚🐍"
+                    text_team = "🐍"
                 elif user.house is Houses.NONE.value:
-                    text_team = "💜🙈"
+                    text_team = "🙈"
                 if user.profession is Professions.PROFESSOR.value:
                     text_prof = "📚"
                 elif user.profession is Professions.MAGIZOOLOGIST.value:
@@ -951,15 +1040,15 @@ def private_ranking_cmd(bot, update):
             user = user_sql.get_user(user_data.user_id)
             if user and not user.banned and user.ranking:
                 if user.house is Houses.GRYFFINDOR.value:
-                    text_team = "❤️🦁"
+                    text_team = "🦁"
                 elif user.house is Houses.HUFFLEPUFF.value:
-                    text_team = "💛🦡"
+                    text_team = "🦡"
                 elif user.house is Houses.RAVENCLAW.value:
-                    text_team = "💙🦅"
+                    text_team = "🦅"
                 elif user.house is Houses.SLYTHERIN.value:
-                    text_team = "💚🐍"
+                    text_team = "🐍"
                 elif user.house is Houses.NONE.value:
-                    text_team = "💜🙈"
+                    text_team = "🙈"
                 if user.profession is Professions.PROFESSOR.value:
                     text_prof = "📚"
                 elif user.profession is Professions.MAGIZOOLOGIST.value:
@@ -1217,12 +1306,22 @@ def poi_btn(bot, update):
             bot.delete_message(
                 chat_id=chat_id,
                 message_id=message_id)
+            bot.sendMessage(
+                chat_id=chat_id,
+                text="🌱 Invernadero registrado correctamente.",
+                parse_mode=telegram.ParseMode.MARKDOWN
+                )
             return
         elif queryData[1] == "fortress":
             create_poi(name, lat, lon, PortalType.FORTRESS.value, chat_id, user_id)
             bot.delete_message(
                 chat_id=chat_id,
                 message_id=message_id)
+            bot.sendMessage(
+                chat_id=chat_id,
+                text="🏰 Fortaleza registrada correctamente.",
+                parse_mode=telegram.ParseMode.MARKDOWN
+                )
             return
         elif queryData[1] == "cancel":
             bot.delete_message(

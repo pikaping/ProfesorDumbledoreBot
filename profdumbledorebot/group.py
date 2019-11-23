@@ -105,7 +105,7 @@ def joined_chat(bot, update, job_queue):
                         chat_id=chat_id, 
                         text=output, 
                         parse_mode=telegram.ParseMode.MARKDOWN)
-                good_luck(chat_id, message, "El usuario no está registrado")
+                good_luck(bot, chat_id, message, "El usuario no está registrado")
                 return
 
             elif group.requirment is ValidationRequiered.VALIDATION.value and user.level is None:
@@ -116,7 +116,7 @@ def joined_chat(bot, update, job_queue):
                         chat_id=chat_id, 
                         text=output, 
                         parse_mode=telegram.ParseMode.MARKDOWN)           
-                good_luck(chat_id, message, "El usuario no está registrado")
+                good_luck(bot, chat_id, message, "El usuario no está registrado")
                 try:
                     bot.sendMessage(
                         chat_id=user_id, 
@@ -134,7 +134,7 @@ def joined_chat(bot, update, job_queue):
                         chat_id=chat_id, 
                         text=output, 
                         parse_mode=telegram.ParseMode.MARKDOWN)           
-                good_luck(chat_id, message, "El usuario no está registrado")
+                good_luck(bot, chat_id, message, "El usuario no está registrado")
                 try:
                     bot.sendMessage(
                         chat_id=user_id, 
@@ -152,7 +152,7 @@ def joined_chat(bot, update, job_queue):
                         chat_id=chat_id, 
                         text=output, 
                         parse_mode=telegram.ParseMode.MARKDOWN)           
-                good_luck(chat_id, message, "El usuario no está registrado")
+                good_luck(bot, chat_id, message, "El usuario no está registrado")
                 try:
                     bot.sendMessage(
                         chat_id=user_id, 
@@ -170,7 +170,7 @@ def joined_chat(bot, update, job_queue):
                         chat_id=chat_id, 
                         text=output, 
                         parse_mode=telegram.ParseMode.MARKDOWN)           
-                good_luck(chat_id, message, "El usuario no está registrado")
+                good_luck(bot, chat_id, message, "El usuario no está registrado")
                 try:
                     bot.sendMessage(
                         chat_id=user_id, 
@@ -188,7 +188,7 @@ def joined_chat(bot, update, job_queue):
                         chat_id=chat_id, 
                         text=output, 
                         parse_mode=telegram.ParseMode.MARKDOWN)           
-                good_luck(chat_id, message, "El usuario no está registrado")
+                good_luck(bot, chat_id, message, "El usuario no está registrado")
                 try:
                     bot.sendMessage(
                         chat_id=user_id, 
@@ -206,7 +206,7 @@ def joined_chat(bot, update, job_queue):
                         chat_id=chat_id, 
                         text=output, 
                         parse_mode=telegram.ParseMode.MARKDOWN)           
-                good_luck(chat_id, message, "El usuario no está registrado")
+                good_luck(bot, chat_id, message, "El usuario no está registrado")
                 try:
                     bot.sendMessage(
                         chat_id=user_id, 
@@ -224,7 +224,7 @@ def joined_chat(bot, update, job_queue):
                         chat_id=chat_id, 
                         text=output, 
                         parse_mode=telegram.ParseMode.MARKDOWN)           
-                good_luck(chat_id, message, "El usuario no está registrado")
+                good_luck(bot, chat_id, message, "El usuario no está registrado")
                 try:
                     bot.sendMessage(
                         chat_id=user_id, 
@@ -242,7 +242,7 @@ def joined_chat(bot, update, job_queue):
                         chat_id=chat_id, 
                         text=output, 
                         parse_mode=telegram.ParseMode.MARKDOWN)           
-                good_luck(chat_id, message, "El usuario no está registrado")
+                good_luck(bot, chat_id, message, "El usuario no está registrado")
                 try:
                     bot.sendMessage(
                         chat_id=user_id, 
@@ -293,7 +293,7 @@ def joined_chat(bot, update, job_queue):
                         group.delete_cooldown,
                         context=delete_object
                     )
-
+            '''
             if group.val_alert and (user is None or user.level is None):
                 sent = bot.sendMessage(
                     chat_id=chat_id,
@@ -307,37 +307,38 @@ def joined_chat(bot, update, job_queue):
                         group.delete_cooldown or 60,
                         context=delete_object
                     )
-            
+            '''
             ladmin = get_particular_admin(chat_id)
             if ladmin is not None and ladmin.welcome:
                 admin = get_admin_from_linked(chat_id)
                 if admin is not None and admin.welcome and admin.admin_bot:
                     config = get_config()
                     adm_bot = Bot(token=config["telegram"]["admin_token"])
-                    replace_pogo = support.replace(user_id, message.from_user.first_name)
+                    replace_pogo = support.replace(user_id, message.from_user.first_name, admin=True)
                     message_text = ("ℹ️ {}\n👤 {} ha entrado en el grupo").format(message.chat.title, replace_pogo)
                     adm_bot.sendMessage(chat_id=admin.id, text=message_text,
                                     parse_mode=telegram.ParseMode.MARKDOWN)
                 elif admin is not None and admin.welcome :
-                    replace_pogo = support.replace(user_id, message.from_user.first_name)
+                    replace_pogo = support.replace(user_id, message.from_user.first_name, admin=True)
                     message_text = ("ℹ️ {}\n👤 {} ha entrado en el grupo").format(message.chat.title, replace_pogo)
                     bot.sendMessage(chat_id=admin.id, text=message_text,
                                     parse_mode=telegram.ParseMode.MARKDOWN)
 
 
-def good_luck(chat_id, message, text):
+def good_luck(bot, chat_id, message, text):
     ladmin = get_particular_admin(chat_id)
+    user_id = message.from_user.id
     if ladmin is not None and ladmin.welcome:
         admin = get_admin_from_linked(chat_id)
         if admin is not None and admin.welcome and admin.admin_bot:
             config = get_config()
             adm_bot = Bot(token=config["telegram"]["admin_token"])
-            replace_pogo = support.replace(user_id, message.from_user.first_name)
+            replace_pogo = support.replace(user_id, message.from_user.first_name, admin=True)
             message_text = ("ℹ️ {}\n👤 {} {}").format(message.chat.title, replace_pogo, text)
             adm_bot.sendMessage(chat_id=admin.id, text=message_text,
                             parse_mode=telegram.ParseMode.MARKDOWN)
         elif admin is not None and admin.welcome:
-            replace_pogo = support.replace(user_id, message.from_user.first_name)
+            replace_pogo = support.replace(user_id, message.from_user.first_name, admin=True)
             message_text = ("ℹ️ {}\n👤 {} {}").format(message.chat.title, replace_pogo, text)
             bot.sendMessage(chat_id=admin.id, text=message_text,
                             parse_mode=telegram.ParseMode.MARKDOWN)
@@ -394,7 +395,7 @@ def process_group_message(bot, update, job_queue):
         return
 
     if text is not None and re.search("@admin(?!\w)", text) is not None:
-        replace_pogo = support.replace(user_id, message.from_user.first_name)
+        replace_pogo = support.replace(user_id, message.from_user.first_name, admin=True)
 
         chat_text = support.message_url(message, message.message_id, message.chat.title)
 
@@ -418,12 +419,12 @@ def process_group_message(bot, update, job_queue):
             if admin is not None and admin.admin and admin.admin_bot:
                 config = get_config()
                 adm_bot = Bot(token=config["telegram"]["admin_token"])
-                replace_pogo = support.replace(user_id, message.from_user.first_name)
+                replace_pogo = support.replace(user_id, message.from_user.first_name, admin=True)
                 message_text = ("ℹ️ {}\n👤 {} {}").format(chat_text, replace_pogo, text)
                 adm_bot.sendMessage(chat_id=admin.id, text=message_text,
                                 parse_mode=telegram.ParseMode.MARKDOWN, disable_web_page_preview=True)
             elif admin is not None and admin.admin:
-                replace_pogo = support.replace(user_id, message.from_user.first_name)
+                replace_pogo = support.replace(user_id, message.from_user.first_name, admin=True)
                 message_text = ("ℹ️ {}\n👤 {} {}").format(chat_text, replace_pogo, text)
                 bot.sendMessage(chat_id=admin.id, text=message_text,
                                 parse_mode=telegram.ParseMode.MARKDOWN, disable_web_page_preview=True)

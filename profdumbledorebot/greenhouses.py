@@ -195,6 +195,18 @@ def gh_btn(bot, update, job_queue):
             bot.delete_message(
                 chat_id=chat_id,
                 message_id=message_id)
+            success_message = bot.sendMessage(
+                chat_id=chat_id,
+                text="🌱 Plantación añadida correctamente.",
+                parse_mode=telegram.ParseMode.MARKDOWN
+                )
+            delete_object = support.DeleteContext(chat_id, success_message.message_id)
+            job_queue.run_once(
+                support.callback_delete, 
+                10,
+                context=delete_object
+            )
+            support.save_jobs(job_queue)
             return
         elif queryData[1] == "cancel":
             bot.delete_message(
@@ -302,6 +314,8 @@ def rem_plant_cmd(bot, update, job_queue, args=None):
             except:
                 pass
 
+            support.save_jobs(job_queue)
+
             if delete_plant(plant_id=args[0], group_id=chat_id):
                 text = "Plantación eliminada correctamente."
             else:
@@ -329,6 +343,8 @@ def rem_plant_cmd(bot, update, job_queue, args=None):
                     deletePlantJob[0].schedule_removal()
                 except:
                     continue
+
+            support.save_jobs(job_queue)
             bot.sendMessage(
             chat_id=chat_id,
             text="Todas las plantaciones eliminadas correctamente.",

@@ -219,6 +219,8 @@ def fort_btn(bot, update, job_queue):
                     context=f_object
                 )
 
+                support.save_jobs(job_queue)
+
                 bot.delete_message(
                     chat_id=chat_id,
                     message_id=message_id)
@@ -327,6 +329,7 @@ def fort_btn(bot, update, job_queue):
         reply_markup=InlineKeyboardMarkup(button_list),
         disable_web_page_preview=True)
 
+'''
 @run_async
 def fort_remove_cmd(bot, update):
     chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
@@ -350,7 +353,6 @@ def fort_remove_cmd(bot, update):
 
     support.delete_message(chat_id, message.reply_to_message.message_id, bot)
 
-'''
 @run_async
 def fort_refloat_cmd(bot, update):
     chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
