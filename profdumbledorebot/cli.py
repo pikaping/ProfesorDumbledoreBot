@@ -116,12 +116,12 @@ def start_bot():
     #dispatcher.add_handler(CommandHandler('nelu', nelu.nelu_cmd, Filters.user(int(config["telegram"]["saray"])), pass_job_queue=True))
     #dispatcher.add_handler(CallbackQueryHandler(nelu.nelu_btn, pattern=r"^nelu_"))
 
-    dispatcher.add_handler(CommandHandler(['fort','fortaleza','add_fort'], fortress.fort_list_cmd, Filters.group, pass_args=True))
+    dispatcher.add_handler(CommandHandler(['fort','fortaleza'], fortress.fort_list_cmd, Filters.group, pass_args=True))
     #dispatcher.add_handler(CommandHandler(['fort_refloat', 'fortrefloat'], fortress.fort_refloat_cmd, Filters.group))
     #dispatcher.add_handler(CommandHandler(['fort_delete', 'fortremove', 'rm_fort'], fortress.fort_remove_cmd, Filters.group))
     dispatcher.add_handler(CallbackQueryHandler(fortress.fort_btn, pattern=r"^fort_", pass_job_queue=True))
 
-    dispatcher.add_handler(CommandHandler('avistamiento', sighting.sighting_cmd, Filters.group & Filters.chat(int(config["telegram"]["beta_group"]))))
+    #TBRdispatcher.add_handler(CommandHandler('avistamiento', sighting.sighting_cmd, Filters.group))
     dispatcher.add_handler(CallbackQueryHandler(sighting.sighting_btn, pattern=r"^sighting_"))
 
     dispatcher.add_handler(CommandHandler(['add_plant','addplant'], greenhouses.add_ingredients_cmd, Filters.group, pass_args=True))
@@ -135,7 +135,7 @@ def start_bot():
     dispatcher.add_handler(CallbackQueryHandler(profdumbledorebot.poi_btn, pattern=r"^poi_"))
 
     dispatcher.add_handler(CommandHandler(['midepollas','flipaos'], profdumbledorebot.ranking_spain_cmd, Filters.chat(int(config["telegram"]["spain_id"])) & Filters.user(int(config["telegram"]["ranking_admin_id"]))))
-    dispatcher.add_handler(CommandHandler('puntos', profdumbledorebot.points_cmd, Filters.private))
+    #TBRdispatcher.add_handler(CommandHandler('puntos', profdumbledorebot.points_cmd, Filters.private))
     dispatcher.add_handler(CommandHandler('ranking', profdumbledorebot.private_ranking_cmd, Filters.group))
 
     dispatcher.add_handler(CommandHandler('ping', profdumbledorebot. ping_cmd))
@@ -145,7 +145,7 @@ def start_bot():
 
     dispatcher.add_handler(CallbackQueryHandler(profdumbledorebot.register_btn, pattern=r"^reg_"))
     dispatcher.add_handler(CallbackQueryHandler(profdumbledorebot.passport_btn, pattern=r"^profile_"))
-    dispatcher.add_handler(CommandHandler(['passport','pasaporte'], profdumbledorebot.passport_cmd, Filters.private))
+    dispatcher.add_handler(CommandHandler(['passport','pasaporte','profile','perfil'], profdumbledorebot.passport_cmd, Filters.private))
     dispatcher.add_handler(CommandHandler('set_friendid', profdumbledorebot.set_friendid_cmd, Filters.private, pass_args=True))
     dispatcher.add_handler(CommandHandler(['register','registro','cucuruchodecucarachas'], profdumbledorebot.register_cmd, Filters.private))
     '''
@@ -171,10 +171,10 @@ def start_bot():
     #dispatcher.add_handler(CommandHandler('mute', admin.mute_cmd, Filters.group, pass_args=True))
     #dispatcher.add_handler(CommandHandler('unwarn', unwarn_cmd, Filters.group, pass_args=True))
 
-    dispatcher.add_handler(CommandHandler('dumbleuv', admin.uv_cmd, Filters.group, pass_args=True))
-    dispatcher.add_handler(CommandHandler('dumblekickuv', admin.kickuv_cmd, Filters.group, pass_args=True))
-    dispatcher.add_handler(CommandHandler('dumblekickmsg', admin.kickmsg_cmd, Filters.group, pass_args=True))
-    dispatcher.add_handler(CommandHandler('dumblekickold', admin.kickold_cmd, Filters.group, pass_args=True))
+    #TBRdispatcher.add_handler(CommandHandler('dumbleuv', admin.uv_cmd, Filters.group, pass_args=True))
+    #TBRdispatcher.add_handler(CommandHandler('dumblekickuv', admin.kickuv_cmd, Filters.group, pass_args=True))
+    #TBRdispatcher.add_handler(CommandHandler('dumblekickmsg', admin.kickmsg_cmd, Filters.group, pass_args=True))
+    #TBRdispatcher.add_handler(CommandHandler('dumblekickold', admin.kickold_cmd, Filters.group, pass_args=True))
 
     dispatcher.add_handler(CommandHandler('rules', rules.rules, Filters.group))   
     dispatcher.add_handler(CommandHandler('set_rules', rules.set_rules, Filters.group))  
@@ -189,7 +189,7 @@ def start_bot():
     dispatcher.add_handler(CommandHandler('settings', settings.settings, Filters.group))
     dispatcher.add_handler(CommandHandler('set_pince', nanny.set_nanny, Filters.group)) 
     dispatcher.add_handler(CommandHandler('set_welcome', settings.set_welcome, Filters.group))
-    dispatcher.add_handler(CommandHandler('test_welcome', welcome.test_welcome, Filters.group))
+    #TBRdispatcher.add_handler(CommandHandler('test_welcome', welcome.test_welcome, Filters.group))
     dispatcher.add_handler(CommandHandler('set_zone', settings.set_zone, Filters.group, pass_args=True))
     dispatcher.add_handler(CommandHandler('set_cooldown', settings.set_cooldown, Filters.group, pass_args=True))
     dispatcher.add_handler(CommandHandler('set_maxmembers', settings.set_maxmembers, Filters.group, pass_args=True))

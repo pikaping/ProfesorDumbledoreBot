@@ -254,7 +254,7 @@ def callback_AlertFortress(bot, job):
         ent = fort_message.parse_entities(["mention"])
         for mention in ent:
             username = fort_message.parse_entity(mention)
-            string = r'\n(🙋‍♀️|✅|🕒|❌) (🍮|⚔|🐾|📚) (\d|\d\d) {}'.format(username)
+            string = r'\n(🙋‍♀️|✅|🕒|❌) 🧙(\d|\d\d|\?\?) (🍮|⚔|🐾|📚)(\d|\d\d|\?\?) 🏰(\d|\d\d|\d\d\d|\?\?) {}'.format(username)
             search = re.search(string, fort_message.text)
             if search.group(1) == "❌":
                 continue

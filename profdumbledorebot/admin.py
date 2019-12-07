@@ -709,6 +709,7 @@ def kickuv_cmd(bot, update, args=None):
 def warn_cmd(bot, update, args=None):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
+    admin_user = get_user(user_id)
 
     if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
@@ -814,7 +815,7 @@ def warn_cmd(bot, update, args=None):
                 config = get_config()
                 adm_bot = Bot(token=config["telegram"]["admin_token"])
                 replace_pogo = support.replace(replied_user, name, admin=True)
-                message_text="ℹ️ {}\n👤 {} ha sido advertido {}/{}".format(chat.title, replace_pogo, warning, group.warn)
+                message_text="ℹ️ {}\n👤 {} ha sido advertido por @{} {}/{}".format(chat.title, replace_pogo, admin_user.alias, warning, group.warn)
                 if reason is not "":
                     message_text = message_text + "\n❔ Motivo: {}".format(reason)
                 adm_bot.sendMessage(
@@ -823,7 +824,7 @@ def warn_cmd(bot, update, args=None):
                     parse_mode=telegram.ParseMode.MARKDOWN)
             elif admin is not None and admin.ejections :
                 replace_pogo = support.replace(replied_user, name, admin=True)
-                message_text="ℹ️ {}\n👤 {} ha sido advertido {}/{}".format(chat.title, replace_pogo, warning, group.warn)
+                message_text="ℹ️ {}\n👤 {} ha sido advertido por @{} {}/{}".format(chat.title, replace_pogo, admin_user.alias, warning, group.warn)
                 if reason is not "":
                     message_text = message_text + "\n❔ Motivo: {}".format(reason)
                 bot.sendMessage(
@@ -837,7 +838,7 @@ def warn_cmd(bot, update, args=None):
         warnText = f"👤 {replace_pogo}"
         if reason is not '':
             warnText = warnText + '\n❔ Motivo: {}'.format(reason)
-        warnText = warnText + "\nℹ️ Entrenador advertido correctamente de:"
+        warnText = warnText + "\nℹ️ @{} ha advertido al mago de:".format(admin_user.alias)
         successBool = False
         errorBool = False
         for group in groups:
@@ -899,6 +900,7 @@ def warn_cmd(bot, update, args=None):
 def kick_cmd(bot, update, args=None):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
+    admin_user = get_user(user_id)
 
     if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
@@ -984,7 +986,7 @@ def kick_cmd(bot, update, args=None):
                 config = get_config()
                 adm_bot = Bot(token=config["telegram"]["admin_token"])
                 replace_pogo = support.replace(replied_user, name, admin=True)
-                message_text="ℹ️ {}\n👤 {} ha sido expulsado".format(chat.title, replace_pogo)
+                message_text="ℹ️ {}\n👤 {} ha sido expulsado por @{}".format(chat.title, replace_pogo, admin_user.alias)
                 if reason is not "":
                     message_text = message_text + "\n❔ Motivo: {}".format(reason)
                 adm_bot.sendMessage(
@@ -993,7 +995,7 @@ def kick_cmd(bot, update, args=None):
                     parse_mode=telegram.ParseMode.MARKDOWN)
             elif admin is not None and admin.ejections :
                 replace_pogo = support.replace(replied_user, name, admin=True)
-                message_text="ℹ️ {}\n👤 {} ha sido expulsado".format(chat.title, replace_pogo)
+                message_text="ℹ️ {}\n👤 {} ha sido expulsado por @{}".format(chat.title, replace_pogo, admin_user.alias)
                 if reason is not "":
                     message_text = message_text + "\n❔ Motivo: {}".format(reason)
                 bot.sendMessage(
@@ -1007,7 +1009,7 @@ def kick_cmd(bot, update, args=None):
         success = f"👤 {replace_pogo}"
         if reason is not '':
             success = success + '\n❔ Motivo: {}'.format(reason)
-        success = success + "\nℹ️ Mago expulsado correctamente de:"
+        success = success + "\nℹ️ @{} ha expulsado al mago de:".format(admin_user.alias)
         successBool = False
         error = f"👤 {replace_pogo}\n❌ No he podido expulsar al mago de:"
         errorBool = False
@@ -1055,6 +1057,7 @@ def kick_cmd(bot, update, args=None):
 def ban_cmd(bot, update, args=None):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
+    admin_user = get_user(user_id)
 
     if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
@@ -1142,7 +1145,7 @@ def ban_cmd(bot, update, args=None):
                 config = get_config()
                 adm_bot = Bot(token=config["telegram"]["admin_token"])
                 replace_pogo = support.replace(replied_user, name, admin=True)
-                message_text="ℹ️ {}\n👤 {} ha sido baneado".format(chat.title, replace_pogo)
+                message_text="ℹ️ {}\n👤 {} ha sido baneado por @{}".format(chat.title, replace_pogo, admin_user.alias)
                 if reason is not "":
                     message_text = message_text + "\n❔ Motivo: {}".format(reason)
                 adm_bot.sendMessage(
@@ -1151,7 +1154,7 @@ def ban_cmd(bot, update, args=None):
                     parse_mode=telegram.ParseMode.MARKDOWN)
             elif admin is not None and admin.ejections :
                 replace_pogo = support.replace(replied_user, name, admin=True)
-                message_text="ℹ️ {}\n👤 {} ha sido baneado".format(chat.title, replace_pogo)
+                message_text="ℹ️ {}\n👤 {} ha sido baneado por @{}".format(chat.title, replace_pogo, admin_user.alias)
                 if reason is not "":
                     message_text = message_text + "\n❔ Motivo: {}".format(reason)
                 bot.sendMessage(
@@ -1164,7 +1167,7 @@ def ban_cmd(bot, update, args=None):
         success = f"👤 {replace_pogo}"
         if reason is not '':
             success = success + '\n❔ Motivo: {}'.format(reason)
-        success = success + "\nℹ️ Mago baneado correctamente de:"
+        success = success + "\nℹ️ @{} ha baneado al mago de:".format(admin_user.alias)
         successBool = False
         error = f"👤 {replace_pogo}\n❌ No he podido banear al mago de:"
         errorBool = False
@@ -1212,6 +1215,7 @@ def ban_cmd(bot, update, args=None):
 def unban_cmd(bot, update, args=None):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
+    admin_user = get_user(user_id)
 
     if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
@@ -1296,7 +1300,7 @@ def unban_cmd(bot, update, args=None):
                 config = get_config()
                 adm_bot = Bot(token=config["telegram"]["admin_token"])
                 replace_pogo = support.replace(replied_user, name, admin=True)
-                message_text="ℹ️ {}\n👤 {} ha sido desbaneado".format(chat.title, replace_pogo)
+                message_text="ℹ️ {}\n👤 {} ha sido desbaneado por @{}".format(chat.title, replace_pogo, admin_user.alias)
                 if reason is not "":
                     message_text = message_text + "\n❔ Motivo: {}".format(reason)
                 adm_bot.sendMessage(
@@ -1305,7 +1309,7 @@ def unban_cmd(bot, update, args=None):
                     parse_mode=telegram.ParseMode.MARKDOWN)
             elif admin is not None and admin.ejections :
                 replace_pogo = support.replace(replied_user, name, admin=True)
-                message_text="ℹ️ {}\n👤 {} ha sido desbaneado".format(chat.title, replace_pogo)
+                message_text="ℹ️ {}\n👤 {} ha sido desbaneado por @{}".format(chat.title, replace_pogo, admin_user.alias)
                 if reason is not "":
                     message_text = message_text + "\n❔ Motivo: {}".format(reason)
                 bot.sendMessage(
@@ -1319,7 +1323,7 @@ def unban_cmd(bot, update, args=None):
         success = f"👤 {replace_pogo}"
         if reason is not '':
             success = success + '\n❔ Motivo: {}'.format(reason)
-        success = success + "\nℹ️ Mago desbaneado correctamente de:"
+        success = success + "\nℹ️ @{} ha desbaneado al mago de:".format(admin_user.alias)
         successBool = False
         error = f"👤 {replace_pogo}\n❌ No he podido desbanear al mago de:"
         errorBool = False

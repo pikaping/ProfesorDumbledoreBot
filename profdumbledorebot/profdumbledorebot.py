@@ -114,7 +114,7 @@ def register_cmd(bot, update, args=None):
 
     user_sql.commit_user(user_id, alias=user_username)
 
-    text = "Son nuestras elecciones las que muestran lo que somos, mucho más que nuestras habilidades, así pues elige bien y dime, ¿Cual es tu nivel?"
+    text = "Son nuestras elecciones las que muestran lo que somos, mucho más que nuestras habilidades, así pues elige bien y dime, ¿Cuál es tu nivel?"
     button_list = [
         [InlineKeyboardButton("1-10", callback_data='reg_btn_0'),
         InlineKeyboardButton("11-20", callback_data='reg_btn_10'),
@@ -727,7 +727,7 @@ def passport_btn(bot, update):
         return
 
     elif par == "hse":
-        user_sql.commit_user(user_id, house=val)
+        user_sql.commit_user(user_id, house=typ)
         output = (
         "Bienvenido {}, este es tu pasaporte del ministerio, aquí podrás editar "
         "tu información de perfil y los ajustes con Dumbledore entre otras funciones.".format(support.replace(user_id, frce=True)))
@@ -749,7 +749,7 @@ def passport_btn(bot, update):
         return
 
     elif par == "tea":
-        user_sql.commit_user(user_id, team=val)
+        user_sql.commit_user(user_id, team=typ)
         output = (
         "Bienvenido {}, este es tu pasaporte del ministerio, aquí podrás editar "
         "tu información de perfil y los ajustes con Dumbledore entre otras funciones.".format(support.replace(user_id, frce=True)))
@@ -772,7 +772,7 @@ def passport_btn(bot, update):
         return
 
     elif par == "prf":
-        user_sql.commit_user(user_id, profession=val)
+        user_sql.commit_user(user_id, profession=typ)
         output = (
         "Bienvenido {}, este es tu pasaporte del ministerio, aquí podrás editar "
         "tu información de perfil y los ajustes con Dumbledore entre otras funciones.".format(support.replace(user_id, frce=True)))
@@ -822,7 +822,7 @@ def passport_btn(bot, update):
         return
 
 
-REGREG = re.compile(r'^reg_([a-z0-9]{1,3})(_([0-9]{1,2})|)')
+REGREG = re.compile(r'^reg_([a-z0-9]{1,3})(_([0-9]{1,3})|)')
 
 @run_async
 def register_btn(bot, update):
@@ -866,6 +866,83 @@ def register_btn(bot, update):
     elif par == "lvl":
         user_sql.commit_user(user_id, level=val)
         button_list = [
+            [InlineKeyboardButton("1", callback_data='reg_pr1_1'),
+            InlineKeyboardButton("2", callback_data='reg_pr1_2'),
+            InlineKeyboardButton("3", callback_data='reg_pr1_3'),
+            InlineKeyboardButton("4", callback_data='reg_pr1_4'),
+            InlineKeyboardButton("5", callback_data='reg_pr1_5')],
+            [InlineKeyboardButton("6", callback_data='reg_pr1_6'),
+            InlineKeyboardButton("7", callback_data='reg_pr1_7'),
+            InlineKeyboardButton("8", callback_data='reg_pr1_8'),
+            InlineKeyboardButton("9", callback_data='reg_pr1_9'),
+            InlineKeyboardButton("10", callback_data='reg_pr1_10')],
+            [InlineKeyboardButton("11", callback_data='reg_pr1_11'),
+            InlineKeyboardButton("12", callback_data='reg_pr1_12'),
+            InlineKeyboardButton("13", callback_data='reg_pr1_13'),
+            InlineKeyboardButton("14", callback_data='reg_pr1_14'),
+            InlineKeyboardButton("15", callback_data='reg_pr1_15')]]
+
+        bot.edit_message_text(
+            text="¿Cuál es tu nivel de profesión?",
+            chat_id=chat_id,
+            message_id=message_id,
+            reply_markup=InlineKeyboardMarkup(button_list),
+            parse_mode=telegram.ParseMode.HTML,
+            disable_web_page_preview=True
+        )
+        return
+
+    elif par == "pr1":
+        user_sql.commit_user(user_id, profession_level=val)
+        button_list = [
+            [InlineKeyboardButton("1-10", callback_data='reg_fr1_0'),
+            InlineKeyboardButton("11-20", callback_data='reg_fr1_10'),
+            InlineKeyboardButton("21-30", callback_data='reg_fr1_20')],
+            [InlineKeyboardButton("31-40", callback_data='reg_fr1_30'),
+            InlineKeyboardButton("41-50", callback_data='reg_fr1_40'),
+            InlineKeyboardButton("51-60", callback_data='reg_fr1_50')],
+            [InlineKeyboardButton("61-70", callback_data='reg_fr1_60'),
+            InlineKeyboardButton("71-80", callback_data='reg_fr1_70'),
+            InlineKeyboardButton("81-90", callback_data='reg_fr1_80')],
+            [InlineKeyboardButton("91-100", callback_data='reg_fr1_90'),
+            InlineKeyboardButton("101-110", callback_data='reg_fr1_100'),
+            InlineKeyboardButton("111-120", callback_data='reg_fr1_110')],
+            [InlineKeyboardButton("121-130", callback_data='reg_fr1_120'),
+            InlineKeyboardButton("131-140", callback_data='reg_fr1_130'),
+            InlineKeyboardButton("141-150", callback_data='reg_fr1_140')]]
+
+        bot.edit_message_text(
+            text="¿Cuál es tu nivel de fortaleza?",
+            chat_id=chat_id,
+            message_id=message_id,
+            reply_markup=InlineKeyboardMarkup(button_list),
+            parse_mode=telegram.ParseMode.HTML,
+            disable_web_page_preview=True
+        )
+        return
+
+    elif par == "fr1":
+        button_list = [
+                [InlineKeyboardButton("{}".format(1+int(val)), callback_data='reg_fr2_{}'.format(1+int(val))),
+                InlineKeyboardButton("{}".format(2+int(val)), callback_data='reg_fr2_{}'.format(2+int(val))),
+                InlineKeyboardButton("{}".format(3+int(val)), callback_data='reg_fr2_{}'.format(3+int(val))),
+                InlineKeyboardButton("{}".format(4+int(val)), callback_data='reg_fr2_{}'.format(4+int(val))),
+                InlineKeyboardButton("{}".format(5+int(val)), callback_data='reg_fr2_{}'.format(5+int(val)))],
+                [InlineKeyboardButton("{}".format(6+int(val)), callback_data='reg_fr2_{}'.format(6+int(val))),
+                InlineKeyboardButton("{}".format(7+int(val)), callback_data='reg_fr2_{}'.format(7+int(val))),
+                InlineKeyboardButton("{}".format(8+int(val)), callback_data='reg_fr2_{}'.format(8+int(val))),
+                InlineKeyboardButton("{}".format(9+int(val)), callback_data='reg_fr2_{}'.format(9+int(val))),
+                InlineKeyboardButton("{}".format(10+int(val)), callback_data='reg_fr2_{}'.format(10+int(val)))]]
+
+        bot.edit_message_reply_markup(
+            chat_id=chat_id,
+            message_id=message_id,
+            reply_markup=InlineKeyboardMarkup(button_list))
+        return
+
+    elif par == "fr2":
+        user_sql.commit_user(user_id, fort_level=val)
+        button_list = [
             [InlineKeyboardButton("🦁 Gryffindor", callback_data='reg_hse_1')],
             [InlineKeyboardButton("🦡 Hufflepuff", callback_data='reg_hse_2')],
             [InlineKeyboardButton("🦅 Ravenclaw", callback_data='reg_hse_3')],
@@ -873,7 +950,7 @@ def register_btn(bot, update):
             [InlineKeyboardButton("🙈 Sin casa", callback_data='reg_hse_0')]]
 
         bot.edit_message_text(
-            text="¿Cual es tu casa de hogwarts?",
+            text="¿Cuál es tu casa de hogwarts?",
             chat_id=chat_id,
             message_id=message_id,
             reply_markup=InlineKeyboardMarkup(button_list),
@@ -889,7 +966,7 @@ def register_btn(bot, update):
             [InlineKeyboardButton("🐾 Magizoologo", callback_data='reg_prf_2')],
             [InlineKeyboardButton("📚 Profesor", callback_data='reg_prf_1')]]
         bot.edit_message_text(
-            text="¿Cual es la profesión que has escogido?",
+            text="¿Cuál es la profesión que has escogido?",
             chat_id=chat_id,
             message_id=message_id,
             reply_markup=InlineKeyboardMarkup(button_list),
