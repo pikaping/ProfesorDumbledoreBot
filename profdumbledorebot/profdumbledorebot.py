@@ -240,12 +240,28 @@ def fclist_cmd(bot, update):
     if are_banned(user_id, chat_id):
         return
 
-    main = user_sql.get_user(user_id)
+    main = user_sql.get_real_user(user_id)
     text = "**Listado de Friend Codes:**"
     friends = []
 
-    if main is None or not main.fclists or main.friend_id is None:
-        text = "❌ No cumples los requisitos para solicitar el listado."
+    if main is None:
+        text = "❌ Debes registrarte para usar este comando."
+        bot.sendMessage(
+            chat_id=user_id,
+            text=text,
+            parse_mode=telegram.ParseMode.MARKDOWN)
+        return
+
+    if not main.fclists:
+        text = "❌ Debes hacer público tu código de amigo desde el /pasaporte para poder pedir la lista."
+        bot.sendMessage(
+            chat_id=user_id,
+            text=text,
+            parse_mode=telegram.ParseMode.MARKDOWN)
+        return
+
+    if main.friend_id is None:
+        text = "❌ Debes añadir tu código de amigo al bot para poder pedir la lista."
         bot.sendMessage(
             chat_id=user_id,
             text=text,
