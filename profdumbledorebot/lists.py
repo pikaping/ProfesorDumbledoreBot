@@ -89,17 +89,17 @@ def list_btn(bot, update):
         text_prof = "🍮"
 
     if user.house is Houses.GRYFFINDOR.value:
-        text_team = "❤️🦁"
+        text_team = "🦁"
     elif user.house is Houses.HUFFLEPUFF.value:
-        text_team = "💛🦡"
+        text_team = "🦡"
     elif user.house is Houses.RAVENCLAW.value:
-        text_team = "💙🦅"
+        text_team = "🦅"
     elif user.house is Houses.SLYTHERIN.value:
-        text_team = "💚🐍"
+        text_team = "🐍"
     elif user.house is Houses.NONE.value:
-        text_team = "💜🙈"
+        text_team = "🙈"
 
-    string = r'\n(.|❤️🦁|💛🦡|💙🦅|💚🐍|💜🙈) - (\d\d|\d) - (.|📚|🐾|⚔️|🍮) - @{}'.format(username)
+    string = r'\n(.|🦁|🦡|🦅|🐍|🙈) - (\d\d|\d) - (.|📚|🐾|⚔️|🍮) - @{}'.format(username)
     text = re.sub(string, "", text)
 
     if data == "list_join":

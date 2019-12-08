@@ -32,6 +32,9 @@ from pytz import all_timezones
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.error import TelegramError, Unauthorized, BadRequest, TimedOut, ChatMigrated, NetworkError
 from telegram.utils.helpers import escape_markdown
+import pickle
+from threading import Event
+
 
 import profdumbledorebot.model as model
 from profdumbledorebot.config import ConfigurationNotLoaded, get_config
@@ -61,15 +64,15 @@ def replace(user_id, name=None, admin=False, frce=False):
         user = get_user(user_id)
 
     if user is None or user.house is model.Houses.NONE.value:
-        text_house = "💜🙈"
+        text_house = "🙈"
     elif user.house is model.Houses.GRYFFINDOR.value:
-        text_house = "❤️🦁"
+        text_house = "🦁"
     elif user.house is model.Houses.HUFFLEPUFF.value:
-        text_house = "💛🦡"
+        text_house = "🦡"
     elif user.house is model.Houses.RAVENCLAW.value:
-        text_house = "💙🦅"
+        text_house = "🦅"
     elif user.house is model.Houses.SLYTHERIN.value:
-        text_house = "💚🐍"
+        text_house = "🐍"
 
     if user is None or user.profession is model.Professions.NONE.value:
         text_prof = "_Desconocido_"
@@ -88,6 +91,8 @@ def replace(user_id, name=None, admin=False, frce=False):
         text_alias = "_Desconocido_"
 
     text_level = ("*{}*".format(user.level) if user and user.level else "*??*")
+    text_fort_level = ("*{}*".format(user.fort_level) if user and user.fort_level else "*??*")
+    text_profession_level = ("*{}*".format(user.profession_level) if user and user.profession_level else "*??*")
     
     text_validationstatus = "✅"
     if user and user.banned:
@@ -99,16 +104,19 @@ def replace(user_id, name=None, admin=False, frce=False):
         text_flag = ""
 
 
-    replace_pogo = "{0} - *L*{1} {2} {3}  {4} {5}".format(
+    replace_pogo = "{0} - *L*{1}  🏰{2}  {3}{4}  {5}  {6}  {7}".format(
         text_alias,
         text_level,
-        text_house,
+        text_fort_level,
         text_prof,
+        text_profession_level,
+        text_house,
         text_validationstatus,
-        text_flag)
+        text_flag
+        )
 
     if admin:
-        replace_pogo = replace_pogo + " `{1}`".format(user_id)
+        replace_pogo = replace_pogo + " `{0}`".format(user_id)
 
     return replace_pogo
 
@@ -246,10 +254,10 @@ def callback_AlertFortress(bot, job):
         ent = fort_message.parse_entities(["mention"])
         for mention in ent:
             username = fort_message.parse_entity(mention)
-            string = r'\n(🙋‍♀️|✅|🕒|❌) (🍮|⚔|🐾|📚) (\d|\d\d) {}'.format(username)
+            string = r'\n(🙋‍♀️|✅|🕒|❌) 🧙(\d|\d\d|\?\?) (🍮|⚔|🐾|📚)(\d|\d\d|\?\?) 🏰(\d|\d\d|\d\d\d|\?\?) {}'.format(username)
             search = re.search(string, fort_message.text)
             if search.group(1) == "❌":
-                pass
+                continue
             user = get_user_by_name(username[1:])
             bot.sendMessage(
                 chat_id=user.id,
@@ -594,13 +602,13 @@ def get_settings_keyboard(chat_id, keyboard="main"):
         elif join.requirment is model.ValidationRequiered.AUROR.value:
             validationrequired_text = "⚔ Auror"
         elif join.requirment is model.ValidationRequiered.GRYFFINDOR.value:
-            validationrequired_text = "❤️🦁 Gryffindor"
+            validationrequired_text = "🦁 Gryffindor"
         elif join.requirment is model.ValidationRequiered.HUFFLEPUFF.value:
-            validationrequired_text = "💛🦡 Hufflepuff"
+            validationrequired_text = "🦡 Hufflepuff"
         elif join.requirment is model.ValidationRequiered.RAVENCLAW.value:
-            validationrequired_text = "💙🦅 Ravenclaw"
+            validationrequired_text = "🦅 Ravenclaw"
         elif join.requirment is model.ValidationRequiered.SLYTHERIN.value:
-            validationrequired_text = "💚🐍 Slytherin"
+            validationrequired_text = "🐍 Slytherin"
 
         if join.val_alert is True:
             mute_text = "✅ Expulsiones silenciosas"
@@ -840,3 +848,58 @@ def ensure_escaped(username):
     if username.find("_") != -1 and username.find("\\_") == -1:
         username = username.replace("_","\\_")
     return username
+
+JOBS_PICKLE = 'job_tuples.pickle'
+
+def load_jobs(jq):
+    now = time.time()
+
+    with open(JOBS_PICKLE, 'rb') as fp:
+        while True:
+            try:
+                next_t, job = pickle.load(fp)
+            except EOFError:
+                break  # Loaded all job tuples
+
+            # Create threading primitives
+            enabled = job._enabled
+            removed = job._remove
+
+            job._enabled = Event()
+            job._remove = Event()
+
+            if enabled:
+                job._enabled.set()
+
+            if removed:
+                job._remove.set()
+
+            next_t -= now  # Convert from absolute to relative time
+
+            jq._put(job, next_t)
+
+def save_jobs(jq):
+    if jq:
+        job_tuples = jq._queue.queue
+    else:
+        job_tuples = []
+
+    with open(JOBS_PICKLE, 'wb') as fp:
+        for next_t, job in job_tuples:
+            # Back up objects
+            _job_queue = job._job_queue
+            _remove = job._remove
+            _enabled = job._enabled
+
+            # Replace un-pickleable threading primitives
+            job._job_queue = None  # Will be reset in jq.put
+            job._remove = job.removed  # Convert to boolean
+            job._enabled = job.enabled  # Convert to boolean
+
+            # Pickle the job
+            pickle.dump((next_t, job), fp)
+
+            # Restore objects
+            job._job_queue = _job_queue
+            job._remove = _remove
+            job._enabled = _enabled

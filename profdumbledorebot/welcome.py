@@ -31,6 +31,7 @@ import profdumbledorebot.supportmethods as support
 from profdumbledorebot.config import get_config
 from profdumbledorebot.model import Types
 from profdumbledorebot.sql.rules import has_rules
+from profdumbledorebot.sql.support import are_banned
 
 VALID_WELCOME_FORMATTERS = ['nombre', 'apellido', 'nombrecompleto', 'usuario', 'id', 'count', 'title', 'hpwu', 'mention']
 
@@ -137,7 +138,16 @@ def send(bot, chat_id, message, keyboard):
 
 def test_welcome(bot, update):
     chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat = update.effective_chat
+    first_name = update.message.from_user.first_name
+    last_name = update.message.from_user.last_name
+    username = update.message.from_user.username
+
     support.delete_message(chat_id, message.message_id, bot)
+    
+    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id,
+            chat_id):
+        return
 
     ENUM_FUNC_MAP = {
         Types.TEXT.value: bot.sendMessage,
@@ -150,52 +160,43 @@ def test_welcome(bot, update):
         Types.VIDEO.value: bot.sendVideo
     }
 
-    should_welc, cust_welcome, welc_type = welcome_sql.get_welc_pref(chat_id)
-    if should_welc:
-        sent = None
+    should_welc, cust_welcome, welc_type = welcome_sql.get_welc_pref(chat.id)
+    sent = None
+    if welc_type != Types.TEXT and welc_type != Types.BUTTON_TEXT:
+        msg = ENUM_FUNC_MAP[welc_type](chat.id, cust_welcome)
+        return msg
 
-        if welc_type != Types.TEXT and welc_type != Types.BUTTON_TEXT:
-            msg = ENUM_FUNC_MAP[welc_type](chat_id, cust_welcome)
-            return msg
+    first_name = first_name or ""
 
-        first_name = "Profesor Dumbledore"
-
-        if cust_welcome:
-            fullname = first_name
-            count = message.chat.get_members_count()
-            mention = mention_markdown(627223390, first_name)
-            username = "@" + escape_markdown("ProfesorDumbledoreBot")
-
-            valid_format = support.escape_invalid_curly_brackets(cust_welcome, VALID_WELCOME_FORMATTERS)
-            res = valid_format.format(nombre=escape_markdown(first_name),
-                                        apellido=escape_markdown(first_name),
-                                        hpwu=support.replace(627223390, first_name),
-                                        nombrecompleto=escape_markdown(fullname), usuario=username, mention=mention,
-                                        count=count, title=escape_markdown(message.chat.title), id=627223390)
-            buttons = welcome_sql.get_welc_buttons(chat_id)
-            keyb = support.build_keyboard(buttons)
-            if has_rules(chat_id):
-                config = get_config()
-                url = "t.me/{}?start={}".format(
-                    config["telegram"]["bot_alias"],
-                    chat_id)
-                keyb.append([InlineKeyboardButton("Normas", url=url)])
+    if cust_welcome:
+        if last_name:
+            fullname = "{} {}".format(first_name, last_name)
         else:
-            return
+            fullname = first_name
+        count = chat.get_members_count()
+        mention = mention_markdown(user_id, first_name)
+        if username:
+            username = "@" + escape_markdown(username)
+        else:
+            username = mention
 
-        keyboard = InlineKeyboardMarkup(keyb)
+        valid_format = support.escape_invalid_curly_brackets(cust_welcome, VALID_WELCOME_FORMATTERS)
+        res = valid_format.format(nombre=escape_markdown(first_name),
+                                    apellido=escape_markdown(last_name or first_name),
+                                    hpwu=support.replace(user_id, first_name),
+                                    nombrecompleto=escape_markdown(fullname), usuario=username, mention=mention,
+                                    count=count, title=escape_markdown(chat.title), id=user_id)
+        buttons = welcome_sql.get_welc_buttons(chat.id)
+        keyb = support.build_keyboard(buttons)
+        if has_rules(chat.id):
+            config = get_config()
+            url = "t.me/{}?start={}".format(
+                config["telegram"]["bot_alias"],
+                chat.id)
+            keyb.append([InlineKeyboardButton("Normas", url=url)])
+    else:
+        return
 
-        for btn in buttons:
-            if btn.same_line:
-                cust_welcome = cust_welcome + "\n[{0}](buttonurl://{1}:same)".format(btn.name, btn.url)
-            else:
-                cust_welcome = cust_welcome + "\n[{0}](buttonurl://{1})".format(btn.name, btn.url)
+    keyboard = InlineKeyboardMarkup(keyb)
 
-        bot.sendMessage(
-            chat_id=chat_id,
-            text=cust_welcome,
-            disable_web_page_preview=True, 
-            disable_notification=True
-        )
-        sent = send(bot, chat_id, res, keyboard)
-        return sent
+    send(bot, chat_id, res, keyboard)

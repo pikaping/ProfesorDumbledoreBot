@@ -219,6 +219,8 @@ def fort_btn(bot, update, job_queue):
                     context=f_object
                 )
 
+                support.save_jobs(job_queue)
+
                 bot.delete_message(
                     chat_id=chat_id,
                     message_id=message_id)
@@ -257,7 +259,7 @@ def fort_btn(bot, update, job_queue):
         (InlineKeyboardButton("⚠️ Aviso", callback_data=f'fort_alert_{poi.id}'))]
     ]
 
-    string = r'\n(🙋‍♀️|✅|🕒|❌) (🍮|⚔|🐾|📚) (\d|\d\d) @{}'.format(username)
+    string = r'\n(🙋‍♀️|✅|🕒|❌) 🧙(\d|\d\d|\?\?) (🍮|⚔|🐾|📚)(\d|\d\d|\?\?) 🏰(\d|\d\d|\d\d\d|\?\?) @{}'.format(username)
 
 
     if queryData[1] == "ubi":
@@ -281,14 +283,23 @@ def fort_btn(bot, update, job_queue):
             ent = message.parse_entities(["mention"])
             chat_url = support.message_url(message, message_id, "fortaleza")
             for mention in ent:
-                usermention = message.parse_entity(mention)
-                user = get_user_by_name(usermention[1:])
+                username = message.parse_entity(mention)
+                string = r'\n(🙋‍♀️|✅|🕒|❌) 🧙(\d|\d\d|\?\?) (🍮|⚔|🐾|📚)(\d|\d\d|\?\?) 🏰(\d|\d\d|\d\d\d|\?\?) {}'.format(username)
+                search = re.search(string, markdown_text)
+                if search.group(1) == "❌":
+                    continue
+                user = get_user_by_name(username[1:])
+                btn_user = get_user(user_id)
                 bot.sendMessage(
                     chat_id=user.id,
-                    text=f"Alerta para la {chat_url} en [{poi.name}](https://maps.google.com/maps?q={lat},{lon}) enviada por @{username}",
+                    text=f"Alerta para la {chat_url} en [{poi.name}](https://maps.google.com/maps?q={lat},{lon}) enviada por @{btn_user.alias}",
                     parse_mode=telegram.ParseMode.MARKDOWN,
                     disable_web_page_preview=True
                 )
+            bot.answer_callback_query(
+                callback_query_id=query.id,
+                text="⚠️ Aviso enviado a todos los magos apuntados en la lista.",
+                show_alert=True)
         else:
             bot.answer_callback_query(query.id, "❌ Debes apuntarte para poder enviar una alerta.", show_alert=True)
         return
@@ -305,14 +316,18 @@ def fort_btn(bot, update, job_queue):
     elif user.profession is Professions.PROFESSOR.value:
         text_prof = "📚"
 
+    text_level = ("{}".format(user.level) if user and user.level else "??")
+    text_fort_level = ("{}".format(user.fort_level) if user and user.fort_level else "??")
+    text_profession_level = ("{}".format(user.profession_level) if user and user.profession_level else "??")
+
     if queryData[1] == "yes":
-        text = markdown_text + f"\n🙋‍♀️ {text_prof} {user.level} @{username}"
+        text = markdown_text + f"\n🙋‍♀️ 🧙{text_level} {text_prof}{text_profession_level} 🏰{text_fort_level} @{username}"
     elif queryData[1] == "here":
-        text = markdown_text + f"\n✅ {text_prof} {user.level} @{username}"
+        text = markdown_text + f"\n✅ 🧙{text_level} {text_prof}{text_profession_level} 🏰{text_fort_level} @{username}"
     elif queryData[1] == "late":
-        text = markdown_text + f"\n🕒 {text_prof} {user.level} @{username}"
+        text = markdown_text + f"\n🕒 🧙{text_level} {text_prof}{text_profession_level} 🏰{text_fort_level} @{username}"
     elif queryData[1] == "no":
-        text = markdown_text + f"\n❌ {text_prof} {user.level} @{username}"
+        text = markdown_text + f"\n❌ 🧙{text_level} {text_prof}{text_profession_level} 🏰{text_fort_level} @{username}"
     
     bot.edit_message_text(
         text=text,
@@ -321,6 +336,71 @@ def fort_btn(bot, update, job_queue):
         parse_mode=telegram.ParseMode.MARKDOWN,
         reply_markup=InlineKeyboardMarkup(button_list),
         disable_web_page_preview=True)
+
+'''
+@run_async
+def fort_remove_cmd(bot, update):
+    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    support.delete_message(chat_id, message.message_id, bot)
+
+    REGLIST = re.compile(
+    r'Lista:')
+    
+    if message.reply_to_message is None or message.reply_to_message.chat.id != chat_id:
+        return
+
+    if message.reply_to_message.from_user.id != bot.id:
+        return
+
+    if are_banned(user_id, chat_id) or not support.is_admin(chat_id, user_id, bot):
+        return
+
+    text = message.reply_to_message.text
+    if REGLIST.search(text) is None:
+        return
+
+    support.delete_message(chat_id, message.reply_to_message.message_id, bot)
+
+@run_async
+def fort_refloat_cmd(bot, update):
+    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    support.delete_message(chat_id, message.message_id, bot)
+
+    REGLIST = re.compile(
+    r'Lista:')
+    
+    if message.reply_to_message is None or message.reply_to_message.chat.id != chat_id:
+        return
+
+    if message.reply_to_message.from_user.id != bot.id:
+        return
+
+    if are_banned(user_id, chat_id) or not support.is_admin(chat_id, user_id, bot):
+        return
+
+    text = message.reply_to_message.text
+    if REGLIST.search(text) is None:
+        return
+
+    text = message.reply_to_message.text
+    button_list = [
+        [(InlineKeyboardButton("🙋‍♀️ Voy", callback_data=f'fort_yes_{poi.id}')),
+        (InlineKeyboardButton("🕒 Tardo", callback_data=f'fort_late_{poi.id}')),
+        (InlineKeyboardButton("❌ No voy", callback_data=f'fort_no_{poi.id}'))],
+        [(InlineKeyboardButton("✅ Estoy", callback_data=f'fort_here_{poi.id}')),
+        (InlineKeyboardButton("📍 Ubicación", callback_data=f'fort_ubi_{poi.id}')),
+        (InlineKeyboardButton("⚠️ Aviso", callback_data=f'fort_alert_{poi.id}'))]
+    ]
+
+    bot.sendMessage(
+        chat_id=chat_id,
+        text=text,
+        parse_mode=telegram.ParseMode.MARKDOWN,
+        reply_markup=InlineKeyboardMarkup(button_list),
+        disable_web_page_preview=True
+    )
+    support.delete_message(chat_id, message.reply_to_message.message_id, bot)
+'''
 
 def dist_calc(point, point2):
     dist = great_circle(point, str(point2.latitude) + ", " + str(point2.longitude)).meters
