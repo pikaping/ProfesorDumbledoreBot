@@ -244,7 +244,7 @@ def callback_AlertFortress(bot, job):
             (InlineKeyboardButton("❌ No voy", callback_data=f'fort_no_{poi.id}'))],
             [(InlineKeyboardButton("✅ Estoy", callback_data=f'fort_here_{poi.id}')),
             (InlineKeyboardButton("📍 Ubicación", callback_data=f'fort_ubi_{poi.id}')),
-            (InlineKeyboardButton("⚠️ ​Aviso", callback_data=f'fort_alert_{poi.id}'))]
+            (InlineKeyboardButton("⚠️ Aviso​", callback_data=f'fort_alert_{poi.id}'))]
         ]
         fort_message = bot.edit_message_reply_markup(
             chat_id=job.context.chat_id,
@@ -254,7 +254,7 @@ def callback_AlertFortress(bot, job):
         ent = fort_message.parse_entities(["mention"])
         for mention in ent:
             username = fort_message.parse_entity(mention)
-            string = r'\n(🙋‍♀️|✅|🕒|❌) 🧙(\d|\d\d|\?\?) (🍮|⚔|🐾|📚)(\d|\d\d|\?\?) 🏰(\d|\d\d|\d\d\d|\?\?) {}'.format(username)
+            string = r'\n(🙋‍♀️|✅|🕒|❌) 🧙(\d|\d\d|\?\?) (🍮|⚔|🐾|📚)(\d|\d\d|\?\?) {}'.format(username)
             search = re.search(string, fort_message.text)
             if search.group(1) == "❌":
                 continue
