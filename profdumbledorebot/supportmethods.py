@@ -99,7 +99,7 @@ def replace(user_id, name=None, admin=False, frce=False):
         text_validationstatus = "⛔️"
 
     if user and user.flag is not None:
-        text_flag = user.flag
+        text_flag = f"{user.flag} "
     else:
         text_flag = ""
 
@@ -109,7 +109,7 @@ def replace(user_id, name=None, admin=False, frce=False):
         staff_flag = ""
 
 
-    replace_pogo = "{0} - *L*{1}  🏰{2}  {3}{4}  {5}  {6}  {7} {8}".format(
+    replace_pogo = "{0} - *L*{1}  🏰{2}  {3}{4}  {5}  {6}  {7}{8}".format(
         text_alias,
         text_level,
         text_fort_level,
