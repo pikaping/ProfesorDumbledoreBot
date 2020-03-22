@@ -17,15 +17,22 @@ import profdumbledorebot.config as config
 def game_spawn_cmd(bot, update, args=None):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
-    '''
+    
     if not is_staff(user_id):
         return
-    '''
+    
+    games = {"grageas":grag_cmd, "quién dijo":whosaid_cmd}
+    
     if args == None or len(args) == 0:
+        game_list = games.keys()
+        game_list = '\n'.join(game_list)
+        bot.sendMessage(
+            chat_id=chat_id, 
+            text='Estos son los juegos disponibles:\n' + game_list, 
+            disable_notification=True)
         return
     args = " ".join(args)
-
-    games = {"grageas":grag_cmd, "quién dijo":whosaid_cmd}
+    
     if games[args] != None:
         games[args](bot, update)
 
