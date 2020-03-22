@@ -74,7 +74,7 @@ def btn(bot, update):
 
     if re.match(r"^g\*gra_", data):
         if texto.find(username) != -1:
-            bot.answer_callback_query(query.id, "Ya has cogido una, déjale al resto del grupo.", show_alert=True)
+            bot.answer_callback_query(query.id, "Ya has cogido una, deja algo al resto del grupo.", show_alert=True)
             return
 
         listaPalabras = data.split("_")
