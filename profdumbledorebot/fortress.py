@@ -259,7 +259,7 @@ def fort_btn(bot, update, job_queue):
         (InlineKeyboardButton("⚠️ Aviso", callback_data=f'fort_alert_{poi.id}'))]
     ]
 
-    string = r'\n(🙋‍♀️|✅|🕒|❌) 🧙(\d|\d\d|\?\?) (🍮|⚔|🐾|📚)(\d|\d\d|\?\?) 🏰(\d|\d\d|\d\d\d|\?\?) @{}'.format(username)
+    string = r'\n(🙋‍♀️|✅|🕒|❌) 🧙(\d|\d\d|\?\?) (🍮|⚔|🐾|📚)(\d|\d\d|\?\?) @{}'.format(username)
 
 
     if queryData[1] == "ubi":
@@ -284,7 +284,7 @@ def fort_btn(bot, update, job_queue):
             chat_url = support.message_url(message, message_id, "fortaleza")
             for mention in ent:
                 username = message.parse_entity(mention)
-                string = r'\n(🙋‍♀️|✅|🕒|❌) 🧙(\d|\d\d|\?\?) (🍮|⚔|🐾|📚)(\d|\d\d|\?\?) 🏰(\d|\d\d|\d\d\d|\?\?) {}'.format(username)
+                string = r'\n(🙋‍♀️|✅|🕒|❌) 🧙(\d|\d\d|\?\?) (🍮|⚔|🐾|📚)(\d|\d\d|\?\?) {}'.format(username)
                 search = re.search(string, markdown_text)
                 if search.group(1) == "❌":
                     continue
@@ -317,17 +317,16 @@ def fort_btn(bot, update, job_queue):
         text_prof = "📚"
 
     text_level = ("{}".format(user.level) if user and user.level else "??")
-    text_fort_level = ("{}".format(user.fort_level) if user and user.fort_level else "??")
     text_profession_level = ("{}".format(user.profession_level) if user and user.profession_level else "??")
 
     if queryData[1] == "yes":
-        text = markdown_text + f"\n🙋‍♀️ 🧙{text_level} {text_prof}{text_profession_level} 🏰{text_fort_level} @{username}"
+        text = markdown_text + f"\n🙋‍♀️ 🧙{text_level} {text_prof}{text_profession_level} @{username}"
     elif queryData[1] == "here":
-        text = markdown_text + f"\n✅ 🧙{text_level} {text_prof}{text_profession_level} 🏰{text_fort_level} @{username}"
+        text = markdown_text + f"\n✅ 🧙{text_level} {text_prof}{text_profession_level} @{username}"
     elif queryData[1] == "late":
-        text = markdown_text + f"\n🕒 🧙{text_level} {text_prof}{text_profession_level} 🏰{text_fort_level} @{username}"
+        text = markdown_text + f"\n🕒 🧙{text_level} {text_prof}{text_profession_level} @{username}"
     elif queryData[1] == "no":
-        text = markdown_text + f"\n❌ 🧙{text_level} {text_prof}{text_profession_level} 🏰{text_fort_level} @{username}"
+        text = markdown_text + f"\n❌ 🧙{text_level} {text_prof}{text_profession_level} @{username}"
     
     bot.edit_message_text(
         text=text,

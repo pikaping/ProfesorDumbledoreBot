@@ -505,7 +505,7 @@ def passport_btn(bot, update):
         button_list = [
             [InlineKeyboardButton("🧙 Nivel del personaje", callback_data='profile_edit_lvl_pj')],
             [InlineKeyboardButton("🛡 Nivel de profesión", callback_data='profile_edit_lvl_prf')],
-            [InlineKeyboardButton("🏰 Nivel de fortaleza", callback_data='profile_edit_lvl_frt')],
+            [InlineKeyboardButton("🏰 Rango de desafíos", callback_data='profile_edit_lvl_frt')],
             [InlineKeyboardButton("« Volver", callback_data='profile_edit')]]
 
         bot.edit_message_reply_markup(
@@ -928,7 +928,7 @@ def register_btn(bot, update):
             InlineKeyboardButton("141-150", callback_data='reg_fr1_140')]]
 
         bot.edit_message_text(
-            text="¿Cuál es tu nivel de fortaleza?",
+            text="¿Cuál es tu rango de desafíos?",
             chat_id=chat_id,
             message_id=message_id,
             reply_markup=InlineKeyboardMarkup(button_list),

@@ -189,3 +189,23 @@ def update_user_points(user_id, points=0, read_only=False):
         finally:
             session.commit()
             session.close()
+
+
+def is_staff(user_id):
+    try:
+        session = get_session()
+        user = get_unique_from_query(session.query(User).filter(User.id == user_id))
+        if user.staff == True:
+            return True
+        else:
+            return False
+    finally:
+        session.close()
+
+def set_staff(user_id, staff_bool):
+    with LOCK:
+        session = get_session()
+        user = get_unique_from_query(session.query(User).filter(User.id == user_id))
+        user.staff = staff_bool
+        session.commit()
+        session.close()

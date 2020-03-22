@@ -9,8 +9,25 @@ from telegram.ext.dispatcher import run_async
 import profdumbledorebot.supportmethods as support
 from profdumbledorebot.admin import last_run
 from profdumbledorebot.sql.support import are_banned
-from profdumbledorebot.sql.user import get_user, update_user_points
+from profdumbledorebot.sql.user import get_user, update_user_points, is_staff
 from profdumbledorebot.sql.group import group_message_counter, update_group_points
+import profdumbledorebot.config as config
+
+@run_async
+def game_spawn_cmd(bot, update, args=None):
+    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    support.delete_message(chat_id, message.message_id, bot)
+    '''
+    if not is_staff(user_id):
+        return
+    '''
+    if args == None or len(args) == 0:
+        return
+    args = " ".join(args)
+
+    games = {"grageas":grag_cmd, "quién dijo":whosaid_cmd}
+    if games[args] != None:
+        games[args](bot, update)
 
 @run_async
 def games_cmd(bot, update):
@@ -19,27 +36,24 @@ def games_cmd(bot, update):
     if are_banned(user_id, chat_id):
         return
 
+    group_message_counter(chat_id)
+
+    cfg = config.get_config()
+    if chat_id != int(cfg["telegram"]["spain_id"]):
+        return
     user = get_user(user_id)
     if user is None:
         return
 
-    return
-
-    if text[0] == "/games":
-        games = ["grageas", "quien dijo"]
-        if text in games:
-            print("hola")
-
-    '''
     if last_run(chat_id, 'games'):
         return
-    '''
-    group_message_counter(chat_id)
-    if (group_message_counter(chat_id, read_only=True) is randrange(2, 6)) or (group_message_counter(chat_id, read_only=True) >= 6):
+
+    if (group_message_counter(chat_id, read_only=True) is randrange(40, 70)) or (group_message_counter(chat_id, read_only=True) >= 70):
         group_message_counter(chat_id, reset=True)
         game_list = [grag_cmd, whosaid_cmd]
         choice(game_list)(bot, update)
 
+@run_async
 def btn(bot, update):
     query = update.callback_query
     data = query.data
@@ -98,7 +112,6 @@ def btn(bot, update):
             markup.append([InlineKeyboardButton(text=sel5, callback_data=b5)])
 
         update_user_points(user_id, 1)
-        update_group_points(chat_id, 1)
 
         bot.edit_message_text(
         text=texto,
@@ -107,6 +120,11 @@ def btn(bot, update):
         reply_markup=InlineKeyboardMarkup(markup))
     elif re.match(r"g\*whosaid_", data):
         if texto.find(username) != -1:
+            return
+
+        ent = message.parse_entities(["mention"])
+        if len(ent) > 0:
+            bot.answer_callback_query(query.id, "Alguien ha respondido ya.", show_alert=True)
             return
 
         listaPalabras = data.split("_")
@@ -121,7 +139,6 @@ def btn(bot, update):
             return
 
         update_user_points(user_id, -1)
-        update_group_points(chat_id, -1)
         bot.answer_callback_query(query.id, "Has fallado.", show_alert=True)
     elif re.match(r"g\*duel_", data):
         '''
