@@ -51,6 +51,7 @@ import profdumbledorebot.greenhouses as greenhouses
 import profdumbledorebot.welcome as welcome
 import profdumbledorebot.sighting as sighting
 import profdumbledorebot.fortress as fortress
+import profdumbledorebot.staff as staff
 
 def save_jobs_job(job, context):
     support.save_jobs(context.job_queue)
@@ -108,7 +109,7 @@ def start_bot():
 
     dispatcher.add_error_handler(support.error_callback)
 
-    #dispatcher.add_handler(CommandHandler('games', games.games_cmd, Filters.group))
+    dispatcher.add_handler(CommandHandler('games', games.game_spawn_cmd, Filters.group, pass_args=True))
     #dispatcher.add_handler(CommandHandler('duel', games.duel_cmd, Filters.group))
     dispatcher.add_handler(CallbackQueryHandler(games.btn, pattern=r"^g\*"))
 
@@ -204,6 +205,9 @@ def start_bot():
     dispatcher.add_handler(CommandHandler('list_news', news.list_news, Filters.group))
     dispatcher.add_handler(CommandHandler('rm_news', news.rm_news, Filters.group, pass_args=True))
     dispatcher.add_handler(CommandHandler('add_news', news.add_news, Filters.group, pass_args=True))
+
+    dispatcher.add_handler(CommandHandler('add_staff', staff.add_staff_cmd, pass_args=True))
+    dispatcher.add_handler(CommandHandler('rm_staff', staff.rm_staff_cmd, pass_args=True))
 
     dispatcher.add_handler(MessageHandler(Filters.group & Filters.status_update.new_chat_members, group.joined_chat, pass_job_queue=True)) 
  
