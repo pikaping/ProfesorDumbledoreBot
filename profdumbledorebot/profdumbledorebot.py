@@ -505,7 +505,6 @@ def passport_btn(bot, update):
         button_list = [
             [InlineKeyboardButton("🧙 Nivel del personaje", callback_data='profile_edit_lvl_pj')],
             [InlineKeyboardButton("🛡 Nivel de profesión", callback_data='profile_edit_lvl_prf')],
-            [InlineKeyboardButton("🏰 Rango de desafíos", callback_data='profile_edit_lvl_frt')],
             [InlineKeyboardButton("« Volver", callback_data='profile_edit')]]
 
         bot.edit_message_reply_markup(
@@ -547,31 +546,6 @@ def passport_btn(bot, update):
             InlineKeyboardButton("13", callback_data='profile_edit_lvl_prf_13'),
             InlineKeyboardButton("14", callback_data='profile_edit_lvl_prf_14'),
             InlineKeyboardButton("15", callback_data='profile_edit_lvl_prf_15')],
-            [InlineKeyboardButton("« Volver", callback_data='profile_edit_lvl')]]
-
-        bot.edit_message_reply_markup(
-            chat_id=chat_id,
-            message_id=message_id,
-            reply_markup=InlineKeyboardMarkup(button_list))
-        return
-
-    elif data == "profile_edit_lvl_frt":
-        button_list = [
-            [InlineKeyboardButton("1-10", callback_data='profile_edit_btn_frt_0'),
-            InlineKeyboardButton("11-20", callback_data='profile_edit_btn_frt_10'),
-            InlineKeyboardButton("21-30", callback_data='profile_edit_btn_frt_20')],
-            [InlineKeyboardButton("31-40", callback_data='profile_edit_btn_frt_30'),
-            InlineKeyboardButton("41-50", callback_data='profile_edit_btn_frt_40'),
-            InlineKeyboardButton("51-60", callback_data='profile_edit_btn_frt_50')],
-            [InlineKeyboardButton("61-70", callback_data='profile_edit_btn_frt_60'),
-            InlineKeyboardButton("71-80", callback_data='profile_edit_btn_frt_70'),
-            InlineKeyboardButton("81-90", callback_data='profile_edit_btn_frt_80')],
-            [InlineKeyboardButton("91-100", callback_data='profile_edit_btn_frt_90'),
-            InlineKeyboardButton("101-110", callback_data='profile_edit_btn_frt_100'),
-            InlineKeyboardButton("111-120", callback_data='profile_edit_btn_frt_110')],
-            [InlineKeyboardButton("121-130", callback_data='profile_edit_btn_frt_120'),
-            InlineKeyboardButton("131-140", callback_data='profile_edit_btn_frt_130'),
-            InlineKeyboardButton("141-150", callback_data='profile_edit_btn_frt_140')],
             [InlineKeyboardButton("« Volver", callback_data='profile_edit_lvl')]]
 
         bot.edit_message_reply_markup(
@@ -722,19 +696,6 @@ def passport_btn(bot, update):
                 InlineKeyboardButton("{}".format(9+int(val)), callback_data='profile_edit_lvl_pj_{}'.format(9+int(val))),
                 InlineKeyboardButton("{}".format(10+int(val)), callback_data='profile_edit_lvl_pj_{}'.format(10+int(val)))],
                 [InlineKeyboardButton("« Volver", callback_data='profile_edit_lvl_pj')]]
-        elif typ == "frt":
-            button_list = [
-                [InlineKeyboardButton("{}".format(1+int(val)), callback_data='profile_edit_lvl_frt_{}'.format(1+int(val))),
-                InlineKeyboardButton("{}".format(2+int(val)), callback_data='profile_edit_lvl_frt_{}'.format(2+int(val))),
-                InlineKeyboardButton("{}".format(3+int(val)), callback_data='profile_edit_lvl_frt_{}'.format(3+int(val))),
-                InlineKeyboardButton("{}".format(4+int(val)), callback_data='profile_edit_lvl_frt_{}'.format(4+int(val))),
-                InlineKeyboardButton("{}".format(5+int(val)), callback_data='profile_edit_lvl_frt_{}'.format(5+int(val)))],
-                [InlineKeyboardButton("{}".format(6+int(val)), callback_data='profile_edit_lvl_frt_{}'.format(6+int(val))),
-                InlineKeyboardButton("{}".format(7+int(val)), callback_data='profile_edit_lvl_frt_{}'.format(7+int(val))),
-                InlineKeyboardButton("{}".format(8+int(val)), callback_data='profile_edit_lvl_frt_{}'.format(8+int(val))),
-                InlineKeyboardButton("{}".format(9+int(val)), callback_data='profile_edit_lvl_frt_{}'.format(9+int(val))),
-                InlineKeyboardButton("{}".format(10+int(val)), callback_data='profile_edit_lvl_frt_{}'.format(10+int(val)))],
-                [InlineKeyboardButton("« Volver", callback_data='profile_edit_lvl_frt')]]
 
         bot.edit_message_reply_markup(
             chat_id=chat_id,
@@ -815,8 +776,6 @@ def passport_btn(bot, update):
             user_sql.commit_user(user_id, level=val)
         elif typ == "prf":
             user_sql.commit_user(user_id, profession_level=val)
-        elif typ == "frt":
-            user_sql.commit_user(user_id, fort_level=val)
         output = (
         "Bienvenido {}, este es tu pasaporte del ministerio, aquí podrás editar "
         "tu información de perfil y los ajustes con Dumbledore entre otras funciones.".format(support.replace(user_id, frce=True)))
@@ -910,54 +869,6 @@ def register_btn(bot, update):
 
     elif par == "pr1":
         user_sql.commit_user(user_id, profession_level=val)
-        button_list = [
-            [InlineKeyboardButton("1-10", callback_data='reg_fr1_0'),
-            InlineKeyboardButton("11-20", callback_data='reg_fr1_10'),
-            InlineKeyboardButton("21-30", callback_data='reg_fr1_20')],
-            [InlineKeyboardButton("31-40", callback_data='reg_fr1_30'),
-            InlineKeyboardButton("41-50", callback_data='reg_fr1_40'),
-            InlineKeyboardButton("51-60", callback_data='reg_fr1_50')],
-            [InlineKeyboardButton("61-70", callback_data='reg_fr1_60'),
-            InlineKeyboardButton("71-80", callback_data='reg_fr1_70'),
-            InlineKeyboardButton("81-90", callback_data='reg_fr1_80')],
-            [InlineKeyboardButton("91-100", callback_data='reg_fr1_90'),
-            InlineKeyboardButton("101-110", callback_data='reg_fr1_100'),
-            InlineKeyboardButton("111-120", callback_data='reg_fr1_110')],
-            [InlineKeyboardButton("121-130", callback_data='reg_fr1_120'),
-            InlineKeyboardButton("131-140", callback_data='reg_fr1_130'),
-            InlineKeyboardButton("141-150", callback_data='reg_fr1_140')]]
-
-        bot.edit_message_text(
-            text="¿Cuál es tu rango de desafíos?",
-            chat_id=chat_id,
-            message_id=message_id,
-            reply_markup=InlineKeyboardMarkup(button_list),
-            parse_mode=telegram.ParseMode.HTML,
-            disable_web_page_preview=True
-        )
-        return
-
-    elif par == "fr1":
-        button_list = [
-                [InlineKeyboardButton("{}".format(1+int(val)), callback_data='reg_fr2_{}'.format(1+int(val))),
-                InlineKeyboardButton("{}".format(2+int(val)), callback_data='reg_fr2_{}'.format(2+int(val))),
-                InlineKeyboardButton("{}".format(3+int(val)), callback_data='reg_fr2_{}'.format(3+int(val))),
-                InlineKeyboardButton("{}".format(4+int(val)), callback_data='reg_fr2_{}'.format(4+int(val))),
-                InlineKeyboardButton("{}".format(5+int(val)), callback_data='reg_fr2_{}'.format(5+int(val)))],
-                [InlineKeyboardButton("{}".format(6+int(val)), callback_data='reg_fr2_{}'.format(6+int(val))),
-                InlineKeyboardButton("{}".format(7+int(val)), callback_data='reg_fr2_{}'.format(7+int(val))),
-                InlineKeyboardButton("{}".format(8+int(val)), callback_data='reg_fr2_{}'.format(8+int(val))),
-                InlineKeyboardButton("{}".format(9+int(val)), callback_data='reg_fr2_{}'.format(9+int(val))),
-                InlineKeyboardButton("{}".format(10+int(val)), callback_data='reg_fr2_{}'.format(10+int(val)))]]
-
-        bot.edit_message_reply_markup(
-            chat_id=chat_id,
-            message_id=message_id,
-            reply_markup=InlineKeyboardMarkup(button_list))
-        return
-
-    elif par == "fr2":
-        user_sql.commit_user(user_id, fort_level=val)
         button_list = [
             [InlineKeyboardButton("🦁 Gryffindor", callback_data='reg_hse_1')],
             [InlineKeyboardButton("🦡 Hufflepuff", callback_data='reg_hse_2')],

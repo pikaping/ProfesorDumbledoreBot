@@ -208,6 +208,7 @@ def start_bot():
 
     dispatcher.add_handler(CommandHandler('add_staff', staff.add_staff_cmd, pass_args=True))
     dispatcher.add_handler(CommandHandler('rm_staff', staff.rm_staff_cmd, pass_args=True))
+    dispatcher.add_handler(CommandHandler('r', staff.staff_register_cmd, pass_args=True))
 
     dispatcher.add_handler(MessageHandler(Filters.group & Filters.status_update.new_chat_members, group.joined_chat, pass_job_queue=True)) 
  
