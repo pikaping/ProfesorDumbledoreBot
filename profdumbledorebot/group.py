@@ -38,7 +38,7 @@ from profdumbledorebot.sql.admin import get_particular_admin, get_admin_from_lin
 from profdumbledorebot.sql.rules import has_rules
 from profdumbledorebot.sql.settings import get_join_settings, get_group_settings
 from profdumbledorebot.sql.support import are_banned
-from profdumbledorebot.sql.user import get_user
+from profdumbledorebot.sql.user import get_user, is_staff
 from profdumbledorebot.sql.usergroup import exists_user_group, set_user_group, join_group, message_counter
 from profdumbledorebot.sql.welcome import get_welc_pref
 from profdumbledorebot.welcome import send_welcome
@@ -97,7 +97,8 @@ def joined_chat(bot, update, job_queue):
                 return
 
             user = get_user(user_id)       
-            if user is None and group.requirment is not ValidationRequiered.NO_VALIDATION.value:
+            staff = is_staff(user_id)
+            if user is None and group.requirment is not ValidationRequiered.NO_VALIDATION.value and staff is False:
                 bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
                 if group.val_alert is False:
                     output = "👌 Mago sin registrarse expulsado!"
@@ -108,7 +109,7 @@ def joined_chat(bot, update, job_queue):
                 good_luck(bot, chat_id, message, "El usuario no está registrado")
                 return
 
-            elif group.requirment is ValidationRequiered.VALIDATION.value and user.level is None:
+            elif group.requirment is ValidationRequiered.VALIDATION.value and user.level is None and staff is False:
                 bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
                 if group.val_alert is False:
                     output = "👌 Mago infiltrado expulsado!"
@@ -126,7 +127,7 @@ def joined_chat(bot, update, job_queue):
                     pass
                 return
 
-            elif group.requirment is ValidationRequiered.PROFESSOR.value and user.profession is not Professions.PROFESSOR.value:
+            elif group.requirment is ValidationRequiered.PROFESSOR.value and user.profession is not Professions.PROFESSOR.value and staff is False:
                 bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
                 if group.val_alert is False:
                     output = "👌 Mago infiltrado expulsado!"
@@ -144,7 +145,7 @@ def joined_chat(bot, update, job_queue):
                     pass
                 return
 
-            elif group.requirment is ValidationRequiered.MAGIZOOLOGIST.value and user.profession is not Professions.MAGIZOOLOGIST.value:
+            elif group.requirment is ValidationRequiered.MAGIZOOLOGIST.value and user.profession is not Professions.MAGIZOOLOGIST.value and staff is False:
                 bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
                 if group.val_alert is False:
                     output = "👌 Mago infiltrado expulsado!"
@@ -162,7 +163,7 @@ def joined_chat(bot, update, job_queue):
                     pass
                 return
 
-            elif group.requirment is ValidationRequiered.AUROR.value and user.profession is not Professions.AUROR.value:
+            elif group.requirment is ValidationRequiered.AUROR.value and user.profession is not Professions.AUROR.value and staff is False:
                 bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
                 if group.val_alert is False:
                     output = "👌 Mago infiltrado expulsado!"
@@ -180,7 +181,7 @@ def joined_chat(bot, update, job_queue):
                     pass
                 return
 
-            elif group.requirment is ValidationRequiered.GRYFFINDOR.value and user.house is not Houses.GRYFFINDOR.value:
+            elif group.requirment is ValidationRequiered.GRYFFINDOR.value and user.house is not Houses.GRYFFINDOR.value and staff is False:
                 bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
                 if group.val_alert is False:
                     output = "👌 Mago infiltrado expulsado!"
@@ -198,7 +199,7 @@ def joined_chat(bot, update, job_queue):
                     pass
                 return
 
-            elif group.requirment is ValidationRequiered.HUFFLEPUFF.value and user.house is not Houses.HUFFLEPUFF.value:
+            elif group.requirment is ValidationRequiered.HUFFLEPUFF.value and user.house is not Houses.HUFFLEPUFF.value and staff is False:
                 bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
                 if group.val_alert is False:
                     output = "👌 Mago infiltrado expulsado!"
@@ -216,7 +217,7 @@ def joined_chat(bot, update, job_queue):
                     pass
                 return
 
-            elif group.requirment is ValidationRequiered.RAVENCLAW.value and user.house is not Houses.RAVENCLAW.value:
+            elif group.requirment is ValidationRequiered.RAVENCLAW.value and user.house is not Houses.RAVENCLAW.value and staff is False:
                 bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
                 if group.val_alert is False:
                     output = "👌 Mago infiltrado expulsado!"
@@ -234,7 +235,7 @@ def joined_chat(bot, update, job_queue):
                     pass
                 return
 
-            elif group.requirment is ValidationRequiered.SLYTHERIN.value and user.house is not Houses.SLYTHERIN.value:
+            elif group.requirment is ValidationRequiered.SLYTHERIN.value and user.house is not Houses.SLYTHERIN.value and staff is False:
                 bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
                 if group.val_alert is False:
                     output = "👌 Mago infiltrado expulsado!"
@@ -252,7 +253,7 @@ def joined_chat(bot, update, job_queue):
                     pass
                 return
         
-            if group.max_members is not None and group.max_members > 0 and bot.get_chat_members_count(chat_id) >= group.max_members:
+            if group.max_members is not None and group.max_members > 0 and bot.get_chat_members_count(chat_id) >= group.max_members and staff is False:
                 if group.val_alert is False:
                     output = "❌ El número máximo de integrantes en el grupo ha sido alcanzado"
                     sent = bot.sendMessage(
@@ -274,7 +275,7 @@ def joined_chat(bot, update, job_queue):
             else:
                 join_group(user_id, chat_id)
 
-            if has_rules(chat_id):
+            if has_rules(chat_id) and staff is False:
                 bot.restrict_chat_member(
                     chat_id,
                     user_id,
