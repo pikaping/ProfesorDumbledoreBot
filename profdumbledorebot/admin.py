@@ -36,7 +36,7 @@ import profdumbledorebot.supportmethods as support
 from profdumbledorebot.config import get_config
 from profdumbledorebot.sql.settings import get_group_settings
 from profdumbledorebot.sql.support import are_banned
-from profdumbledorebot.sql.user import get_user, get_user_by_name
+from profdumbledorebot.sql.user import get_user, get_user_by_name, is_staff
 from profdumbledorebot.sql.usergroup import exists_user_group, set_user_group, warn_user, get_users_from_group
 from profdumbledorebot.sql.group import get_group
 from profdumbledorebot.model import Teams, Professions, Houses
@@ -354,7 +354,7 @@ def kickmsg_cmd(bot, update, args=None):
     if args is None or len(args) != 1 or not args[0].isdigit():
         return
 
-    if last_run(chat_id, 'kickmsg'):
+    if last_run(chat_id, 'kickmsg') and is_staff(user_id) is False:
         bot.sendMessage(
             chat_id=chat_id,
             text="Hace menos de un dia que se usó el comando.",
@@ -397,7 +397,7 @@ def kickold_cmd(bot, update, args=None):
     if args is None or len(args) != 1 or not args[0].isdigit():
         return
 
-    if last_run(chat_id, 'kickold'):
+    if last_run(chat_id, 'kickold') and is_staff(user_id) is False:
         bot.sendMessage(
             chat_id=chat_id,
             text="Hace menos de un dia que se usó el comando.",
@@ -440,6 +440,13 @@ def uv_cmd(bot, update, args=None):
     if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
 
+    if last_run(chat_id, 'uv') and is_staff(user_id) is False:
+        bot.sendMessage(
+            chat_id=chat_id,
+            text="Hace menos de un dia que se usó el comando.",
+            parse_mode=telegram.ParseMode.HTML)
+        return
+
     unique = outn = uv = g = h = r = s = a = m = p = n = i = 0
     print_ = print_uv = print_g = print_h = print_r = print_s = print_n = print_a = print_m = print_p = print_i = False
 
@@ -466,15 +473,6 @@ def uv_cmd(bot, update, args=None):
                 print_m = print_ = True
             elif arg == "p":
                 print_p = print_ = True
-            elif arg == "all":
-                print_uv = print_ = print_n = print_g = print_h = print_r = print_s = print_a = print_m = print_p = print_i = True
-
-    if last_run(chat_id, 'uv'):
-        bot.sendMessage(
-            chat_id=chat_id,
-            text="Hace menos de un dia que se usó el comando.",
-            parse_mode=telegram.ParseMode.HTML)
-        return
 
     output = ''
     if print_:
@@ -582,7 +580,7 @@ def kickuv_cmd(bot, update, args=None):
     if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
 
-    if last_run(chat_id, 'kickuv'):
+    if last_run(chat_id, 'kickuv') and is_staff(user_id) is False:
         bot.sendMessage(
             chat_id=chat_id,
             text="Hace menos de un dia que se usó el comando.",
