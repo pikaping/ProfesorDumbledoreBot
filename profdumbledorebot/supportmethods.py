@@ -63,7 +63,9 @@ def replace(user_id, name=None, admin=False, frce=False):
     else:
         user = get_user(user_id)
 
-    if user is None or user.house is model.Houses.NONE.value:
+    if user is None or user.house is model.Houses.NONE.value and (user.level is None or user.profession is model.Professions.NONE.value or user.profession_level is None):
+        text_house = "🖤"
+    elif user.house is model.Houses.NONE.value:
         text_house = "🙈"
     elif user.house is model.Houses.GRYFFINDOR.value:
         text_house = "🦁"
@@ -73,6 +75,8 @@ def replace(user_id, name=None, admin=False, frce=False):
         text_house = "🦅"
     elif user.house is model.Houses.SLYTHERIN.value:
         text_house = "🐍"
+    elif user.house is model.Houses.BOTS.value:
+        text_house = "💻"
 
     if user is None or user.profession is model.Professions.NONE.value:
         text_prof = "_Desconocido_"
@@ -82,6 +86,8 @@ def replace(user_id, name=None, admin=False, frce=False):
         text_prof = "🐾"
     elif user.profession is model.Professions.PROFESSOR.value:
         text_prof = "📚"
+    elif user.profession is model.Professions.BOT.value:
+        text_prof = "🤖"
 
     if user and user.alias is not None:
         text_alias = escape_markdown("@{}".format(user.alias))
@@ -91,7 +97,6 @@ def replace(user_id, name=None, admin=False, frce=False):
         text_alias = "_Desconocido_"
 
     text_level = ("*{}*".format(user.level) if user and user.level else "*??*")
-    text_fort_level = ("*{}*".format(user.fort_level) if user and user.fort_level else "*??*")
     text_profession_level = ("*{}*".format(user.profession_level) if user and user.profession_level else "*??*")
     
     text_validationstatus = "✅"
@@ -109,10 +114,9 @@ def replace(user_id, name=None, admin=False, frce=False):
         staff_flag = ""
 
 
-    replace_pogo = "{0} - *L*{1}  🏰{2}  {3}{4}  {5}  {6}  {7}{8}".format(
+    replace_pogo = "{0} - *L*{1}  {2}{3}  {4}  {5}  {6}{7}".format(
         text_alias,
         text_level,
-        text_fort_level,
         text_prof,
         text_profession_level,
         text_house,

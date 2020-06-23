@@ -36,7 +36,7 @@ import profdumbledorebot.supportmethods as support
 from profdumbledorebot.config import get_config
 from profdumbledorebot.sql.settings import get_group_settings
 from profdumbledorebot.sql.support import are_banned
-from profdumbledorebot.sql.user import get_user, get_user_by_name
+from profdumbledorebot.sql.user import get_user, get_user_by_name, is_staff
 from profdumbledorebot.sql.usergroup import exists_user_group, set_user_group, warn_user, get_users_from_group
 from profdumbledorebot.sql.group import get_group
 from profdumbledorebot.model import Teams, Professions, Houses
@@ -354,7 +354,7 @@ def kickmsg_cmd(bot, update, args=None):
     if args is None or len(args) != 1 or not args[0].isdigit():
         return
 
-    if last_run(chat_id, 'kickmsg'):
+    if last_run(chat_id, 'kickmsg') and is_staff(user_id) is False:
         bot.sendMessage(
             chat_id=chat_id,
             text="Hace menos de un dia que se usó el comando.",
@@ -397,7 +397,7 @@ def kickold_cmd(bot, update, args=None):
     if args is None or len(args) != 1 or not args[0].isdigit():
         return
 
-    if last_run(chat_id, 'kickold'):
+    if last_run(chat_id, 'kickold') and is_staff(user_id) is False:
         bot.sendMessage(
             chat_id=chat_id,
             text="Hace menos de un dia que se usó el comando.",
@@ -440,8 +440,15 @@ def uv_cmd(bot, update, args=None):
     if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
 
-    unique = outn = uv = g = h = r = s = a = m = p = n = 0
-    print_ = print_uv = print_g = print_h = print_r = print_s = print_n = print_a = print_m = print_p = False
+    if last_run(chat_id, 'uv') and is_staff(user_id) is False:
+        bot.sendMessage(
+            chat_id=chat_id,
+            text="Hace menos de un dia que se usó el comando.",
+            parse_mode=telegram.ParseMode.HTML)
+        return
+
+    unique = outn = uv = g = h = r = s = a = m = p = n = i = 0
+    print_ = print_uv = print_g = print_h = print_r = print_s = print_n = print_a = print_m = print_p = print_i = False
 
     if args is not None and len(args) > 0:
         for arg in args:
@@ -450,6 +457,8 @@ def uv_cmd(bot, update, args=None):
                 print_uv = print_ = True
             elif arg == "n":
                 print_n = print_ = True
+            elif arg == "i":
+                print_i = print_ = True
             elif arg == "g":
                 print_g = print_ = True
             elif arg == "h":
@@ -464,15 +473,6 @@ def uv_cmd(bot, update, args=None):
                 print_m = print_ = True
             elif arg == "p":
                 print_p = print_ = True
-            elif arg == "all":
-                print_uv = print_ = print_n = print_g = print_h = print_r = print_s = print_a = print_m = print_p = True
-
-    if last_run(chat_id, 'uv'):
-        bot.sendMessage(
-            chat_id=chat_id,
-            text="Hace menos de un dia que se usó el comando.",
-            parse_mode=telegram.ParseMode.HTML)
-        return
 
     output = ''
     if print_:
@@ -505,10 +505,15 @@ def uv_cmd(bot, update, args=None):
                     output = ''
                     outn = 0
                 continue
-            elif info.house is Houses.NONE.value or info.profession is Professions.NONE.value:
+            elif info.house is Houses.NONE.value and (info.level is None or info.profession is Professions.NONE.value or info.profession_level is None):
                 n += 1
                 if print_n:
                     icon = icon + '🖤'
+                    outn += 1
+            elif info.house is Houses.NONE.value:
+                i += 1
+                if print_i:
+                    icon = icon + '🙈'
                     outn += 1
             elif info.house is Houses.GRYFFINDOR.value:
                 g += 1
@@ -558,9 +563,9 @@ def uv_cmd(bot, update, args=None):
 
             time.sleep(0.01)
 
-    total = uv + g + h + r + s + a + m + p + n
+    total = uv + g + h + r + s + a + m + p + n + i
     tlgrm = tlgrm - unique - 1
-    output = "🦁 Gryffindor: {}\n🦡 Hufflepuff: {}\n🦅 Ravenclaw: {}\n🐍 Slytherin: {}\n⚔️ Auror: {}\n🐾 Magizoologo: {}\n📚 Profesor: {}\n🖤 Registro incompleto: {}\n❌ Sin registrar: {}\n❓ Desconocidos: {}\n".format(g, h, r, s, a, m, p, n, uv, tlgrm) + output
+    output = "🦁 Gryffindor: {}\n🦡 Hufflepuff: {}\n🦅 Ravenclaw: {}\n🐍 Slytherin: {}\n🙈 Sin Casa: {}\n⚔️ Auror: {}\n🐾 Magizoologo: {}\n📚 Profesor: {}\n🖤 Registro incompleto: {}\n❌ Sin registrar: {}\n❓ Desconocidos: {}\n".format(g, h, r, s, i, a, m, p, n, uv, tlgrm) + output
     bot.sendMessage(
         chat_id=chat_id,
         text=output,
@@ -575,14 +580,14 @@ def kickuv_cmd(bot, update, args=None):
     if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
         return
 
-    if last_run(chat_id, 'kickuv'):
+    if last_run(chat_id, 'kickuv') and is_staff(user_id) is False:
         bot.sendMessage(
             chat_id=chat_id,
             text="Hace menos de un dia que se usó el comando.",
             parse_mode=telegram.ParseMode.HTML)
         return
 
-    uv = g = h = r = s = a = m = p = n = False
+    uv = g = h = r = s = a = m = p = n = i = False
 
     if args is not None and len(args) > 0:
         for arg in args:
@@ -591,6 +596,8 @@ def kickuv_cmd(bot, update, args=None):
                 uv = True
             elif arg == "n":
                 n = True
+            elif arg == "i":
+                i = True
             elif arg == "g":
                 g = True
             elif arg == "h":
@@ -626,8 +633,17 @@ def kickuv_cmd(bot, update, args=None):
                     except:
                         pass
                     time.sleep(0.01)
-            elif info.house is Houses.NONE.value or info.profession is Professions.NONE.value:
+            elif info.house is Houses.NONE.value and (info.level is None or info.profession is Professions.NONE.value or info.profession_level is None):
                 if n:
+                    try:
+                        bot.kickChatMember(chat_id, user.user_id)
+                        bot.unbanChatMember(chat_id, user.user_id)
+                        kicked_users += 1
+                    except:
+                        pass
+                    time.sleep(0.01)
+            elif info.house is Houses.NONE.value:
+                if i:
                     try:
                         bot.kickChatMember(chat_id, user.user_id)
                         bot.unbanChatMember(chat_id, user.user_id)

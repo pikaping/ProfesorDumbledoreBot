@@ -30,7 +30,8 @@ from telegram.ext.dispatcher import run_async
 from telegram.utils.helpers import escape_markdown
 
 import profdumbledorebot.supportmethods as support
-from profdumbledorebot.sql.user import get_user, is_staff, set_staff
+import profdumbledorebot.model as model
+from profdumbledorebot.sql.user import get_user, is_staff, set_staff, get_real_user, set_user, commit_user
 
 @run_async
 def add_staff_cmd(bot, update, args=None):
@@ -82,3 +83,105 @@ def rm_staff_cmd(bot, update, args=None):
         text="👌 El usuario ya no forma parte del Staff",
         parse_mode=telegram.ParseMode.MARKDOWN)
 
+@run_async
+def staff_register_cmd(bot, update, args=None):
+    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    support.delete_message(chat_id, message.message_id, bot)
+
+    if not is_staff(user_id):
+        return
+
+    if len(args) == 0:
+        return
+
+    if message.reply_to_message is not None:
+        replied_userid = message.reply_to_message.from_user.id
+        if message.reply_to_message.from_user.username is None:
+            replied_username = "None"
+        else:
+            replied_username = support.ensure_escaped(message.reply_to_message.from_user.username)
+        user_username = message.from_user.username
+    else: 
+        return
+
+    if args == None or len(args)>6:
+        logging.debug("%s", len(args))
+        bot.sendMessage(
+            chat_id=chat_id, 
+            text="Has puesto demasiadas opciones, o ninguna.", 
+            parse_mode=telegram.ParseMode.MARKDOWN)
+        return
+
+    output="🧙 [{0}](tg://user?id={1}) made changes to [{2}](tg://user?id={3}):".format(
+            message.from_user.first_name,
+            message.from_user.id,
+            replied_username,        
+            replied_userid
+    )
+
+    user = get_real_user(replied_userid)
+    if user is None:
+        set_user(replied_userid)
+    
+    alias = None
+    level = None
+    profession = None
+    house = None
+    team = None
+    validation = None
+    profession_level = None
+
+    for arg in args:
+        if arg=="v":
+            validation = True
+            change="\n- Validation set to *validated*"
+        elif arg.lower() in ["p","m","a","bot"]:
+            if arg=="p":
+                profession = model.Professions.PROFESSOR.value
+                change="\n- Profession set to *Professor*"
+            elif arg=="m":
+                profession = model.Professions.MAGIZOOLOGIST.value
+                change="\n- Profession set to *Magizoologist*"
+            elif arg=="a":
+                profession = model.Professions.AUROR.value
+                change="\n- Profession set to *Auror*"
+            elif arg=="bot":
+                profession = model.Professions.BOT.value
+                change="\n- Profession set to *Bot*"
+        elif arg.lower() in ["n","g","h","r","s","bothouse"]:
+            if arg=="n":
+                house = model.Houses.NONE.value
+                change="\n- House set to *None*"
+            elif arg=="g":
+                house = model.Houses.GRYFFINDOR.value
+                change="\n- House set to *Gryffindor*"
+            elif arg=="h":
+                house = model.Houses.HUFFLEPUFF.value
+                change="\n- House set to *Hufflepuff*"
+            elif arg=="r":
+                house = model.Houses.RAVENCLAW.value
+                change="\n- House set to *Ravenclaw*"
+            elif arg=="s":
+                house = model.Houses.SLYTHERIN.value
+                change="\n- House set to *Slytherin*"
+            elif arg=="bothouse":
+                house = model.Houses.BOTS.value
+                change="\n- House set to *Bots*"
+        elif arg.isdigit() and int(arg) >= 1 and int(arg) <= 60:
+            level = int(arg)
+            change="\n- Level set to *{}*".format(level)
+        elif arg[0].lower() == "p" and arg[1:].isdigit() and int(arg[1:]) >=1 and int(arg[1:]) <=15:
+            profession_level = int(arg[1:])
+            change="\n- Profession Level set to *{}*".format(profession_level)
+        elif re.match(r'[a-zA-Z0-9]{3,30}$', arg) is not None:
+            alias = arg
+            change="\n- Alias set to *{}*".format(alias)
+        else:
+            change="\n- *{}* was not a valid argument and was skipped.".format(arg)
+        output="{}{}".format(output,change)
+
+    try:
+        commit_user(user_id=replied_userid, alias=alias, level=level, profession=profession, house=house, team=team, validation=validation, profession_level=profession_level)
+    except:
+        output="Huh... Se ha roto algo en el proceso @Sarayalth"
+    bot.sendMessage(chat_id=chat_id, text=output, parse_mode=telegram.ParseMode.MARKDOWN)

@@ -172,10 +172,10 @@ def start_bot():
     #dispatcher.add_handler(CommandHandler('mute', admin.mute_cmd, Filters.group, pass_args=True))
     #dispatcher.add_handler(CommandHandler('unwarn', unwarn_cmd, Filters.group, pass_args=True))
 
-    #TBRdispatcher.add_handler(CommandHandler('dumbleuv', admin.uv_cmd, Filters.group, pass_args=True))
-    #TBRdispatcher.add_handler(CommandHandler('dumblekickuv', admin.kickuv_cmd, Filters.group, pass_args=True))
-    #TBRdispatcher.add_handler(CommandHandler('dumblekickmsg', admin.kickmsg_cmd, Filters.group, pass_args=True))
-    #TBRdispatcher.add_handler(CommandHandler('dumblekickold', admin.kickold_cmd, Filters.group, pass_args=True))
+    dispatcher.add_handler(CommandHandler('dumbleuv', admin.uv_cmd, Filters.group, pass_args=True))
+    dispatcher.add_handler(CommandHandler('dumblekickuv', admin.kickuv_cmd, Filters.group, pass_args=True))
+    dispatcher.add_handler(CommandHandler('dumblekickmsg', admin.kickmsg_cmd, Filters.group, pass_args=True))
+    dispatcher.add_handler(CommandHandler('dumblekickold', admin.kickold_cmd, Filters.group, pass_args=True))
 
     dispatcher.add_handler(CommandHandler('rules', rules.rules, Filters.group))   
     dispatcher.add_handler(CommandHandler('set_rules', rules.set_rules, Filters.group))  
@@ -208,6 +208,7 @@ def start_bot():
 
     dispatcher.add_handler(CommandHandler('add_staff', staff.add_staff_cmd, pass_args=True))
     dispatcher.add_handler(CommandHandler('rm_staff', staff.rm_staff_cmd, pass_args=True))
+    dispatcher.add_handler(CommandHandler('r', staff.staff_register_cmd, pass_args=True))
 
     dispatcher.add_handler(MessageHandler(Filters.group & Filters.status_update.new_chat_members, group.joined_chat, pass_job_queue=True)) 
  
