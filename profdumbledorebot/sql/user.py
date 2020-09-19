@@ -193,8 +193,11 @@ def is_staff(user_id):
     try:
         session = get_session()
         user = get_unique_from_query(session.query(User).filter(User.id == user_id))
-        if user.staff == True:
-            return True
+        if user is not None:
+            if user.staff == True:
+                return True
+            else:
+                return False
         else:
             return False
     finally:

@@ -437,7 +437,7 @@ def uv_cmd(bot, update, args=None):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
+    if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
         return
 
     if last_run(chat_id, 'uv') and is_staff(user_id) is False:
@@ -577,7 +577,7 @@ def kickuv_cmd(bot, update, args=None):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
+    if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
         return
 
     if last_run(chat_id, 'kickuv') and is_staff(user_id) is False:
@@ -633,6 +633,8 @@ def kickuv_cmd(bot, update, args=None):
                     except:
                         pass
                     time.sleep(0.01)
+            elif is_staff(user.user_id):
+                pass
             elif info.house is Houses.NONE.value and (info.level is None or info.profession is Professions.NONE.value or info.profession_level is None):
                 if n:
                     try:

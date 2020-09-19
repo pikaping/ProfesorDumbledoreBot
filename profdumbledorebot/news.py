@@ -175,5 +175,5 @@ def send_news(bot, update):
             logging.info('sendingMessageTo:FAILURE->: %s', k.user_id)
 
     for k in exceptions_users:
-        news_sql.rm_all_news_subscription(k.user_id)
+        news_sql.rm_all_news_subscription(k)
 
