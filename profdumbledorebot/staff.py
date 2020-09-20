@@ -31,7 +31,7 @@ from telegram.utils.helpers import escape_markdown
 
 import profdumbledorebot.supportmethods as support
 import profdumbledorebot.model as model
-from profdumbledorebot.sql.user import get_user, is_staff, set_staff, get_real_user, set_user, commit_user
+from profdumbledorebot.sql.user import get_user, is_staff, set_staff, get_real_user, set_user, commit_user, set_ghost
 
 @run_async
 def add_staff_cmd(bot, update, args=None):
@@ -185,3 +185,53 @@ def staff_register_cmd(bot, update, args=None):
     except:
         output="Huh... Se ha roto algo en el proceso @Sarayalth"
     bot.sendMessage(chat_id=chat_id, text=output, parse_mode=telegram.ParseMode.MARKDOWN)
+
+@run_async
+def add_ghost_cmd(bot, update, args=None):
+    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    support.delete_message(chat_id, message.message_id, bot)
+
+    if not is_staff(user_id):
+        return
+
+    if len(args) == 0:
+        return
+
+    if get_user(user_id) is not None:
+        set_ghost(args[0], True)
+    else:
+        bot.sendMessage(
+        chat_id=chat_id,
+        text="❌ Ese usuario no existe.",
+        parse_mode=telegram.ParseMode.MARKDOWN)
+        return
+
+    bot.sendMessage(
+        chat_id=chat_id,
+        text="👌 El usuario ahora es un fantasma 👻",
+        parse_mode=telegram.ParseMode.MARKDOWN)
+
+@run_async
+def rm_ghost_cmd(bot, update, args=None):
+    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    support.delete_message(chat_id, message.message_id, bot)
+
+    if not is_staff(user_id):
+        return
+
+    if len(args) == 0:
+        return
+
+    if get_user(user_id) is not None:
+        set_ghost(args[0], False)
+    else:
+        bot.sendMessage(
+        chat_id=chat_id,
+        text="❌ Ese usuario no existe.",
+        parse_mode=telegram.ParseMode.MARKDOWN)
+        return
+
+    bot.sendMessage(
+        chat_id=chat_id,
+        text="👌 El usuario ya no es un fantasma 👻",
+        parse_mode=telegram.ParseMode.MARKDOWN)

@@ -38,7 +38,7 @@ from profdumbledorebot.sql.admin import get_particular_admin, get_admin_from_lin
 from profdumbledorebot.sql.rules import has_rules
 from profdumbledorebot.sql.settings import get_join_settings, get_group_settings
 from profdumbledorebot.sql.support import are_banned
-from profdumbledorebot.sql.user import get_user, is_staff
+from profdumbledorebot.sql.user import get_user, is_staff, is_ghost
 from profdumbledorebot.sql.usergroup import exists_user_group, set_user_group, join_group, message_counter
 from profdumbledorebot.sql.welcome import get_welc_pref
 from profdumbledorebot.welcome import send_welcome
@@ -96,8 +96,19 @@ def joined_chat(bot, update, job_queue):
                 bot.kickChatMember(chat_id, user_id)
                 return
 
-            user = get_user(user_id)       
+            user = get_user(user_id)
             staff = is_staff(user_id)
+            ghost = is_ghost(user_id)
+            if ghost is True:
+                if group.requirment is ValidationRequiered.GRYFFINDOR.value or ValidationRequiered.HUFFLEPUFF.value or ValidationRequiered.SLYTHERIN.value or ValidationRequiered.RAVENCLAW.value and user.house is group.requirment:
+                    if group.val_alert is False:
+                        output = "👻 poi"
+                        bot.sendMessage(
+                            chat_id=chat_id, 
+                            text=output, 
+                            parse_mode=telegram.ParseMode.MARKDOWN)
+                        return
+
             if user is None and group.requirment is not ValidationRequiered.NO_VALIDATION.value and staff is False:
                 bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
                 if group.val_alert is False:

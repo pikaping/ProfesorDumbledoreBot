@@ -210,3 +210,26 @@ def set_staff(user_id, staff_bool):
         user.staff = staff_bool
         session.commit()
         session.close()
+
+
+def is_ghost(user_id):
+    try:
+        session = get_session()
+        user = get_unique_from_query(session.query(User).filter(User.id == user_id))
+        if user is not None:
+            if user.ghost == True:
+                return True
+            else:
+                return False
+        else:
+            return False
+    finally:
+        session.close()
+
+def set_ghost(user_id, ghost_bool):
+    with LOCK:
+        session = get_session()
+        user = get_unique_from_query(session.query(User).filter(User.id == user_id))
+        user.ghost = ghost_bool
+        session.commit()
+        session.close()

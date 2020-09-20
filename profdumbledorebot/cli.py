@@ -169,6 +169,7 @@ def start_bot():
     dispatcher.add_handler(CommandHandler('kick', admin.kick_cmd, Filters.group, pass_args=True))
     dispatcher.add_handler(CommandHandler('warn', admin.warn_cmd, Filters.group, pass_args=True))
     dispatcher.add_handler(CommandHandler('unban', admin.unban_cmd, Filters.group, pass_args=True))
+    dispatcher.add_handler(CommandHandler('id', admin.whois_id, pass_args=True))
     #dispatcher.add_handler(CommandHandler('mute', admin.mute_cmd, Filters.group, pass_args=True))
     #dispatcher.add_handler(CommandHandler('unwarn', unwarn_cmd, Filters.group, pass_args=True))
 
@@ -208,6 +209,8 @@ def start_bot():
 
     dispatcher.add_handler(CommandHandler('add_staff', staff.add_staff_cmd, pass_args=True))
     dispatcher.add_handler(CommandHandler('rm_staff', staff.rm_staff_cmd, pass_args=True))
+    dispatcher.add_handler(CommandHandler('add_ghost', staff.add_ghost_cmd, pass_args=True))
+    dispatcher.add_handler(CommandHandler('rm_ghost', staff.rm_ghost_cmd, pass_args=True))
     dispatcher.add_handler(CommandHandler('r', staff.staff_register_cmd, pass_args=True))
 
     dispatcher.add_handler(MessageHandler(Filters.group & Filters.status_update.new_chat_members, group.joined_chat, pass_job_queue=True)) 

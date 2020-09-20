@@ -79,7 +79,7 @@ def replace(user_id, name=None, admin=False, frce=False):
         text_house = "💻"
 
     if user is None or user.profession is model.Professions.NONE.value:
-        text_prof = "_Desconocido_"
+        text_prof = "_Desconocida_"
     elif user.profession is model.Professions.AUROR.value:
         text_prof = "⚔"
     elif user.profession is model.Professions.MAGIZOOLOGIST.value:
