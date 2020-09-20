@@ -114,7 +114,7 @@ def joined_chat(bot, update, job_queue):
             elif ghost is True:
                 if group.requirment is ValidationRequiered.GRYFFINDOR.value or ValidationRequiered.HUFFLEPUFF.value or ValidationRequiered.SLYTHERIN.value or ValidationRequiered.RAVENCLAW.value and user.house is group.requirment:
                     if group.val_alert is False:
-                        output = "👻 poi"
+                        output = "👻 Peeves ha entrado en la casa a hacer de las suyas, estad atentos."
                         bot.sendMessage(
                             chat_id=chat_id, 
                             text=output, 
