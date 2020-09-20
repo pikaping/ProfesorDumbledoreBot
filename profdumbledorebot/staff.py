@@ -31,7 +31,7 @@ from telegram.utils.helpers import escape_markdown
 
 import profdumbledorebot.supportmethods as support
 import profdumbledorebot.model as model
-from profdumbledorebot.sql.user import get_user, is_staff, set_staff, get_real_user, set_user, commit_user, set_ghost
+from profdumbledorebot.sql.user import get_user, is_staff, set_staff, get_real_user, set_user, commit_user, set_ghost, add_flag, rm_flag
 
 @run_async
 def add_staff_cmd(bot, update, args=None):
@@ -46,6 +46,7 @@ def add_staff_cmd(bot, update, args=None):
 
     if get_user(user_id) is not None:
         set_staff(args[0], True)
+        add_flag(args[0], "🧙‍♂️")
     else:
         bot.sendMessage(
         chat_id=chat_id,
@@ -71,6 +72,7 @@ def rm_staff_cmd(bot, update, args=None):
 
     if get_user(user_id) is not None:
         set_staff(args[0], False)
+        rm_flag(args[0], "🧙‍♂️")
     else:
         bot.sendMessage(
         chat_id=chat_id,
@@ -197,8 +199,12 @@ def add_ghost_cmd(bot, update, args=None):
     if len(args) == 0:
         return
 
-    if get_user(user_id) is not None:
+    user = get_user(user_id)
+
+    if user is not None:
         set_ghost(args[0], True)
+        add_flag(args[0], "👻")
+
     else:
         bot.sendMessage(
         chat_id=chat_id,
@@ -224,6 +230,7 @@ def rm_ghost_cmd(bot, update, args=None):
 
     if get_user(user_id) is not None:
         set_ghost(args[0], False)
+        rm_flag(args[0], "👻")
     else:
         bot.sendMessage(
         chat_id=chat_id,

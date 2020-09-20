@@ -233,3 +233,32 @@ def set_ghost(user_id, ghost_bool):
         user.ghost = ghost_bool
         session.commit()
         session.close()
+
+def add_flag(user_id, flag, reset=False):
+    with LOCK:
+        session = get_session()
+        user = get_unique_from_query(session.query(User).filter(User.id == user_id))
+        if reset is True:
+            user.flag = ""
+        if user.flag is None:
+                user.flag = ""
+        if not flag in user.flag:
+            user.flag = user.flag + flag
+        session.commit()
+        session.close()
+
+def rm_flag(user_id, flag=None, reset=False):
+    with LOCK:
+        try:
+            session = get_session()
+            user = get_unique_from_query(session.query(User).filter(User.id == user_id))
+            if reset is True:
+                user.flag = ""
+                return
+            if user.flag is None:
+                user.flag = ""
+            if flag in user.flag:
+                user.flag = user.flag.replace(flag, "")
+        finally:
+            session.commit()
+            session.close()

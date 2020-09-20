@@ -1729,6 +1729,9 @@ def whois_id(bot, update, args=None):
         user = get_user_by_name(args[0])
         if user is not None:
             replied_id = user.id
+        elif args[0].isdigit():
+            user = get_user(args[0])
+            replied_id = user.id
         else:
                 output = "❌ No he encontrado el mago que buscas."
                 bot.sendMessage(
@@ -1819,8 +1822,6 @@ def whois_id(bot, update, args=None):
     text_flag = "\n*Flags*: "
     if user and user.flag is not None:
         text_flag = text_flag + f"{user.flag} "
-    if user and user.staff == True:
-        text_flag = text_flag + "🧙‍♂️"
     else:
         text_flag = ""
 

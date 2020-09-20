@@ -99,15 +99,6 @@ def joined_chat(bot, update, job_queue):
             user = get_user(user_id)
             staff = is_staff(user_id)
             ghost = is_ghost(user_id)
-            if ghost is True:
-                if group.requirment is ValidationRequiered.GRYFFINDOR.value or ValidationRequiered.HUFFLEPUFF.value or ValidationRequiered.SLYTHERIN.value or ValidationRequiered.RAVENCLAW.value and user.house is group.requirment:
-                    if group.val_alert is False:
-                        output = "👻 poi"
-                        bot.sendMessage(
-                            chat_id=chat_id, 
-                            text=output, 
-                            parse_mode=telegram.ParseMode.MARKDOWN)
-                        return
 
             if user is None and group.requirment is not ValidationRequiered.NO_VALIDATION.value and staff is False:
                 bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)
@@ -119,6 +110,15 @@ def joined_chat(bot, update, job_queue):
                         parse_mode=telegram.ParseMode.MARKDOWN)
                 good_luck(bot, chat_id, message, "El usuario no está registrado")
                 return
+
+            elif ghost is True:
+                if group.requirment is ValidationRequiered.GRYFFINDOR.value or ValidationRequiered.HUFFLEPUFF.value or ValidationRequiered.SLYTHERIN.value or ValidationRequiered.RAVENCLAW.value and user.house is group.requirment:
+                    if group.val_alert is False:
+                        output = "👻 poi"
+                        bot.sendMessage(
+                            chat_id=chat_id, 
+                            text=output, 
+                            parse_mode=telegram.ParseMode.MARKDOWN)
 
             elif group.requirment is ValidationRequiered.VALIDATION.value and user.level is None and staff is False:
                 bot.kickChatMember(chat_id=chat_id, user_id=user_id, until_date=time.time()+31)

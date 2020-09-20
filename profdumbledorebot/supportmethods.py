@@ -108,21 +108,14 @@ def replace(user_id, name=None, admin=False, frce=False):
     else:
         text_flag = ""
 
-    if user and user.staff == True:
-        staff_flag = "🧙‍♂️"
-    else:
-        staff_flag = ""
-
-
-    replace_pogo = "{0} - *L*{1}  {2}{3}  {4}  {5}  {6}{7}".format(
+    replace_pogo = "{0} - *L*{1}  {2}{3}  {4}  {5}  {6}".format(
         text_alias,
         text_level,
         text_prof,
         text_profession_level,
         text_house,
         text_validationstatus,
-        text_flag,
-        staff_flag
+        text_flag
         )
 
     if admin:
