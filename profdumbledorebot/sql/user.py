@@ -137,7 +137,7 @@ def unban_user(user_id):
         session.close()
 
 
-def commit_user(user_id, alias=None, level=None, profession=None, house=None, team=None, validation=None, profession_level=None):
+def commit_user(user_id, alias=None, level=None, profession=None, house=None, team=None, validation=None):
     with LOCK:
         session = get_session()
         user = get_unique_from_query(session.query(User).filter(User.id == user_id))
@@ -153,8 +153,6 @@ def commit_user(user_id, alias=None, level=None, profession=None, house=None, te
             user.profession = profession
         if team:
             user.team = team
-        if profession_level:
-            user.profession_level = profession_level
         session.commit()
         session.close()
 

@@ -42,7 +42,7 @@ from profdumbledorebot.sql.user import get_user, is_staff, is_ghost
 from profdumbledorebot.sql.usergroup import exists_user_group, set_user_group, join_group, message_counter
 from profdumbledorebot.sql.welcome import get_welc_pref
 from profdumbledorebot.welcome import send_welcome
-from profdumbledorebot.games import games_cmd
+from profdumbledorebot.games.utils import game_selection
 
 
 @run_async
@@ -372,7 +372,7 @@ def process_group_message(bot, update, job_queue):
         
     message_counter(user_id, chat_id)
     if get_group_settings(chat_id).games == True and (chat_type == 'supergroup' or chat_type == 'group'):
-        games_cmd(bot, update)
+        game_selection(bot, update)
 
     if text is None or msg.photo is None:
         if msg and msg.document:

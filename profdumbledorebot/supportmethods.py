@@ -63,7 +63,7 @@ def replace(user_id, name=None, admin=False, frce=False):
     else:
         user = get_user(user_id)
 
-    if user is None or user.house is model.Houses.NONE.value and (user.level is None or user.profession is model.Professions.NONE.value or user.profession_level is None):
+    if user is None or user.house is model.Houses.NONE.value and (user.level is None or user.profession is model.Professions.NONE.value):
         text_house = "🖤"
     elif user.house is model.Houses.NONE.value:
         text_house = "🙈"
@@ -97,7 +97,6 @@ def replace(user_id, name=None, admin=False, frce=False):
         text_alias = "_Desconocido_"
 
     text_level = ("*{}*".format(user.level) if user and user.level else "*??*")
-    text_profession_level = ("*{}*".format(user.profession_level) if user and user.profession_level else "*??*")
     
     text_validationstatus = "✅"
     if user and user.banned:
@@ -108,11 +107,10 @@ def replace(user_id, name=None, admin=False, frce=False):
     else:
         text_flag = ""
 
-    replace_pogo = "{0} - *L*{1}  {2}{3}  {4}  {5}  {6}".format(
+    replace_pogo = "{0} - *L*{1}  {2}  {3}  {4}  {5}".format(
         text_alias,
         text_level,
         text_prof,
-        text_profession_level,
         text_house,
         text_validationstatus,
         text_flag
@@ -257,7 +255,7 @@ def callback_AlertFortress(bot, job):
         ent = fort_message.parse_entities(["mention"])
         for mention in ent:
             username = fort_message.parse_entity(mention)
-            string = r'\n(🙋‍♀️|✅|🕒|❌) 🧙(\d|\d\d|\?\?) (🍮|⚔|🐾|📚)(\d|\d\d|\?\?) {}'.format(username)
+            string = r'\n(🙋‍♀️|✅|🕒|❌) 🧙(\d|\d\d|\?\?) (🍮|⚔|🐾|📚) {}'.format(username)
             search = re.search(string, fort_message.text)
             if search.group(1) == "❌":
                 continue
@@ -906,3 +904,11 @@ def save_jobs(jq):
             job._job_queue = _job_queue
             job._remove = _remove
             job._enabled = _enabled
+'''
+def create_user_str(user):
+    if user and user.alias is not None:
+        text_alias = escape_markdown("@{}".format(user.alias))
+    elif user.name is not None:
+        text_alias = f"[{escape_markdown(name)}](tg://user?id={user_id})"
+    return user_mention_str
+'''

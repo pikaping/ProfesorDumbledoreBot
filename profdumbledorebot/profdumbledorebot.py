@@ -454,7 +454,7 @@ def passport_btn(bot, update):
         button_list = [
             [InlineKeyboardButton("🏘 Casa Hogwarts", callback_data='profile_edit_hse')],
             #[InlineKeyboardButton("👨‍👩‍👧‍👦 Equipo", callback_data='profile_edit_tea')],
-            [InlineKeyboardButton("🆙 Nivel", callback_data='profile_edit_lvl')],
+            [InlineKeyboardButton("🆙 Nivel", callback_data='profile_edit_lvl_pj')],
             [InlineKeyboardButton("🛡 Profesion", callback_data='profile_edit_prf')],
             [InlineKeyboardButton("🗑 Eliminar perfil", callback_data='profile_edit_del')],
             [InlineKeyboardButton("« Volver", callback_data='profile_back')]]
@@ -501,18 +501,6 @@ def passport_btn(bot, update):
             reply_markup=InlineKeyboardMarkup(button_list))
         return
 
-    elif data == "profile_edit_lvl":
-        button_list = [
-            [InlineKeyboardButton("🧙 Nivel del personaje", callback_data='profile_edit_lvl_pj')],
-            [InlineKeyboardButton("🛡 Nivel de profesión", callback_data='profile_edit_lvl_prf')],
-            [InlineKeyboardButton("« Volver", callback_data='profile_edit')]]
-
-        bot.edit_message_reply_markup(
-            chat_id=chat_id,
-            message_id=message_id,
-            reply_markup=InlineKeyboardMarkup(button_list))
-        return
-
     elif data == "profile_edit_lvl_pj":
         button_list = [
             [InlineKeyboardButton("1-10", callback_data='profile_edit_btn_pj_0'),
@@ -521,32 +509,7 @@ def passport_btn(bot, update):
             [InlineKeyboardButton("31-40", callback_data='profile_edit_btn_pj_30'),
             InlineKeyboardButton("41-50", callback_data='profile_edit_btn_pj_40'),
             InlineKeyboardButton("51-60", callback_data='profile_edit_btn_pj_50')],
-            [InlineKeyboardButton("« Volver", callback_data='profile_edit_lvl')]]
-
-        bot.edit_message_reply_markup(
-            chat_id=chat_id,
-            message_id=message_id,
-            reply_markup=InlineKeyboardMarkup(button_list))
-        return
-
-    elif data == "profile_edit_lvl_prf":
-        button_list = [
-            [InlineKeyboardButton("1", callback_data='profile_edit_lvl_prf_1'),
-            InlineKeyboardButton("2", callback_data='profile_edit_lvl_prf_2'),
-            InlineKeyboardButton("3", callback_data='profile_edit_lvl_prf_3'),
-            InlineKeyboardButton("4", callback_data='profile_edit_lvl_prf_4'),
-            InlineKeyboardButton("5", callback_data='profile_edit_lvl_prf_5')],
-            [InlineKeyboardButton("6", callback_data='profile_edit_lvl_prf_6'),
-            InlineKeyboardButton("7", callback_data='profile_edit_lvl_prf_7'),
-            InlineKeyboardButton("8", callback_data='profile_edit_lvl_prf_8'),
-            InlineKeyboardButton("9", callback_data='profile_edit_lvl_prf_9'),
-            InlineKeyboardButton("10", callback_data='profile_edit_lvl_prf_10')],
-            [InlineKeyboardButton("11", callback_data='profile_edit_lvl_prf_11'),
-            InlineKeyboardButton("12", callback_data='profile_edit_lvl_prf_12'),
-            InlineKeyboardButton("13", callback_data='profile_edit_lvl_prf_13'),
-            InlineKeyboardButton("14", callback_data='profile_edit_lvl_prf_14'),
-            InlineKeyboardButton("15", callback_data='profile_edit_lvl_prf_15')],
-            [InlineKeyboardButton("« Volver", callback_data='profile_edit_lvl')]]
+            [InlineKeyboardButton("« Volver", callback_data='profile_edit')]]
 
         bot.edit_message_reply_markup(
             chat_id=chat_id,
@@ -711,7 +674,7 @@ def passport_btn(bot, update):
         button_list = [
             [InlineKeyboardButton("🏘 Casa Hogwarts", callback_data='profile_edit_hse')],
             #[InlineKeyboardButton("👨‍👩‍👧‍👦 Equipo", callback_data='profile_edit_tea')],
-            [InlineKeyboardButton("🆙 Nivel", callback_data='profile_edit_lvl')],
+            [InlineKeyboardButton("🆙 Nivel", callback_data='profile_edit_lvl_pj')],
             [InlineKeyboardButton("🛡 Profesion", callback_data='profile_edit_prf')],
             [InlineKeyboardButton("🗑 Eliminar perfil", callback_data='profile_edit_del')],
             [InlineKeyboardButton("« Guardar y salir", callback_data='profile_end')]]
@@ -733,7 +696,7 @@ def passport_btn(bot, update):
         button_list = [
             [InlineKeyboardButton("🏘 Casa Hogwarts", callback_data='profile_edit_hse')],
             #[InlineKeyboardButton("👨‍👩‍👧‍👦 Equipo", callback_data='profile_edit_tea')],
-            [InlineKeyboardButton("🆙 Nivel", callback_data='profile_edit_lvl')],
+            [InlineKeyboardButton("🆙 Nivel", callback_data='profile_edit_lvl_pj')],
             [InlineKeyboardButton("🛡 Profesion", callback_data='profile_edit_prf')],
             [InlineKeyboardButton("🗑 Eliminar perfil", callback_data='profile_edit_del')],
             [InlineKeyboardButton("« Guardar y salir", callback_data='profile_end')]]
@@ -756,7 +719,7 @@ def passport_btn(bot, update):
         button_list = [
             [InlineKeyboardButton("🏘 Casa Hogwarts", callback_data='profile_edit_hse')],
             #[InlineKeyboardButton("👨‍👩‍👧‍👦 Equipo", callback_data='profile_edit_tea')],
-            [InlineKeyboardButton("🆙 Nivel", callback_data='profile_edit_lvl')],
+            [InlineKeyboardButton("🆙 Nivel", callback_data='profile_edit_lvl_pj')],
             [InlineKeyboardButton("🛡 Profesion", callback_data='profile_edit_prf')],
             [InlineKeyboardButton("🗑 Eliminar perfil", callback_data='profile_edit_del')],
             [InlineKeyboardButton("« Guardar y salir", callback_data='profile_end')]]
@@ -774,15 +737,13 @@ def passport_btn(bot, update):
     elif par == "lvl":
         if typ == "pj":
             user_sql.commit_user(user_id, level=val)
-        elif typ == "prf":
-            user_sql.commit_user(user_id, profession_level=val)
         output = (
         "Bienvenido {}, este es tu pasaporte del ministerio, aquí podrás editar "
         "tu información de perfil y los ajustes con Dumbledore entre otras funciones.".format(support.replace(user_id, frce=True)))
         button_list = [
             [InlineKeyboardButton("🏘 Casa Hogwarts", callback_data='profile_edit_hse')],
             #[InlineKeyboardButton("👨‍👩‍👧‍👦 Equipo", callback_data='profile_edit_tea')],
-            [InlineKeyboardButton("🆙 Nivel", callback_data='profile_edit_lvl')],
+            [InlineKeyboardButton("🆙 Nivel", callback_data='profile_edit_lvl_pj')],
             [InlineKeyboardButton("🛡 Profesion", callback_data='profile_edit_prf')],
             [InlineKeyboardButton("🗑 Eliminar perfil", callback_data='profile_edit_del')],
             [InlineKeyboardButton("« Guardar y salir", callback_data='profile_end')]]
@@ -840,35 +801,6 @@ def register_btn(bot, update):
 
     elif par == "lvl":
         user_sql.commit_user(user_id, level=val)
-        button_list = [
-            [InlineKeyboardButton("1", callback_data='reg_pr1_1'),
-            InlineKeyboardButton("2", callback_data='reg_pr1_2'),
-            InlineKeyboardButton("3", callback_data='reg_pr1_3'),
-            InlineKeyboardButton("4", callback_data='reg_pr1_4'),
-            InlineKeyboardButton("5", callback_data='reg_pr1_5')],
-            [InlineKeyboardButton("6", callback_data='reg_pr1_6'),
-            InlineKeyboardButton("7", callback_data='reg_pr1_7'),
-            InlineKeyboardButton("8", callback_data='reg_pr1_8'),
-            InlineKeyboardButton("9", callback_data='reg_pr1_9'),
-            InlineKeyboardButton("10", callback_data='reg_pr1_10')],
-            [InlineKeyboardButton("11", callback_data='reg_pr1_11'),
-            InlineKeyboardButton("12", callback_data='reg_pr1_12'),
-            InlineKeyboardButton("13", callback_data='reg_pr1_13'),
-            InlineKeyboardButton("14", callback_data='reg_pr1_14'),
-            InlineKeyboardButton("15", callback_data='reg_pr1_15')]]
-
-        bot.edit_message_text(
-            text="¿Cuál es tu nivel de profesión?",
-            chat_id=chat_id,
-            message_id=message_id,
-            reply_markup=InlineKeyboardMarkup(button_list),
-            parse_mode=telegram.ParseMode.HTML,
-            disable_web_page_preview=True
-        )
-        return
-
-    elif par == "pr1":
-        user_sql.commit_user(user_id, profession_level=val)
         button_list = [
             [InlineKeyboardButton("🦁 Gryffindor", callback_data='reg_hse_1')],
             [InlineKeyboardButton("🦡 Hufflepuff", callback_data='reg_hse_2')],

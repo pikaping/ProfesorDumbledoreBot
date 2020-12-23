@@ -37,6 +37,7 @@ from profdumbledorebot.sql.settings import set_max_members, set_general_settings
     set_welcome_cooldown
 from profdumbledorebot.sql.support import are_banned
 from profdumbledorebot.sql.usergroup import remove_warn
+from profdumbledorebot.sql.user import is_staff
 from profdumbledorebot.sql.welcome import set_welc_preference, set_custom_welcome, set_welcome_settings
 
 
@@ -45,7 +46,7 @@ def settings(bot, update, args=None):
     chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
+    if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
         return
 
     group = get_group(chat_id)
@@ -66,7 +67,7 @@ def set_welcome(bot, update):
     chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
     text, data_type, content, buttons = support.get_welcome_type(message)
 
-    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
+    if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
         return
 
     group = get_group(chat_id)
@@ -93,7 +94,7 @@ def set_zone(bot, update, args=None):
     chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
+    if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
         return
 
     group = get_group(chat_id)
@@ -143,7 +144,7 @@ def set_maxmembers(bot, update, args=None):
     chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
+    if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
         return
 
     group = get_group(chat_id)
@@ -179,7 +180,7 @@ def set_cooldown(bot, update, args=None):
     chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
+    if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
         return
 
     group = get_group(chat_id)
@@ -275,7 +276,7 @@ def settingsbutton(bot, update):
 
     if re.match("^settings_.+$", data) is not None:
         match = re.match(r"settings_news_([-0-9]*)", query.data)
-        if not support.is_admin(chat_id, user_id, bot):
+        if not support.is_admin(chat_id, user_id, bot) and is_staff(user_id) is False:
             bot.answerCallbackQuery(
                 text="Solo los administradores del grupo pueden configurar el bot.",
                 callback_query_id=update.callback_query.id,
@@ -324,7 +325,7 @@ def settingsbutton(bot, update):
 
     match = re.match(r"rm_warn\((.+?)\)", query.data)
     if match:
-        if not support.is_admin(chat_id, user_id, bot):
+        if not support.is_admin(chat_id, user_id, bot) and is_staff(user_id) is False:
             bot.answerCallbackQuery(
                 text="Solo los administradores del grupo pueden retirar warns.",
                 callback_query_id=update.callback_query.id,
@@ -357,7 +358,7 @@ def settingsbutton(bot, update):
 
     match = re.match(r"rm_ban\((.+?)\)", query.data)
     if match:
-        if not support.is_admin(chat_id, user_id, bot):
+        if not support.is_admin(chat_id, user_id, bot) and is_staff(user_id) is False:
             bot.answerCallbackQuery(
                 text="Solo los administradores del grupo pueden retirar bans.",
                 callback_query_id=update.callback_query.id,
@@ -380,7 +381,7 @@ def settingsbutton(bot, update):
 
     match = re.match(r"rm_mute\((.+?)\)", query.data)
     if match:
-        if not support.is_admin(chat_id, user_id, bot):
+        if not support.is_admin(chat_id, user_id, bot) and is_staff(user_id) is False:
             bot.answerCallbackQuery(
                 text="Solo los administradores del grupo pueden desmutear usuarios.",
                 callback_query_id=update.callback_query.id,

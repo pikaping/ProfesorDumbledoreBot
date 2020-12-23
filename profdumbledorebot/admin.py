@@ -48,7 +48,7 @@ def settings_admin_cmd(bot, update):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
+    if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
         return
 
     group = adm_sql.get_admin(chat_id)
@@ -68,7 +68,7 @@ def create_admin_cmd(bot, update):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
+    if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
         return
 
     if adm_sql.get_admin(chat_id) is None:
@@ -88,7 +88,7 @@ def rm_admin_cmd(bot, update):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
+    if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
         return
 
     if adm_sql.get_admin(chat_id) is not None:
@@ -146,7 +146,7 @@ def groups_cmd(bot, update):
 def add_url_cmd(bot, update, args=None):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
 
-    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
+    if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
         return
 
     if args is None or len(args) != 1 or args[0] != '-' and (len(args[0]) < 3 or len(args[0]) > 60 or re.match("@?[a-zA-Z]([a-zA-Z0-9_]+)$|https://t\.me/joinchat/[a-zA-Z0-9_-]+$", args[0]) is None):
@@ -177,7 +177,7 @@ def create_link_cmd(bot, update, args=None):
     support.delete_message(chat_id, message.message_id, bot)
     chat_title = message.chat.title
 
-    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
+    if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
         return
 
     if args is None or len(args) != 1 or adm_sql.get_admin(args[0]) is None:
@@ -198,7 +198,7 @@ def add_tag_cmd(bot, update, args=None):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
+    if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
         return
 
     if adm_sql.get_groups(chat_id) is not None:
@@ -230,7 +230,7 @@ def rm_link_cmd(bot, update):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
+    if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
         return
 
     adm_sql.rm_link(chat_id)
@@ -348,7 +348,7 @@ def kickmsg_cmd(bot, update, args=None):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
+    if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
         return
 
     if args is None or len(args) != 1 or not args[0].isdigit():
@@ -391,7 +391,7 @@ def kickold_cmd(bot, update, args=None):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
     
-    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
+    if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
         return
 
     if args is None or len(args) != 1 or not args[0].isdigit():
@@ -505,7 +505,7 @@ def uv_cmd(bot, update, args=None):
                     output = ''
                     outn = 0
                 continue
-            elif info.house is Houses.NONE.value and (info.level is None or info.profession is Professions.NONE.value or info.profession_level is None):
+            elif info.house is Houses.NONE.value and (info.level is None or info.profession is Professions.NONE.value):
                 n += 1
                 if print_n:
                     icon = icon + '🖤'
@@ -635,7 +635,7 @@ def kickuv_cmd(bot, update, args=None):
                     time.sleep(0.01)
             elif is_staff(user.user_id):
                 pass
-            elif info.house is Houses.NONE.value and (info.level is None or info.profession is Professions.NONE.value or info.profession_level is None):
+            elif info.house is Houses.NONE.value and (info.level is None or info.profession is Professions.NONE.value):
                 if n:
                     try:
                         bot.kickChatMember(chat_id, user.user_id)
@@ -729,7 +729,7 @@ def warn_cmd(bot, update, args=None):
     support.delete_message(chat_id, message.message_id, bot)
     admin_user = get_user(user_id)
 
-    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
+    if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
         return
 
     reason = ""
@@ -920,7 +920,7 @@ def kick_cmd(bot, update, args=None):
     support.delete_message(chat_id, message.message_id, bot)
     admin_user = get_user(user_id)
 
-    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
+    if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
         return
 
     reason = ""
@@ -1077,7 +1077,7 @@ def ban_cmd(bot, update, args=None):
     support.delete_message(chat_id, message.message_id, bot)
     admin_user = get_user(user_id)
 
-    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
+    if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
         return
 
     reason = ""
@@ -1235,7 +1235,7 @@ def unban_cmd(bot, update, args=None):
     support.delete_message(chat_id, message.message_id, bot)
     admin_user = get_user(user_id)
 
-    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
+    if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
         return
 
     reason = ""
@@ -1721,7 +1721,7 @@ def whois_id(bot, update, args=None):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
+    if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
         return
 
     if args is not None and len(args)== 1:
@@ -1789,7 +1789,151 @@ def whois_id(bot, update, args=None):
         )
         return
 
-    if user is None or user.house is Houses.NONE.value and (user.level is None or user.profession is Professions.NONE.value or user.profession_level is None):
+    if user is None or user.house is Houses.NONE.value and (user.level is None or user.profession is Professions.NONE.value):
+        text_house = "🖤"
+    elif user.house is Houses.NONE.value:
+        text_house = "🙈"
+    elif user.house is Houses.GRYFFINDOR.value:
+        text_house = "🦁"
+    elif user.house is Houses.HUFFLEPUFF.value:
+        text_house = "🦡"
+    elif user.house is Houses.RAVENCLAW.value:
+        text_house = "🦅"
+    elif user.house is Houses.SLYTHERIN.value:
+        text_house = "🐍"
+    elif user.house is Houses.BOTS.value:
+        text_house = "💻"
+
+    if user is None or user.profession is Professions.NONE.value:
+        text_prof = "_Desconocida_"
+    elif user.profession is Professions.AUROR.value:
+        text_prof = "⚔"
+    elif user.profession is Professions.MAGIZOOLOGIST.value:
+        text_prof = "🐾"
+    elif user.profession is Professions.PROFESSOR.value:
+        text_prof = "📚"
+    elif user.profession is Professions.BOT.value:
+        text_prof = "🤖"
+
+    text_validationstatus = "✅"
+    if user and user.banned:
+        text_validationstatus = "⛔️"
+
+    text_flag = "\n*Flags*: "
+    if user and user.flag is not None:
+        text_flag = text_flag + f"{user.flag} "
+    else:
+        text_flag = ""
+
+    output = "*ID:* `{}`\n*Alias:* {}\n*Casa:* {}\n*Profesión:* {}\n*Estado:* {}{}".format(
+        replied_id,
+        text_alias,
+        text_house, 
+        text_prof,
+        text_validationstatus,
+        text_flag
+    )
+
+    if chat_type != "private":
+        group = get_group_settings(chat_id)
+
+        if group.reply_on_group:
+            dest_id = chat_id
+        else:
+            dest_id = user_id
+    else:
+        dest_id = user_id
+
+    bot.sendMessage(
+        chat_id=dest_id,
+        text=output,
+        parse_mode=telegram.ParseMode.MARKDOWN
+    )
+
+@run_async
+def whois_group(bot, update, args=None):
+    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    support.delete_message(chat_id, message.message_id, bot)
+
+    if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
+        return
+
+    if args is not None and len(args)== 1:
+        if args[0].isdigit():
+            user = bot.get_chat(args[0])
+            if user is None:
+                output = "❌ No he encontrado el grupo que buscas."
+                bot.sendMessage(
+                    chat_id=chat_id,
+                    text=output,
+                    parse_mode=telegram.ParseMode.MARKDOWN
+                )
+                return
+            replied_id = user.id
+        else:
+                output = "❌ No he encontrado el grupo que buscas."
+                bot.sendMessage(
+                    chat_id=chat_id,
+                    text=output,
+                    parse_mode=telegram.ParseMode.MARKDOWN
+                )
+                return
+        '''to be fixed for channels
+        elif message.reply_to_message is not None:
+            if message.reply_to_message.forward_from is not None:
+                user = get_user(message.reply_to_message.forward_from.id)
+                if user is not None:
+                    replied_id = user.id
+                else:
+                    output = "❌ No he encontrado el mago que buscas."
+                    bot.sendMessage(
+                        chat_id=chat_id,
+                        text=output,
+                        parse_mode=telegram.ParseMode.MARKDOWN
+                    )
+                    return
+            elif message.reply_to_message.from_user is not None:
+                user = get_user(message.reply_to_message.from_user.id)
+                if user is not None:
+                    replied_id = user.id
+                else:
+                    output = "❌ No he encontrado el mago que buscas."
+                    bot.sendMessage(
+                        chat_id=chat_id,
+                        text=output,
+                        parse_mode=telegram.ParseMode.MARKDOWN
+                    )
+                    return
+        '''
+    else:
+        user = bot.get_chat(chat_id)
+        if user is None:
+            output = "❌ No he encontrado el grupo que buscas."
+            bot.sendMessage(
+                chat_id=chat_id,
+                text=output,
+                parse_mode=telegram.ParseMode.MARKDOWN
+            )
+            return
+        replied_id = user.id
+
+    if user and user.alias is not None:
+        text_alias = escape_markdown("@{}".format(user.alias))
+    elif user.alias is None:
+        text_alias = f"[{escape_markdown(user.first_name)}](tg://user?id={user_id})"
+    else:
+        text_alias = "_Desconocido_"
+
+    if user is None:
+        output = "❌ No puedo darte información sobre este mago."
+        bot.sendMessage(
+            chat_id=user_id,
+            text=output,
+            parse_mode=telegram.ParseMode.MARKDOWN
+        )
+        return
+
+    if user is None or user.house is Houses.NONE.value and (user.level is None or user.profession is Professions.NONE.value):
         text_house = "🖤"
     elif user.house is Houses.NONE.value:
         text_house = "🙈"

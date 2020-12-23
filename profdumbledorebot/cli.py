@@ -109,9 +109,10 @@ def start_bot():
 
     dispatcher.add_error_handler(support.error_callback)
 
-    dispatcher.add_handler(CommandHandler('games', games.game_spawn_cmd, Filters.group, pass_args=True))
-    #dispatcher.add_handler(CommandHandler('duel', games.duel_cmd, Filters.group))
-    dispatcher.add_handler(CallbackQueryHandler(games.btn, pattern=r"^g\*"))
+    dispatcher.add_handler(CommandHandler('games', games.utils.game_spawn_cmd, Filters.group, pass_args=True))
+    dispatcher.add_handler(CommandHandler('ppt', games.rps.rps_user_cmd, Filters.group, pass_args=True, pass_job_queue=True))
+    #dispatcher.add_handler(CommandHandler('duel', games.duel_cmd, Filters.group)) HAHANOPE
+    dispatcher.add_handler(CallbackQueryHandler(games.utils.btn_parser, pattern=r"^g\*"))
 
     #Juego Cumple Nelu
     #dispatcher.add_handler(CommandHandler('nelu', nelu.nelu_cmd, Filters.user(int(config["telegram"]["saray"])), pass_job_queue=True))
@@ -170,6 +171,7 @@ def start_bot():
     dispatcher.add_handler(CommandHandler('warn', admin.warn_cmd, Filters.group, pass_args=True))
     dispatcher.add_handler(CommandHandler('unban', admin.unban_cmd, Filters.group, pass_args=True))
     dispatcher.add_handler(CommandHandler('id', admin.whois_id, pass_args=True))
+    #dispatcher.add_handler(CommandHandler('group_id', admin.whois_group, pass_args=True))
     #dispatcher.add_handler(CommandHandler('mute', admin.mute_cmd, Filters.group, pass_args=True))
     #dispatcher.add_handler(CommandHandler('unwarn', unwarn_cmd, Filters.group, pass_args=True))
 
@@ -217,6 +219,8 @@ def start_bot():
  
     dispatcher.add_handler(MessageHandler(Filters.command, nanny.process_cmd, pass_job_queue=True))
     dispatcher.add_handler(MessageHandler(Filters.group & Filters.all, group.process_group_message, pass_job_queue=True))
+
+    dispatcher.add_handler(MessageHandler(Filters.private & Filters.all, games.utils.potato_process))
 
     dispatcher.add_handler(MessageHandler(Filters.all, news.send_news))
     dispatcher.add_handler(CallbackQueryHandler(settings.settingsbutton))

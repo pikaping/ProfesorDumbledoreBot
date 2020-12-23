@@ -106,7 +106,7 @@ def staff_register_cmd(bot, update, args=None):
     else: 
         return
 
-    if args == None or len(args)>6:
+    if args == None or len(args)>5:
         logging.debug("%s", len(args))
         bot.sendMessage(
             chat_id=chat_id, 
@@ -131,7 +131,6 @@ def staff_register_cmd(bot, update, args=None):
     house = None
     team = None
     validation = None
-    profession_level = None
 
     for arg in args:
         if arg=="v":
@@ -172,9 +171,6 @@ def staff_register_cmd(bot, update, args=None):
         elif arg.isdigit() and int(arg) >= 1 and int(arg) <= 60:
             level = int(arg)
             change="\n- Level set to *{}*".format(level)
-        elif arg[0].lower() == "p" and arg[1:].isdigit() and int(arg[1:]) >=1 and int(arg[1:]) <=15:
-            profession_level = int(arg[1:])
-            change="\n- Profession Level set to *{}*".format(profession_level)
         elif re.match(r'[a-zA-Z0-9]{3,30}$', arg) is not None:
             alias = arg
             change="\n- Alias set to *{}*".format(alias)
@@ -183,7 +179,7 @@ def staff_register_cmd(bot, update, args=None):
         output="{}{}".format(output,change)
 
     try:
-        commit_user(user_id=replied_userid, alias=alias, level=level, profession=profession, house=house, team=team, validation=validation, profession_level=profession_level)
+        commit_user(user_id=replied_userid, alias=alias, level=level, profession=profession, house=house, team=team, validation=validation)
     except:
         output="Huh... Se ha roto algo en el proceso @Sarayalth"
     bot.sendMessage(chat_id=chat_id, text=output, parse_mode=telegram.ParseMode.MARKDOWN)
