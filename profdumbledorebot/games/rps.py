@@ -160,6 +160,10 @@ def rps_user_cmd(bot, update, job_queue, args=None):
 
     if update.effective_user.username is None:
         return
+    
+    if not is_staff(user_id):
+        return
+
 
     if args is not None and len(args) > 0:
         if message.reply_to_message is not None:
