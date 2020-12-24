@@ -13,7 +13,7 @@ from profdumbledorebot.sql.user import get_user, update_user_points, is_staff
 from profdumbledorebot.sql.group import group_message_counter, update_group_points
 import profdumbledorebot.config as config
 
-from profdumbledorebot.games import grageas, whosaid
+from profdumbledorebot.games import grageas, whosaid, rps
 
 @run_async
 def btn_parser(bot, update):
@@ -41,6 +41,8 @@ def btn_parser(bot, update):
         grageas.grag_btn(bot, update, game_data)
     if game == "whosaid":
         whosaid.whosaid_btn(bot, update, game_data)
+    if game == "rps":
+        rps.rps_btn(bot, update, game_data)
 
 @run_async
 def game_spawn_cmd(bot, update, args=None):
@@ -50,7 +52,7 @@ def game_spawn_cmd(bot, update, args=None):
     if not is_staff(user_id):
         return
     
-    games = {"grageas":grageas.grag_cmd, "quién dijo":whosaid.whosaid_cmd}
+    games = {"grageas":grageas.grag_cmd, "quién dijo":whosaid.whosaid_cmd, "rps":rps.rps_ai_cmd}
     
     if args == None or len(args) == 0:
         game_list = games.keys()

@@ -39,12 +39,12 @@ def grag_btn(bot, update, game_data):
 
     listaPalabras = game_data.split("_")
     
-    escogido = listaPalabras[1]
-    sel1 = listaPalabras[2]
-    sel2 = listaPalabras[3]
-    sel3 = listaPalabras[4]
-    sel4 = listaPalabras[5]
-    sel5 = listaPalabras[6]
+    escogido = listaPalabras[0]
+    sel1 = listaPalabras[1]
+    sel2 = listaPalabras[2]
+    sel3 = listaPalabras[3]
+    sel4 = listaPalabras[4]
+    sel5 = listaPalabras[5]
     
     #user_lang = get_lang(chat_id)
     user_lang = "es_ES"

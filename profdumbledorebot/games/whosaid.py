@@ -43,7 +43,7 @@ def whosaid_btn(bot, update, game_data):
 
     listaPalabras = game_data.split("_")
 
-    if listaPalabras[1] == "success":
+    if listaPalabras[0] == "success":
         update_user_points(user_id, 3)
         update_group_points(chat_id, 3)
         bot.edit_message_text(

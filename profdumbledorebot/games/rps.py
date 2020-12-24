@@ -33,121 +33,113 @@ def rps_btn(bot, update, game_data):
         bot.answer_callback_query(query.id, "Necesitas una @ para poder usar este bot.", show_alert=True)
         return
 
-    if texto.find(username) != -1:
-        return
+    listaPalabras = game_data.split("_")
+    
+    user_choice = listaPalabras[2]
+    user_id = listaPalabras[3]
+    other_user = get_user(user_id)
+    vs_choice = listaPalabras[1]
 
     ent = message.parse_entities(["mention"])
-    if len(ent) > 1:
-        bot.answer_callback_query(query.id, "Alguien ha respondido ya.", show_alert=True)
-        return
-
-    listaPalabras = game_data.split("_")
-
     if listaPalabras[0] == "ai":
-        bot_choice = randint(0,2)
-        if bot_choice == 0:
-            #success
-            update_user_points(vs_id, 1)
-            bot.edit_message_text(
-                text=texto + "\n\n¡@" + username + " ha ganado!",
-                chat_id=chat_id,
-                message_id=message_id)
-            bot.answer_callback_query(query.id, "¡Has ganado!", show_alert=True)
-        else:
-            #hahayousuck
+        if texto.find(username) != -1:
+            return
+        if len(ent) > 1:
+            bot.answer_callback_query(query.id, "Alguien ha respondido ya.", show_alert=True)
+            return
+    elif listaPalabras[0] == "us":
+        if texto.find(username) == -1:
+            return
+        if len(ent) > 2:
+            bot.answer_callback_query(query.id, "Alguien ha respondido ya.", show_alert=True)
+            return
+        if list(ent.values())[0].lower() == "@" + username.lower():
+            bot.answer_callback_query(query.id, "Espera a que tu contrincante elija.", show_alert=True)
+            return
+
+    if vs_choice == "r": #rock
+        if user_choice == "p":
+            update_user_points(user_id, 1)
             update_user_points(vs_id, -1)
             bot.edit_message_text(
-                text=texto + "\n\n¡@" + username + " ha perdido!",
+                text=texto + "\n\n¡El papel de @" + other_user.alias + " ha ganado a la piedra de @" + username + "!",
                 chat_id=chat_id,
-                message_id=message_id)
-            bot.answer_callback_query(query.id, "Has perdido.", show_alert=True)
-        return
-    elif listaPalabras[0] == "us":
-        user_choice = listaPalabras[2]
-        user_id = listaPalabras[3]
-        other_user = get_user(user_id)
-        vs_choice = listaPalabras[1]
-        if vs_choice == "r": #rock
-            if user_choice == "p":
-                update_user_points(user_id, 1)
-                update_user_points(vs_id, -1)
-                bot.edit_message_text(
-                    text=texto + "\n\n¡El papel de @" + other_user.username + " ha ganado a la piedra de @" + username + "!",
-                    chat_id=chat_id,
-                    message_id=message_id) #PEKO PEKO PEKO PEKO
-                bot.answer_callback_query(query.id, "¡Has perdido!", show_alert=True) #MIKO MIKO MIKO MIKO
-            elif user_choice == "s":
-                update_user_points(vs_id, 1)
-                update_user_points(user_id, -1)
-                bot.edit_message_text(
-                    text=texto + "\n\n¡La piedra de @" + username + " ha ganado a las tijeras de @" + other_user.username + "!",
-                    chat_id=chat_id,
-                    message_id=message_id) #PEKO PEKO PEKO PEKO
-                bot.answer_callback_query(query.id, "¡Has ganado!", show_alert=True) #MIKO MIKO MIKO MIKO
-            elif user_choice == "r":
-                bot.edit_message_text(
-                    text=texto + "\n\n¡@" + username + " y @" + other_user.username + " han elegido piedra! ¡Empate!",
-                    chat_id=chat_id,
-                    message_id=message_id) #PEKO PEKO PEKO PEKO
-                bot.answer_callback_query(query.id, "¡Has empatado!", show_alert=True) #MIKO MIKO MIKO MIKO
+                message_id=message_id) #PEKO PEKO PEKO PEKO
+            bot.answer_callback_query(query.id, "¡Has perdido!", show_alert=True) #MIKO MIKO MIKO MIKO
+        elif user_choice == "s":
+            update_user_points(vs_id, 1)
+            update_user_points(user_id, -1)
+            bot.edit_message_text(
+                text=texto + "\n\n¡La piedra de @" + username + " ha ganado a las tijeras de @" + other_user.alias + "!",
+                chat_id=chat_id,
+                message_id=message_id) #PEKO PEKO PEKO PEKO
+            bot.answer_callback_query(query.id, "¡Has ganado!", show_alert=True) #MIKO MIKO MIKO MIKO
+        elif user_choice == "r":
+            bot.edit_message_text(
+                text=texto + "\n\n¡@" + username + " y @" + other_user.alias + " han elegido piedra! ¡Empate!",
+                chat_id=chat_id,
+                message_id=message_id) #PEKO PEKO PEKO PEKO
+            bot.answer_callback_query(query.id, "¡Has empatado!", show_alert=True) #MIKO MIKO MIKO MIKO
 
-        elif vs_choice == "p": #paper
-            if user_choice == "p":
-                bot.edit_message_text(
-                    text=texto + "\n\n¡@" + username + " y @" + other_user.username + " han elegido papel! ¡Empate!",
-                    chat_id=chat_id,
-                    message_id=message_id) #PEKO PEKO PEKO PEKO
-                bot.answer_callback_query(query.id, "¡Has empatado!", show_alert=True) #MIKO MIKO MIKO MIKO
-            elif user_choice == "s":
-                update_user_points(user_id, 1)
-                update_user_points(vs_id, -1)
-                bot.edit_message_text(
-                    text=texto + "\n\n¡Las tijeras de @" + other_user.username + " ha ganado al papel de @" + username + "!",
-                    chat_id=chat_id,
-                    message_id=message_id) #PEKO PEKO PEKO PEKO
-                bot.answer_callback_query(query.id, "¡Has perdido!", show_alert=True) #MIKO MIKO MIKO MIKO
-            elif user_choice == "r":
-                update_user_points(vs_id, 1)
-                update_user_points(user_id, -1)
-                bot.edit_message_text(
-                    text=texto + "\n\n¡El papel de @" + username + " ha ganado a la piedra de @" + other_user.username + "!",
-                    chat_id=chat_id,
-                    message_id=message_id) #PEKO PEKO PEKO PEKO
-                bot.answer_callback_query(query.id, "¡Has ganado!", show_alert=True) #MIKO MIKO MIKO MIKO
+    elif vs_choice == "p": #paper
+        if user_choice == "p":
+            bot.edit_message_text(
+                text=texto + "\n\n¡@" + username + " y @" + other_user.alias + " han elegido papel! ¡Empate!",
+                chat_id=chat_id,
+                message_id=message_id) #PEKO PEKO PEKO PEKO
+            bot.answer_callback_query(query.id, "¡Has empatado!", show_alert=True) #MIKO MIKO MIKO MIKO
+        elif user_choice == "s":
+            update_user_points(user_id, 1)
+            update_user_points(vs_id, -1)
+            bot.edit_message_text(
+                text=texto + "\n\n¡Las tijeras de @" + other_user.alias + " han ganado al papel de @" + username + "!",
+                chat_id=chat_id,
+                message_id=message_id) #PEKO PEKO PEKO PEKO
+            bot.answer_callback_query(query.id, "¡Has perdido!", show_alert=True) #MIKO MIKO MIKO MIKO
+        elif user_choice == "r":
+            update_user_points(vs_id, 1)
+            update_user_points(user_id, -1)
+            bot.edit_message_text(
+                text=texto + "\n\n¡El papel de @" + username + " ha ganado a la piedra de @" + other_user.alias + "!",
+                chat_id=chat_id,
+                message_id=message_id) #PEKO PEKO PEKO PEKO
+            bot.answer_callback_query(query.id, "¡Has ganado!", show_alert=True) #MIKO MIKO MIKO MIKO
 
-        elif vs_choice == "s": #scissors
-            if user_choice == "p":
-                update_user_points(vs_id, 1)
-                update_user_points(user_id, -1)
-                bot.edit_message_text(
-                    text=texto + "\n\n¡Las tijeras de @" + username + " han ganado al papel de @" + other_user.username + "!",
-                    chat_id=chat_id,
-                    message_id=message_id) #PEKO PEKO PEKO PEKO
-                bot.answer_callback_query(query.id, "¡Has ganado!", show_alert=True) #MIKO MIKO MIKO MIKO
-            elif user_choice == "s":
-                bot.edit_message_text(
-                    text=texto + "\n\n¡@" + username + " y @" + other_user.username + " han elegido piedra! ¡Empate!",
-                    chat_id=chat_id,
-                    message_id=message_id) #PEKO PEKO PEKO PEKO
-                bot.answer_callback_query(query.id, "¡Has empatado!", show_alert=True) #MIKO MIKO MIKO MIKO
-            elif user_choice == "r":
-                update_user_points(user_id, 1)
-                update_user_points(vs_id, -1)
-                bot.edit_message_text(
-                    text=texto + "\n\n¡La piedra de @" + other_user.username + " ha ganado a las tijeras de @" + username + "!",
-                    chat_id=chat_id,
-                    message_id=message_id) #PEKO PEKO PEKO PEKO
-                bot.answer_callback_query(query.id, "¡Has perdido!", show_alert=True) #MIKO MIKO MIKO MIKO
-        return
+    elif vs_choice == "s": #scissors
+        if user_choice == "p":
+            update_user_points(vs_id, 1)
+            update_user_points(user_id, -1)
+            bot.edit_message_text(
+                text=texto + "\n\n¡Las tijeras de @" + username + " han ganado al papel de @" + other_user.alias + "!",
+                chat_id=chat_id,
+                message_id=message_id) #PEKO PEKO PEKO PEKO
+            bot.answer_callback_query(query.id, "¡Has ganado!", show_alert=True) #MIKO MIKO MIKO MIKO
+        elif user_choice == "s":
+            bot.edit_message_text(
+                text=texto + "\n\n¡@" + username + " y @" + other_user.alias + " han elegido piedra! ¡Empate!",
+                chat_id=chat_id,
+                message_id=message_id) #PEKO PEKO PEKO PEKO
+            bot.answer_callback_query(query.id, "¡Has empatado!", show_alert=True) #MIKO MIKO MIKO MIKO
+        elif user_choice == "r":
+            update_user_points(user_id, 1)
+            update_user_points(vs_id, -1)
+            bot.edit_message_text(
+                text=texto + "\n\n¡La piedra de @" + other_user.alias + " ha ganado a las tijeras de @" + username + "!",
+                chat_id=chat_id,
+                message_id=message_id) #PEKO PEKO PEKO PEKO
+            bot.answer_callback_query(query.id, "¡Has perdido!", show_alert=True) #MIKO MIKO MIKO MIKO
+    return
 
 @run_async
 def rps_ai_cmd(bot, update):
     (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
-    b1 = "g*rps_ai_r"
-    b2 = "g*rps_ai_p"
-    b3 = "g*rps_ai_s"
+    choices = ["r", "p", "s"]
+
+    b1 = "g*rps_ai_r_" + choices[randint(0,2)] + "_" + str(bot.id)
+    b2 = "g*rps_ai_p_" + choices[randint(0,2)] + "_" + str(bot.id)
+    b3 = "g*rps_ai_s_" + choices[randint(0,2)] + "_" + str(bot.id)
 
     markup = [
 	[InlineKeyboardButton(text="Piedra", callback_data=b1)],
@@ -156,7 +148,7 @@ def rps_ai_cmd(bot, update):
 
     bot.sendMessage(
 	    chat_id=chat_id, 
-	    text='¡@ProfesorDumbledoreBot te desafia a Piedra, Papel o Tijera! \n ¿Qué eliges?', 
+	    text='@ProfesorDumbledoreBot te desafía a Piedra, Papel o Tijera! \n ¿Qué eliges?', 
 	    disable_notification=True, 
 	    reply_markup=InlineKeyboardMarkup(markup))
 
@@ -183,18 +175,30 @@ def rps_user_cmd(bot, update, job_queue, args=None):
                     10,
                     context=delete_object)
                 return
+            if vs_user.id == user_id:
+                bot.sendMessage(
+                    chat_id=chat_id, 
+                    text='Necesitas a alguien más para jugar.', 
+                    disable_notification=True)
+                return
+            if vs_user.is_bot == True:
+                bot.sendMessage(
+                    chat_id=chat_id, 
+                    text='No puedes jugar contra un bot.', 
+                    disable_notification=True)
+                return
             if args[0].lower() == "piedra":
-                b1 = "g*rps_us_r_r_" + user_id
-                b2 = "g*rps_us_p_r_" + user_id
-                b3 = "g*rps_us_s_r_" + user_id
+                b1 = "g*rps_us_r_r_" + str(user_id)
+                b2 = "g*rps_us_p_r_" + str(user_id)
+                b3 = "g*rps_us_s_r_" + str(user_id)
             elif args[0].lower() == "papel":
-                b1 = "g*rps_us_r_p_" + user_id
-                b2 = "g*rps_us_p_p_" + user_id
-                b3 = "g*rps_us_s_p_" + user_id
+                b1 = "g*rps_us_r_p_" + str(user_id)
+                b2 = "g*rps_us_p_p_" + str(user_id)
+                b3 = "g*rps_us_s_p_" + str(user_id)
             elif args[0].lower() == "tijera":
-                b1 = "g*rps_us_r_s_" + user_id
-                b2 = "g*rps_us_p_s_" + user_id
-                b3 = "g*rps_us_s_s_" + user_id
+                b1 = "g*rps_us_r_s_" + str(user_id)
+                b2 = "g*rps_us_p_s_" + str(user_id)
+                b3 = "g*rps_us_s_s_" + str(user_id)
             else:
                 sent = bot.sendMessage(
                     chat_id=chat_id, 
@@ -214,7 +218,7 @@ def rps_user_cmd(bot, update, job_queue, args=None):
 
             bot.sendMessage(
                 chat_id=chat_id, 
-                text='¡@' + username + ' ha retado a @' + vs_user.username + ' a Piedra, Papel o Tijera! \n ¿Qué eliges?', 
+                text='@' + username + ' ha retado a @' + vs_user.username + ' a Piedra, Papel o Tijera! \n ¿Qué eliges?', 
                 disable_notification=True, 
                 reply_markup=InlineKeyboardMarkup(markup))
         else:

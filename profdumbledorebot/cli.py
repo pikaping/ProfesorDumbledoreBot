@@ -110,7 +110,7 @@ def start_bot():
     dispatcher.add_error_handler(support.error_callback)
 
     dispatcher.add_handler(CommandHandler('games', games.utils.game_spawn_cmd, Filters.group, pass_args=True))
-    dispatcher.add_handler(CommandHandler('ppt', games.rps.rps_user_cmd, Filters.group, pass_args=True, pass_job_queue=True))
+    dispatcher.add_handler(CommandHandler('ppt', games.rps.rps_user_cmd, Filters.group, pass_job_queue=True, pass_args=True))
     #dispatcher.add_handler(CommandHandler('duel', games.duel_cmd, Filters.group)) HAHANOPE
     dispatcher.add_handler(CallbackQueryHandler(games.utils.btn_parser, pattern=r"^g\*"))
 
