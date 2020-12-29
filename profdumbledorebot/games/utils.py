@@ -77,7 +77,7 @@ def game_selection(bot, update):
     group_message_counter(chat_id)
 
     cfg = config.get_config()
-    if chat_id != int(cfg["telegram"]["spain_id"]) or chat_id != int(cfg["telegram"]["comedor_id"]) or chat_id != int(cfg["telegram"]["raven_id"]) or chat_id != int(cfg["telegram"]["huff_id"]) or chat_id != int(cfg["telegram"]["gryff_id"]) or chat_id != int(cfg["telegram"]["sly_id"]):
+    if chat_id != int(cfg["telegram"]["spain_id"]) and chat_id != int(cfg["telegram"]["comedor_id"]) and chat_id != int(cfg["telegram"]["raven_id"]) and chat_id != int(cfg["telegram"]["huff_id"]) and chat_id != int(cfg["telegram"]["gryff_id"]) and chat_id != int(cfg["telegram"]["sly_id"]):
         return
     user = get_user(user_id)
     if user is None:
