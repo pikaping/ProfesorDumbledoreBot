@@ -114,14 +114,13 @@ def register_cmd(bot, update, args=None):
 
     user_sql.commit_user(user_id, alias=user_username)
 
-    text = "Son nuestras elecciones las que muestran lo que somos, mucho más que nuestras habilidades, así pues elige bien y dime, ¿Cuál es tu nivel?"
+    text = "Son nuestras elecciones las que muestran lo que somos, mucho más que nuestras habilidades, así pues elige bien y dime, ¿Cuál es tu casa de Hogwarts?"
     button_list = [
-        [InlineKeyboardButton("1-10", callback_data='reg_btn_0'),
-        InlineKeyboardButton("11-20", callback_data='reg_btn_10'),
-        InlineKeyboardButton("21-30", callback_data='reg_btn_20')],
-        [InlineKeyboardButton("31-40", callback_data='reg_btn_30'),
-        InlineKeyboardButton("41-50", callback_data='reg_btn_40'),
-        InlineKeyboardButton("51-60", callback_data='reg_btn_50')]]
+            [InlineKeyboardButton("🦁 Gryffindor", callback_data='reg_hse_1')],
+            [InlineKeyboardButton("🦡 Hufflepuff", callback_data='reg_hse_2')],
+            [InlineKeyboardButton("🦅 Ravenclaw", callback_data='reg_hse_3')],
+            [InlineKeyboardButton("🐍 Slytherin", callback_data='reg_hse_4')],
+            [InlineKeyboardButton("🙈 Sin casa", callback_data='reg_hse_0')]]
 
     reply_markup = InlineKeyboardMarkup(button_list)
     bot.sendMessage(
@@ -780,61 +779,8 @@ def register_btn(bot, update):
     else:
         return
 
-    if par == "btn":
-        button_list = [
-            [InlineKeyboardButton("{}".format(1+int(val)), callback_data='reg_lvl_{}'.format(1+int(val))),
-            InlineKeyboardButton("{}".format(2+int(val)), callback_data='reg_lvl_{}'.format(2+int(val))),
-            InlineKeyboardButton("{}".format(3+int(val)), callback_data='reg_lvl_{}'.format(3+int(val))),
-            InlineKeyboardButton("{}".format(4+int(val)), callback_data='reg_lvl_{}'.format(4+int(val))),
-            InlineKeyboardButton("{}".format(5+int(val)), callback_data='reg_lvl_{}'.format(5+int(val)))],
-            [InlineKeyboardButton("{}".format(6+int(val)), callback_data='reg_lvl_{}'.format(6+int(val))),
-            InlineKeyboardButton("{}".format(7+int(val)), callback_data='reg_lvl_{}'.format(7+int(val))),
-            InlineKeyboardButton("{}".format(8+int(val)), callback_data='reg_lvl_{}'.format(8+int(val))),
-            InlineKeyboardButton("{}".format(9+int(val)), callback_data='reg_lvl_{}'.format(9+int(val))),
-            InlineKeyboardButton("{}".format(10+int(val)), callback_data='reg_lvl_{}'.format(10+int(val)))]]
-
-        bot.edit_message_reply_markup(
-            chat_id=chat_id,
-            message_id=message_id,
-            reply_markup=InlineKeyboardMarkup(button_list))
-        return
-
-    elif par == "lvl":
-        user_sql.commit_user(user_id, level=val)
-        button_list = [
-            [InlineKeyboardButton("🦁 Gryffindor", callback_data='reg_hse_1')],
-            [InlineKeyboardButton("🦡 Hufflepuff", callback_data='reg_hse_2')],
-            [InlineKeyboardButton("🦅 Ravenclaw", callback_data='reg_hse_3')],
-            [InlineKeyboardButton("🐍 Slytherin", callback_data='reg_hse_4')],
-            [InlineKeyboardButton("🙈 Sin casa", callback_data='reg_hse_0')]]
-
-        bot.edit_message_text(
-            text="¿Cuál es tu casa de hogwarts?",
-            chat_id=chat_id,
-            message_id=message_id,
-            reply_markup=InlineKeyboardMarkup(button_list),
-            parse_mode=telegram.ParseMode.HTML,
-            disable_web_page_preview=True
-        )
-        return
-
-    elif par == "hse":
+    if par == "hse":
         user_sql.commit_user(user_id, house=val)
-        button_list = [
-            [InlineKeyboardButton("⚔ Auror", callback_data='reg_prf_3')],
-            [InlineKeyboardButton("🐾 Magizoologo", callback_data='reg_prf_2')],
-            [InlineKeyboardButton("📚 Profesor", callback_data='reg_prf_1')]]
-        bot.edit_message_text(
-            text="¿Cuál es la profesión que has escogido?",
-            chat_id=chat_id,
-            message_id=message_id,
-            reply_markup=InlineKeyboardMarkup(button_list),
-            parse_mode=telegram.ParseMode.HTML,
-            disable_web_page_preview=True
-        )
-
-    elif par == "prf":
-        user_sql.commit_user(user_id, profession=val)
         user_sql.commit_user(user_id, validation=True)
         bot.edit_message_text(
             text="Felicidades, has completado el proceso de validación.",
