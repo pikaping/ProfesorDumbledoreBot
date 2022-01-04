@@ -63,7 +63,7 @@ def replace(user_id, name=None, admin=False, frce=False):
     else:
         user = get_user(user_id)
 
-    if user is None or user.house is model.Houses.NONE.value and (user.level is None or user.profession is model.Professions.NONE.value):
+    if user is None or user.house is model.Houses.NONE.value:
         text_house = "🖤"
     elif user.house is model.Houses.NONE.value:
         text_house = "🙈"
@@ -78,25 +78,12 @@ def replace(user_id, name=None, admin=False, frce=False):
     elif user.house is model.Houses.BOTS.value:
         text_house = "💻"
 
-    if user is None or user.profession is model.Professions.NONE.value:
-        text_prof = "_Desconocida_"
-    elif user.profession is model.Professions.AUROR.value:
-        text_prof = "⚔"
-    elif user.profession is model.Professions.MAGIZOOLOGIST.value:
-        text_prof = "🐾"
-    elif user.profession is model.Professions.PROFESSOR.value:
-        text_prof = "📚"
-    elif user.profession is model.Professions.BOT.value:
-        text_prof = "🤖"
-
     if user and user.alias is not None:
         text_alias = escape_markdown("@{}".format(user.alias))
     elif name is not None:
         text_alias = f"[{escape_markdown(name)}](tg://user?id={user_id})"
     else:
         text_alias = "_Desconocido_"
-
-    text_level = ("*{}*".format(user.level) if user and user.level else "*??*")
     
     text_validationstatus = "✅"
     if user and user.banned:
@@ -107,10 +94,8 @@ def replace(user_id, name=None, admin=False, frce=False):
     else:
         text_flag = ""
 
-    replace_pogo = "{0} - *L*{1}  {2}  {3}  {4}  {5}".format(
+    replace_pogo = "{0} - {1}  {2}  {3}".format(
         text_alias,
-        text_level,
-        text_prof,
         text_house,
         text_validationstatus,
         text_flag
@@ -596,12 +581,6 @@ def get_settings_keyboard(chat_id, keyboard="main"):
             validationrequired_text = "▪️ Grupo abierto"
         elif join.requirment is model.ValidationRequiered.VALIDATION.value:
             validationrequired_text = "✅ Validación obligatoria"
-        elif join.requirment is model.ValidationRequiered.PROFESSOR.value:
-            validationrequired_text = "📚 Profesor"
-        elif join.requirment is model.ValidationRequiered.MAGIZOOLOGIST.value:
-            validationrequired_text = "🐾 Magizoologo"
-        elif join.requirment is model.ValidationRequiered.AUROR.value:
-            validationrequired_text = "⚔ Auror"
         elif join.requirment is model.ValidationRequiered.GRYFFINDOR.value:
             validationrequired_text = "🦁 Gryffindor"
         elif join.requirment is model.ValidationRequiered.HUFFLEPUFF.value:
@@ -610,6 +589,8 @@ def get_settings_keyboard(chat_id, keyboard="main"):
             validationrequired_text = "🦅 Ravenclaw"
         elif join.requirment is model.ValidationRequiered.SLYTHERIN.value:
             validationrequired_text = "🐍 Slytherin"
+        else:
+            validationrequired_text = "▪️ Grupo abierto"
 
         if join.val_alert is True:
             mute_text = "✅ Expulsiones silenciosas"

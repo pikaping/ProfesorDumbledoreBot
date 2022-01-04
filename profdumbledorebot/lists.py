@@ -79,15 +79,6 @@ def list_btn(bot, update):
     if user is None:
         return
 
-    if user.profession is Professions.PROFESSOR.value:
-        text_prof = "📚"
-    elif user.profession is Professions.MAGIZOOLOGIST.value:
-        text_prof = "🐾"
-    elif user.profession is Professions.AUROR.value:
-        text_prof = "⚔️"
-    elif user.profession is Professions.NONE.value:
-        text_prof = "🍮"
-
     if user.house is Houses.GRYFFINDOR.value:
         text_team = "🦁"
     elif user.house is Houses.HUFFLEPUFF.value:
@@ -99,14 +90,12 @@ def list_btn(bot, update):
     elif user.house is Houses.NONE.value:
         text_team = "🙈"
 
-    string = r'\n(.|🦁|🦡|🦅|🐍|🙈) - (\d\d|\d) - (.|📚|🐾|⚔️|🍮) - @{}'.format(username)
+    string = r'\n(.|🦁|🦡|🦅|🐍|🙈) - @{}'.format(username)
     text = re.sub(string, "", text)
 
     if data == "list_join":
-        text = text + "\n{0} - {1} - {2} - @{3}".format(
+        text = text + "\n{0} - @{1}".format(
             text_team,
-            user.level,
-            text_prof,
             username
         )
 

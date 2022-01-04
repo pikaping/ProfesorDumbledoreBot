@@ -1789,7 +1789,7 @@ def whois_id(bot, update, args=None):
         )
         return
 
-    if user is None or user.house is Houses.NONE.value and (user.level is None or user.profession is Professions.NONE.value):
+    if user is None or user.house is Houses.NONE.value:
         text_house = "🖤"
     elif user.house is Houses.NONE.value:
         text_house = "🙈"
@@ -1804,17 +1804,6 @@ def whois_id(bot, update, args=None):
     elif user.house is Houses.BOTS.value:
         text_house = "💻"
 
-    if user is None or user.profession is Professions.NONE.value:
-        text_prof = "_Desconocida_"
-    elif user.profession is Professions.AUROR.value:
-        text_prof = "⚔"
-    elif user.profession is Professions.MAGIZOOLOGIST.value:
-        text_prof = "🐾"
-    elif user.profession is Professions.PROFESSOR.value:
-        text_prof = "📚"
-    elif user.profession is Professions.BOT.value:
-        text_prof = "🤖"
-
     text_validationstatus = "✅"
     if user and user.banned:
         text_validationstatus = "⛔️"
@@ -1825,11 +1814,10 @@ def whois_id(bot, update, args=None):
     else:
         text_flag = ""
 
-    output = "*ID:* `{}`\n*Alias:* {}\n*Casa:* {}\n*Profesión:* {}\n*Estado:* {}{}".format(
+    output = "*ID:* `{}`\n*Alias:* {}\n*Casa:* {}\n*Estado:* {}{}".format(
         replied_id,
         text_alias,
         text_house, 
-        text_prof,
         text_validationstatus,
         text_flag
     )
@@ -1933,7 +1921,7 @@ def whois_group(bot, update, args=None):
         )
         return
 
-    if user is None or user.house is Houses.NONE.value and (user.level is None or user.profession is Professions.NONE.value):
+    if user is None or user.house is Houses.NONE.value:
         text_house = "🖤"
     elif user.house is Houses.NONE.value:
         text_house = "🙈"
@@ -1948,17 +1936,6 @@ def whois_group(bot, update, args=None):
     elif user.house is Houses.BOTS.value:
         text_house = "💻"
 
-    if user is None or user.profession is Professions.NONE.value:
-        text_prof = "_Desconocida_"
-    elif user.profession is Professions.AUROR.value:
-        text_prof = "⚔"
-    elif user.profession is Professions.MAGIZOOLOGIST.value:
-        text_prof = "🐾"
-    elif user.profession is Professions.PROFESSOR.value:
-        text_prof = "📚"
-    elif user.profession is Professions.BOT.value:
-        text_prof = "🤖"
-
     text_validationstatus = "✅"
     if user and user.banned:
         text_validationstatus = "⛔️"
@@ -1969,11 +1946,10 @@ def whois_group(bot, update, args=None):
     else:
         text_flag = ""
 
-    output = "*ID:* `{}`\n*Alias:* {}\n*Casa:* {}\n*Profesión:* {}\n*Estado:* {}{}".format(
+    output = "*ID:* `{}`\n*Alias:* {}\n*Casa:* {}\n*Estado:* {}{}".format(
         replied_id,
         text_alias,
-        text_house, 
-        text_prof,
+        text_house,
         text_validationstatus,
         text_flag
     )

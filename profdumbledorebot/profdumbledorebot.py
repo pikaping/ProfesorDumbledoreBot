@@ -65,7 +65,7 @@ def start_cmd(bot, update, args=None):
     else:
         dest_id = user_id
 
-    output = "📖 Bienvenido al mundo mágico del profesor Dumbledore. Tómate tu tiempo en leer la guía para magos.\n\n💙💛❤️💚 Registrar pasaporte del Ministerio\nEscríbeme por privado la contraseña /cucuruchodecucarachas y responde a mis preguntas.\n\n🔔 Editar pasaporte del Ministerio\nPara subir de nivel, únicamente debes enviarme /pasaporte y el número de nivel actual."
+    output = "📖 Bienvenido al mundo mágico del profesor Dumbledore. Tómate tu tiempo en leer la guía para magos.\n\n💙💛❤️💚 Registrar pasaporte del Ministerio\nEscríbeme por privado la contraseña /cucuruchodecucarachas y responde a mis preguntas.\n\n🔔 Editar pasaporte del Ministerio."
 
     sent_message = bot.sendMessage(
         chat_id=dest_id,
@@ -404,7 +404,7 @@ def passport_cmd(bot, update):
     button_list = [
         [InlineKeyboardButton("👤 Perfil", callback_data='profile_edit')],
         [InlineKeyboardButton("🗣 Menciones", callback_data='profile_ment')],
-        [InlineKeyboardButton("👥 Otros Ajustes", callback_data='profile_other')],
+        #[InlineKeyboardButton("👥 Otros Ajustes", callback_data='profile_other')],
         [InlineKeyboardButton("Salir", callback_data='profile_end')]
     ]
 
@@ -439,7 +439,7 @@ def passport_btn(bot, update):
         button_list = [
         [InlineKeyboardButton("👤 Perfil", callback_data='profile_edit')],
         [InlineKeyboardButton("🗣 Menciones", callback_data='profile_ment')],
-        [InlineKeyboardButton("👥 Otros Ajustes", callback_data='profile_other')],
+        #[InlineKeyboardButton("👥 Otros Ajustes", callback_data='profile_other')],
         [InlineKeyboardButton("Salir", callback_data='profile_end')]
     ]
 
@@ -453,8 +453,8 @@ def passport_btn(bot, update):
         button_list = [
             [InlineKeyboardButton("🏘 Casa Hogwarts", callback_data='profile_edit_hse')],
             #[InlineKeyboardButton("👨‍👩‍👧‍👦 Equipo", callback_data='profile_edit_tea')],
-            [InlineKeyboardButton("🆙 Nivel", callback_data='profile_edit_lvl_pj')],
-            [InlineKeyboardButton("🛡 Profesion", callback_data='profile_edit_prf')],
+            #[InlineKeyboardButton("🆙 Nivel", callback_data='profile_edit_lvl_pj')],
+            #[InlineKeyboardButton("🛡 Profesion", callback_data='profile_edit_prf')],
             [InlineKeyboardButton("🗑 Eliminar perfil", callback_data='profile_edit_del')],
             [InlineKeyboardButton("« Volver", callback_data='profile_back')]]
 
@@ -673,8 +673,8 @@ def passport_btn(bot, update):
         button_list = [
             [InlineKeyboardButton("🏘 Casa Hogwarts", callback_data='profile_edit_hse')],
             #[InlineKeyboardButton("👨‍👩‍👧‍👦 Equipo", callback_data='profile_edit_tea')],
-            [InlineKeyboardButton("🆙 Nivel", callback_data='profile_edit_lvl_pj')],
-            [InlineKeyboardButton("🛡 Profesion", callback_data='profile_edit_prf')],
+            #[InlineKeyboardButton("🆙 Nivel", callback_data='profile_edit_lvl_pj')],
+            #[InlineKeyboardButton("🛡 Profesion", callback_data='profile_edit_prf')],
             [InlineKeyboardButton("🗑 Eliminar perfil", callback_data='profile_edit_del')],
             [InlineKeyboardButton("« Guardar y salir", callback_data='profile_end')]]
        
@@ -695,8 +695,8 @@ def passport_btn(bot, update):
         button_list = [
             [InlineKeyboardButton("🏘 Casa Hogwarts", callback_data='profile_edit_hse')],
             #[InlineKeyboardButton("👨‍👩‍👧‍👦 Equipo", callback_data='profile_edit_tea')],
-            [InlineKeyboardButton("🆙 Nivel", callback_data='profile_edit_lvl_pj')],
-            [InlineKeyboardButton("🛡 Profesion", callback_data='profile_edit_prf')],
+            #[InlineKeyboardButton("🆙 Nivel", callback_data='profile_edit_lvl_pj')],
+            #[InlineKeyboardButton("🛡 Profesion", callback_data='profile_edit_prf')],
             [InlineKeyboardButton("🗑 Eliminar perfil", callback_data='profile_edit_del')],
             [InlineKeyboardButton("« Guardar y salir", callback_data='profile_end')]]
        
@@ -718,8 +718,8 @@ def passport_btn(bot, update):
         button_list = [
             [InlineKeyboardButton("🏘 Casa Hogwarts", callback_data='profile_edit_hse')],
             #[InlineKeyboardButton("👨‍👩‍👧‍👦 Equipo", callback_data='profile_edit_tea')],
-            [InlineKeyboardButton("🆙 Nivel", callback_data='profile_edit_lvl_pj')],
-            [InlineKeyboardButton("🛡 Profesion", callback_data='profile_edit_prf')],
+            #[InlineKeyboardButton("🆙 Nivel", callback_data='profile_edit_lvl_pj')],
+            #[InlineKeyboardButton("🛡 Profesion", callback_data='profile_edit_prf')],
             [InlineKeyboardButton("🗑 Eliminar perfil", callback_data='profile_edit_del')],
             [InlineKeyboardButton("« Guardar y salir", callback_data='profile_end')]]
        
@@ -742,8 +742,8 @@ def passport_btn(bot, update):
         button_list = [
             [InlineKeyboardButton("🏘 Casa Hogwarts", callback_data='profile_edit_hse')],
             #[InlineKeyboardButton("👨‍👩‍👧‍👦 Equipo", callback_data='profile_edit_tea')],
-            [InlineKeyboardButton("🆙 Nivel", callback_data='profile_edit_lvl_pj')],
-            [InlineKeyboardButton("🛡 Profesion", callback_data='profile_edit_prf')],
+            #[InlineKeyboardButton("🆙 Nivel", callback_data='profile_edit_lvl_pj')],
+            #[InlineKeyboardButton("🛡 Profesion", callback_data='profile_edit_prf')],
             [InlineKeyboardButton("🗑 Eliminar perfil", callback_data='profile_edit_del')],
             [InlineKeyboardButton("« Guardar y salir", callback_data='profile_end')]]
         bot.edit_message_text(
