@@ -1,6 +1,7 @@
 import re
 import json
 from random import randrange, randint, shuffle, choice
+import logging
 
 import telegram
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Bot
@@ -74,7 +75,6 @@ def game_selection(bot, update):
     if are_banned(user_id, chat_id):
         return
 
-    group_message_counter(chat_id)
 
     cfg = config.get_config()
     if chat_id != int(cfg["telegram"]["spain_id"]) and chat_id != int(cfg["telegram"]["comedor_id"]) and chat_id != int(cfg["telegram"]["raven_id"]) and chat_id != int(cfg["telegram"]["huff_id"]) and chat_id != int(cfg["telegram"]["gryff_id"]) and chat_id != int(cfg["telegram"]["sly_id"]):
@@ -85,6 +85,8 @@ def game_selection(bot, update):
 
     if last_run(chat_id, 'games'):
         return
+
+    group_message_counter(chat_id)
 
     if (group_message_counter(chat_id, read_only=True) is randrange(40, 70)) or (group_message_counter(chat_id, read_only=True) >= 70):
         group_message_counter(chat_id, reset=True)

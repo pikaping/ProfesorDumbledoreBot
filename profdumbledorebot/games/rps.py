@@ -33,6 +33,11 @@ def rps_btn(bot, update, game_data):
         bot.answer_callback_query(query.id, "Necesitas una @ para poder usar este bot.", show_alert=True)
         return
 
+
+    # ROCK > SCISSORS | NIAGINI > SNAPE
+    # PAPER > ROCK | NEVILLE > NAGINI
+    # SCISSORS > PAPER | SNAPE > NEVILLE
+
     listaPalabras = game_data.split("_")
     
     user_choice = listaPalabras[2]
@@ -62,7 +67,7 @@ def rps_btn(bot, update, game_data):
             update_user_points(user_id, 1)
             update_user_points(vs_id, -1)
             bot.edit_message_text(
-                text=texto + "\n\n¡El papel de @" + other_user.alias + " ha ganado a la piedra de @" + username + "!",
+                text=texto + "\n\n@" + other_user.alias + " saca a Neville, @" + username + " saca a Niagini.\n¡Neville decapita a Niagini y gana!",
                 chat_id=chat_id,
                 message_id=message_id) #PEKO PEKO PEKO PEKO
             bot.answer_callback_query(query.id, "¡Has perdido!", show_alert=True) #MIKO MIKO MIKO MIKO
@@ -70,12 +75,13 @@ def rps_btn(bot, update, game_data):
             update_user_points(vs_id, 1)
             update_user_points(user_id, -1)
             bot.edit_message_text(
-                text=texto + "\n\n¡La piedra de @" + username + " ha ganado a las tijeras de @" + other_user.alias + "!",
+                text=texto + "\n\n@" + other_user.alias + " saca a Niagini, @" + username + " saca a Snape.\n¡Niagini muerde a Snape y gana!",
                 chat_id=chat_id,
                 message_id=message_id) #PEKO PEKO PEKO PEKO
             bot.answer_callback_query(query.id, "¡Has ganado!", show_alert=True) #MIKO MIKO MIKO MIKO
         elif user_choice == "r":
             bot.edit_message_text(
+                text=texto + "\n\n@" + other_user.alias + " saca a Niagini, @" + username + " saca a Snape.\n¡Niagini muerde a Snape y gana!",
                 text=texto + "\n\n¡@" + username + " y @" + other_user.alias + " han elegido piedra! ¡Empate!",
                 chat_id=chat_id,
                 message_id=message_id) #PEKO PEKO PEKO PEKO
