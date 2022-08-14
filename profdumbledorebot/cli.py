@@ -171,9 +171,11 @@ def start_bot():
     dispatcher.add_handler(CommandHandler('warn', admin.warn_cmd, Filters.group, pass_args=True))
     dispatcher.add_handler(CommandHandler('unban', admin.unban_cmd, Filters.group, pass_args=True))
     dispatcher.add_handler(CommandHandler('id', admin.whois_id, pass_args=True))
+    #dispatcher.add_handler(CommandHandler('test_btn', admin.test_btn))
     #dispatcher.add_handler(CommandHandler('group_id', admin.whois_group, pass_args=True))
     #dispatcher.add_handler(CommandHandler('mute', admin.mute_cmd, Filters.group, pass_args=True))
     #dispatcher.add_handler(CommandHandler('unwarn', unwarn_cmd, Filters.group, pass_args=True))
+    dispatcher.add_handler(CallbackQueryHandler(admin.adm_btn, pattern=r"^adm_"))
 
     dispatcher.add_handler(CommandHandler('dumbleuv', admin.uv_cmd, Filters.group, pass_args=True))
     dispatcher.add_handler(CommandHandler('dumblekickuv', admin.kickuv_cmd, Filters.group, pass_args=True))

@@ -45,7 +45,7 @@ from profdumbledorebot.model import Teams, Professions, Houses
 
 @run_async
 def settings_admin_cmd(bot, update):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
@@ -65,7 +65,7 @@ def settings_admin_cmd(bot, update):
 
 @run_async
 def create_admin_cmd(bot, update):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
@@ -85,7 +85,7 @@ def create_admin_cmd(bot, update):
 
 @run_async
 def rm_admin_cmd(bot, update):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
@@ -104,7 +104,7 @@ def rm_admin_cmd(bot, update):
 
 @run_async
 def groups_cmd(bot, update):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if are_banned(user_id, chat_id):
@@ -144,7 +144,7 @@ def groups_cmd(bot, update):
 
 @run_async
 def add_url_cmd(bot, update, args=None):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
 
     if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
         return
@@ -173,7 +173,7 @@ def add_url_cmd(bot, update, args=None):
 
 @run_async
 def create_link_cmd(bot, update, args=None):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
     chat_title = message.chat.title
 
@@ -195,7 +195,7 @@ def create_link_cmd(bot, update, args=None):
 
 @run_async
 def add_tag_cmd(bot, update, args=None):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
@@ -227,7 +227,7 @@ def add_tag_cmd(bot, update, args=None):
 
 @run_async
 def rm_link_cmd(bot, update):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
@@ -345,7 +345,7 @@ def last_run(id, cmdtype):
 
 @run_async
 def kickmsg_cmd(bot, update, args=None):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
@@ -388,7 +388,7 @@ def kickmsg_cmd(bot, update, args=None):
 
 @run_async
 def kickold_cmd(bot, update, args=None):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
     
     if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
@@ -434,7 +434,7 @@ def kickold_cmd(bot, update, args=None):
 
 @run_async
 def uv_cmd(bot, update, args=None):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
@@ -574,7 +574,7 @@ def uv_cmd(bot, update, args=None):
 
 @run_async
 def kickuv_cmd(bot, update, args=None):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
@@ -725,8 +725,9 @@ def kickuv_cmd(bot, update, args=None):
 
 @run_async
 def warn_cmd(bot, update, args=None):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
-    support.delete_message(chat_id, message.message_id, bot)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
+    if message_type == "normal":
+        support.delete_message(chat_id, message.message_id, bot)
     admin_user = get_user(user_id)
 
     if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
@@ -916,8 +917,9 @@ def warn_cmd(bot, update, args=None):
 
 @run_async
 def kick_cmd(bot, update, args=None):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
-    support.delete_message(chat_id, message.message_id, bot)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
+    if message_type == "normal":
+        support.delete_message(chat_id, message.message_id, bot)
     admin_user = get_user(user_id)
 
     if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
@@ -940,7 +942,7 @@ def kick_cmd(bot, update, args=None):
         if args and len(args) > 0:
             reason = ' '.join(args)
     elif args is not None and len(args) > 0:
-        if len(args) > 1 and args[0][0] is '-':
+        if len(args) > 1 and args[0][0] == '-':
             if adm_sql.get_linked_admin(chat_id, args[0]):
                 chat_id = args[0]
                 del args[0]
@@ -1073,8 +1075,9 @@ def kick_cmd(bot, update, args=None):
 
 @run_async
 def ban_cmd(bot, update, args=None):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
-    support.delete_message(chat_id, message.message_id, bot)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
+    if message_type == "normal":
+        support.delete_message(chat_id, message.message_id, bot)
     admin_user = get_user(user_id)
 
     if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
@@ -1140,7 +1143,7 @@ def ban_cmd(bot, update, args=None):
         try:
             bot.kickChatMember(chat_id, replied_user)
             output = "👌 Mago {} baneado correctamente!".format(name)
-            if reason is not '':
+            if reason != "":
                 output = output + "\nMotivo: {}".format(reason)
             keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("Eliminar Ban", callback_data='rm_ban({})'.format(replied_user))]])
             bot.sendMessage(
@@ -1231,7 +1234,7 @@ def ban_cmd(bot, update, args=None):
 
 @run_async
 def unban_cmd(bot, update, args=None):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
     admin_user = get_user(user_id)
 
@@ -1387,7 +1390,7 @@ def unban_cmd(bot, update, args=None):
 
 @run_async
 def mute_cmd(bot, update, args=None):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
@@ -1553,7 +1556,7 @@ def mute_cmd(bot, update, args=None):
 
 @run_async
 def unmute_cmd(bot, update, args=None):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
@@ -1718,7 +1721,7 @@ def unmute_cmd(bot, update, args=None):
 
 @run_async
 def whois_id(bot, update, args=None):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
@@ -1840,7 +1843,7 @@ def whois_id(bot, update, args=None):
 
 @run_async
 def whois_group(bot, update, args=None):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
@@ -1969,3 +1972,57 @@ def whois_group(bot, update, args=None):
         text=output,
         parse_mode=telegram.ParseMode.MARKDOWN
     )
+
+@run_async
+def test_btn(bot, update):
+    user_id = update.message.from_user.id
+    replace_pogo = support.replace(user_id, update.message.from_user.first_name, admin=True)
+    message_text = ("ℹ️ {}\n👤 {} ha entrado en el grupo").format(update.message.chat.title, replace_pogo)
+
+    buttons = [
+        [InlineKeyboardButton(text="🚫 Ban", callback_data=f"adm_ban_{user_id}"),
+        InlineKeyboardButton(text="❌ Kick", callback_data=f"adm_kick_{user_id}"),
+        InlineKeyboardButton(text="⚠️ Warn", callback_data=f"adm_warn_{user_id}")]
+    ]
+
+    bot.sendMessage(
+        chat_id=update.message.chat.id,
+        text=message_text,
+        parse_mode=telegram.ParseMode.MARKDOWN,
+        reply_markup=InlineKeyboardMarkup(buttons)
+    )
+
+@run_async
+def adm_btn(bot, update):
+    query = update.callback_query
+    data = query.data
+    user = update.effective_user
+    username = query.from_user.username
+    user_id = query.from_user.id
+    texto = query.message.text
+    chat_id = query.message.chat.id
+    message_id = query.message.message_id
+    message = query.message
+
+    if (not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id)) and is_staff(user_id) is False:
+        bot.answer_callback_query(query.id, "❌ No tienes permiso para hacer eso.", show_alert=True)
+        return
+
+    user = get_user(user_id)
+    if user is None:
+        return
+    
+    action_text = ""
+    action = data.split("_")[1]
+    action_to_id = data.split("_")[2]
+    whatever = []
+    whatever.append(action_to_id)
+
+    if action == "ban":
+        ban_cmd(bot, update, whatever)
+    elif action == "kick":
+        kick_cmd(bot, update, whatever)
+    elif action == "warn":
+        warn_cmd(bot, update, whatever)
+
+    bot.answer_callback_query(query.id, "✅ ya le has dado al botón, no le vuelvas a dar", show_alert=True)

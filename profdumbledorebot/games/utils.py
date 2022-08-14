@@ -47,7 +47,7 @@ def btn_parser(bot, update):
 
 @run_async
 def game_spawn_cmd(bot, update, args=None):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
     
     if not is_staff(user_id):
@@ -70,7 +70,7 @@ def game_spawn_cmd(bot, update, args=None):
 
 @run_async
 def game_selection(bot, update):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
 
     if are_banned(user_id, chat_id):
         return
@@ -96,7 +96,7 @@ def game_selection(bot, update):
 # got 5€ from doing this, god i love my work
 @run_async
 def potato_process(bot, update):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     
     if (chat_type == "private"):
         bot.sendMessage(
@@ -109,7 +109,7 @@ def potato_process(bot, update):
 
 @run_async
 def duel_cmd(bot, update):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
     user_username = message.from_user.username
 

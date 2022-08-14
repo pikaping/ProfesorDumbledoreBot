@@ -42,7 +42,7 @@ from profdumbledorebot.sql.group import get_poi_list, set_plant, get_plant_list,
 
 @run_async
 def add_ingredients_cmd(bot, update, args=None):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if are_banned(chat_id, user_id):
@@ -221,7 +221,7 @@ def gh_btn(bot, update, job_queue):
 
 @run_async
 def plants_list_cmd(bot, update, args=None):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if are_banned(chat_id, user_id):
@@ -281,7 +281,7 @@ def plants_list_cmd(bot, update, args=None):
 
 @run_async
 def rem_plant_cmd(bot, update, job_queue, args=None):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if are_banned(chat_id, user_id) or not support.is_admin(chat_id, user_id, bot):

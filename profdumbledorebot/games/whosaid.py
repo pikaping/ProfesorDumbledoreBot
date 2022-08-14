@@ -60,7 +60,7 @@ with open('/var/local/profdumbledore/json/whosaid.json') as file:
 
 @run_async
 def whosaid_cmd(bot, update):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
 
     question = randint(0, len(who_json)-1)	
     

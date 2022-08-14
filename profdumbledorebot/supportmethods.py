@@ -491,20 +491,33 @@ def get_usergroup_tlg(chat_id, user_id, bot):
 
 
 def extract_update_info(update):
-    try:
+    message_type = ""
+    if update.message is not None:
+        message = update.message
+        message_type = "normal"
+    elif update.callback_query is not None:
+        message = update.callback_query.message
+        message_type = "callback_query"
+    elif update.channel_post is not None:
+        message = update.channel_post
+        message_type = "channel_post"
+    '''try:
         message = update.message
     except:
         message = update.channel_post
     if message is None:
-        message = update.channel_post
-    text = message.text
+        message = update.channel_post'''
     try:
-        user_id = message.from_user.id
+        text = message.text
     except:
-        user_id = None
+        text = ""
+    if message_type == "callback_query":
+        user_id = update.callback_query.from_user.id
+    else:
+        user_id = message.from_user.id
     chat_id = message.chat.id
     chat_type = message.chat.type
-    return (chat_id, chat_type, user_id, text, message)
+    return (chat_id, chat_type, user_id, text, message, message_type)
 
 
 def error_callback(bot, update, error):

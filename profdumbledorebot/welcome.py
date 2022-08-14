@@ -37,7 +37,7 @@ VALID_WELCOME_FORMATTERS = ['nombre', 'apellido', 'nombrecompleto', 'usuario', '
 
 
 def send_welcome(bot, update):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     chat = update.effective_chat
 
     ENUM_FUNC_MAP = {
@@ -137,7 +137,7 @@ def send(bot, chat_id, message, keyboard):
     return msg
 
 def test_welcome(bot, update):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     chat = update.effective_chat
     first_name = update.message.from_user.first_name
     last_name = update.message.from_user.last_name

@@ -39,7 +39,7 @@ REGLIST = re.compile(
 
 @run_async
 def list_cmd(bot, update):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if are_banned(user_id, chat_id):
@@ -113,7 +113,7 @@ def list_btn(bot, update):
 
 @run_async
 def listclose_cmd(bot, update):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if message.reply_to_message is None or message.reply_to_message.chat.id != chat_id:
@@ -137,7 +137,7 @@ def listclose_cmd(bot, update):
 
 @run_async
 def listopen_cmd(bot, update):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
     
     if message.reply_to_message is None or message.reply_to_message.chat.id != chat_id:
@@ -167,7 +167,7 @@ def listopen_cmd(bot, update):
 
 @run_async
 def listrefloat_cmd(bot, update):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
     
     if message.reply_to_message is None or message.reply_to_message.chat.id != chat_id:

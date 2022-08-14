@@ -47,7 +47,7 @@ from profdumbledorebot.games.utils import game_selection
 
 @run_async
 def joined_chat(bot, update, job_queue):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     new_chat_member = message.new_chat_members[0] if message.new_chat_members else None
 
     config = get_config()
@@ -251,18 +251,31 @@ def joined_chat(bot, update, job_queue):
             ladmin = get_particular_admin(chat_id)
             if ladmin is not None and ladmin.welcome:
                 admin = get_admin_from_linked(chat_id)
+                buttons = [
+                    [InlineKeyboardButton(text="🚫 Ban", callback_data=f"adm_ban_{user_id}"),
+                    InlineKeyboardButton(text="❌ Kick", callback_data=f"adm_kick_{user_id}"),
+                    InlineKeyboardButton(text="⚠️ Warn", callback_data=f"adm_warn_{user_id}")]
+                ]
                 if admin is not None and admin.welcome and admin.admin_bot:
                     config = get_config()
                     adm_bot = Bot(token=config["telegram"]["admin_token"])
                     replace_pogo = support.replace(user_id, message.from_user.first_name, admin=True)
                     message_text = ("ℹ️ {}\n👤 {} ha entrado en el grupo").format(message.chat.title, replace_pogo)
-                    adm_bot.sendMessage(chat_id=admin.id, text=message_text,
-                                    parse_mode=telegram.ParseMode.MARKDOWN)
+                    adm_bot.sendMessage(
+                        chat_id=admin.id,
+                        text=message_text,
+                        parse_mode=telegram.ParseMode.MARKDOWN,
+                        reply_markup=InlineKeyboardMarkup(buttons)
+                    )
                 elif admin is not None and admin.welcome :
                     replace_pogo = support.replace(user_id, message.from_user.first_name, admin=True)
                     message_text = ("ℹ️ {}\n👤 {} ha entrado en el grupo").format(message.chat.title, replace_pogo)
-                    bot.sendMessage(chat_id=admin.id, text=message_text,
-                                    parse_mode=telegram.ParseMode.MARKDOWN)
+                    bot.sendMessage(
+                        chat_id=admin.id,
+                        text=message_text,
+                        parse_mode=telegram.ParseMode.MARKDOWN,
+                        reply_markup=InlineKeyboardMarkup(buttons)
+                    )
 
 
 def good_luck(bot, chat_id, message, text):
@@ -286,7 +299,7 @@ def good_luck(bot, chat_id, message, text):
 
 @run_async
 def process_group_message(bot, update, job_queue):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     msg = update.effective_message
     
     if are_banned(user_id, chat_id):

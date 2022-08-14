@@ -38,7 +38,7 @@ from profdumbledorebot.sql.group import get_group
 
 @run_async
 def sighting_cmd(bot, update):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     username = message.from_user.username
     support.delete_message(chat_id, message.message_id, bot)
 

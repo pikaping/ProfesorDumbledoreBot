@@ -51,7 +51,7 @@ def nanny_text(bot, user_id, chat_id, message, job_queue):
     
 
 def process_gif(bot, update, job_queue):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     nanny = get_nanny_settings(chat_id)
 
     if nanny and nanny.animation:
@@ -66,7 +66,7 @@ def process_gif(bot, update, job_queue):
 
 
 def process_cmd(bot, update, job_queue):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
 
     try:
         args = re.sub(r"^/[a-zA-Z0-9_]+", "", text).strip().split(" ")
@@ -105,7 +105,7 @@ def process_cmd(bot, update, job_queue):
 
 
 def process_contact(bot, update, job_queue):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update) 
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update) 
     nanny = get_nanny_settings(chat_id)
 
     if nanny and nanny.contact:
@@ -122,7 +122,7 @@ def process_contact(bot, update, job_queue):
 
 
 def process_file(bot, update, job_queue):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update) 
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update) 
     nanny = get_nanny_settings(chat_id)
 
     if nanny and nanny.document:
@@ -139,7 +139,7 @@ def process_file(bot, update, job_queue):
 
 
 def process_game(bot, update, job_queue):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
 
     nanny = get_nanny_settings(chat_id)
 
@@ -157,7 +157,7 @@ def process_game(bot, update, job_queue):
 
 
 def process_ubi(bot, update, job_queue):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update) 
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update) 
 
     nanny = get_nanny_settings(chat_id)
     if nanny and nanny.location:
@@ -174,7 +174,7 @@ def process_ubi(bot, update, job_queue):
 
 
 def process_pic(bot, update, job_queue):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update) 
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update) 
 
     nanny = get_nanny_settings(chat_id)
 
@@ -192,7 +192,7 @@ def process_pic(bot, update, job_queue):
 
 
 def process_sticker(bot, update, job_queue):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update) 
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update) 
 
     nanny = get_nanny_settings(chat_id)
 
@@ -210,7 +210,7 @@ def process_sticker(bot, update, job_queue):
 
 
 def process_voice(bot, update, job_queue):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)  
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)  
 
     nanny = get_nanny_settings(chat_id)
 
@@ -228,7 +228,7 @@ def process_voice(bot, update, job_queue):
 
 
 def process_video(bot, update, job_queue):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update) 
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update) 
 
     nanny = get_nanny_settings(chat_id)
 
@@ -246,7 +246,7 @@ def process_video(bot, update, job_queue):
 
 
 def process_url(bot, update, job_queue):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)  
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)  
 
     nanny = get_nanny_settings(chat_id)
 
@@ -309,7 +309,7 @@ def send_warn(bot, chat_id, user_id, job_queue, nanny_text=None):
 
 @run_async
 def set_nanny(bot, update, args=None):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     chat = update.effective_chat
     user = update.effective_user
     msg = update.effective_message

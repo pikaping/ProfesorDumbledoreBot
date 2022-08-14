@@ -44,7 +44,7 @@ from profdumbledorebot.sql.group import create_poi, get_poi_list, delete_poi
 
 @run_async
 def start_cmd(bot, update, args=None):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if are_banned(user_id, chat_id):
@@ -82,7 +82,7 @@ def start_cmd(bot, update, args=None):
 
 @run_async
 def register_cmd(bot, update, args=None):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     user_username = message.from_user.username
 
     if are_banned(user_id, chat_id):
@@ -132,7 +132,7 @@ def register_cmd(bot, update, args=None):
 
 @run_async
 def ping_cmd(bot, update):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
 
     sent_dt = message.date
     now_dt = datetime.now()
@@ -172,7 +172,7 @@ def ping_cmd(bot, update):
 
 @run_async
 def whois_cmd(bot, update, args=None):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if are_banned(user_id, chat_id):
@@ -233,7 +233,7 @@ def whois_cmd(bot, update, args=None):
 
 @run_async
 def fclist_cmd(bot, update):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if are_banned(user_id, chat_id):
@@ -314,7 +314,7 @@ def fclist_cmd(bot, update):
 
 @run_async
 def set_friendid_cmd(bot, update, args=None):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
 
     if are_banned(chat_id, user_id):
         return
@@ -365,7 +365,7 @@ def set_friendid_cmd(bot, update, args=None):
 @run_async
 def passport_cmd(bot, update):
     logging.debug("%s", update)
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     user_username = message.from_user.username
 
     if are_banned(chat_id, user_id):
@@ -823,7 +823,7 @@ def register_btn(bot, update):
 
 @run_async
 def ranking_spain_cmd(bot, update):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
     config = get_config()
 
@@ -889,7 +889,7 @@ def ranking_spain_cmd(bot, update):
 
 @run_async
 def private_ranking_cmd(bot, update):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
     config = get_config()
 
@@ -1008,7 +1008,7 @@ def private_ranking_cmd(bot, update):
 @run_async
 def points_cmd(bot, update):
     logging.debug("%s", update)
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     user_username = message.from_user.username
 
     if are_banned(chat_id, user_id):
@@ -1033,7 +1033,7 @@ def points_cmd(bot, update):
 @run_async
 def add_poi_cmd(bot, update, args=None):
     logging.debug("%s", update)
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if are_banned(chat_id, user_id) or not support.is_admin(chat_id, user_id, bot):
@@ -1072,7 +1072,7 @@ def add_poi_cmd(bot, update, args=None):
 @run_async
 def rem_poi_cmd(bot, update, args=None):
     logging.debug("%s", update)
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if are_banned(chat_id, user_id) or not support.is_admin(chat_id, user_id, bot):
@@ -1116,7 +1116,7 @@ def rem_poi_cmd(bot, update, args=None):
 @run_async
 def poi_list_cmd(bot, update, args=None):
     logging.debug("%s", update)
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if are_banned(chat_id, user_id):

@@ -85,7 +85,7 @@ with open('/var/local/profdumbledore/json/grageas.json') as f:
 
 @run_async
 def grag_cmd(bot, update):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
 
     colours = []
     for k in range(5):

@@ -82,7 +82,7 @@ def rps_btn(bot, update, game_data):
         elif user_choice == "r":
             bot.edit_message_text(
                 text=texto + "\n\n@" + other_user.alias + " saca a Niagini, @" + username + " saca a Snape.\n¡Niagini muerde a Snape y gana!",
-                text=texto + "\n\n¡@" + username + " y @" + other_user.alias + " han elegido piedra! ¡Empate!",
+                #text=texto + "\n\n¡@" + username + " y @" + other_user.alias + " han elegido piedra! ¡Empate!",
                 chat_id=chat_id,
                 message_id=message_id) #PEKO PEKO PEKO PEKO
             bot.answer_callback_query(query.id, "¡Has empatado!", show_alert=True) #MIKO MIKO MIKO MIKO
@@ -138,7 +138,7 @@ def rps_btn(bot, update, game_data):
 
 @run_async
 def rps_ai_cmd(bot, update):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     choices = ["r", "p", "s"]
@@ -160,7 +160,7 @@ def rps_ai_cmd(bot, update):
 
 @run_async
 def rps_user_cmd(bot, update, job_queue, args=None):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     username = update.effective_user.username
     support.delete_message(chat_id, message.message_id, bot)
 

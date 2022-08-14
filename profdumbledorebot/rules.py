@@ -33,7 +33,7 @@ from profdumbledorebot.sql.support import are_banned
 
 
 def send_rules(bot, update, group_id=None):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if group_id is None:
@@ -86,7 +86,7 @@ def rules(bot, update):
 
 @run_async
 def set_rules(bot, update):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
@@ -103,7 +103,7 @@ def set_rules(bot, update):
 
 @run_async
 def clear_rules(bot, update):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):

@@ -34,7 +34,7 @@ from profdumbledorebot.sql.support import are_banned
 
 @run_async
 def init_news(bot, update, args=None):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if chat_type != "channel":
@@ -62,7 +62,7 @@ def init_news(bot, update, args=None):
 
 @run_async
 def stop_news(bot, update):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if chat_type != "channel":
@@ -79,7 +79,7 @@ def stop_news(bot, update):
 
 @run_async
 def add_news(bot, update, args=None):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
@@ -99,7 +99,7 @@ def add_news(bot, update, args=None):
 
 @run_async
 def rm_news(bot, update, args=None):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
@@ -119,7 +119,7 @@ def rm_news(bot, update, args=None):
 
 @run_async
 def list_news(bot, update):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if not support.is_admin(chat_id, user_id, bot) or are_banned(user_id, chat_id):
@@ -147,7 +147,7 @@ def list_news(bot, update):
 
 @run_async
 def send_news(bot, update):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
 
     if chat_type != "channel":
         return

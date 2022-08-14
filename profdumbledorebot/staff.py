@@ -35,7 +35,7 @@ from profdumbledorebot.sql.user import get_user, is_staff, set_staff, get_real_u
 
 @run_async
 def add_staff_cmd(bot, update, args=None):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if not is_staff(user_id):
@@ -61,7 +61,7 @@ def add_staff_cmd(bot, update, args=None):
 
 @run_async
 def rm_staff_cmd(bot, update, args=None):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if not is_staff(user_id):
@@ -87,7 +87,7 @@ def rm_staff_cmd(bot, update, args=None):
 
 @run_async
 def staff_register_cmd(bot, update, args=None):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if not is_staff(user_id):
@@ -186,7 +186,7 @@ def staff_register_cmd(bot, update, args=None):
 
 @run_async
 def add_ghost_cmd(bot, update, args=None):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if not is_staff(user_id):
@@ -215,7 +215,7 @@ def add_ghost_cmd(bot, update, args=None):
 
 @run_async
 def rm_ghost_cmd(bot, update, args=None):
-    (chat_id, chat_type, user_id, text, message) = support.extract_update_info(update)
+    (chat_id, chat_type, user_id, text, message, message_type) = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if not is_staff(user_id):

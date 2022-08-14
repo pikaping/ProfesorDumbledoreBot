@@ -43,7 +43,7 @@ from profdumbledorebot.admin import last_run
 
 @run_async
 def fort_list_cmd(bot, update, args=None):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     if are_banned(chat_id, user_id):
@@ -338,7 +338,7 @@ def fort_btn(bot, update, job_queue):
 '''
 @run_async
 def fort_remove_cmd(bot, update):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     REGLIST = re.compile(
@@ -361,7 +361,7 @@ def fort_remove_cmd(bot, update):
 
 @run_async
 def fort_refloat_cmd(bot, update):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
 
     REGLIST = re.compile(

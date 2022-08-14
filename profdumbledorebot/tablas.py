@@ -43,7 +43,7 @@ except:
 @run_async
 def list_pics(bot, update, args):
     logging.debug("%s %s" % (bot, update))
-    chat_id, chat_type, user_id, text, message = extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = extract_update_info(update)
     output = "Listado de tablas:"
     count = 0
 
@@ -90,7 +90,7 @@ def list_pics(bot, update, args):
 @run_async
 def new_pic(bot, update, args=None):
     logging.debug("%s %s" % (bot, update))
-    chat_id, chat_type, user_id, text, message = extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = extract_update_info(update)
 
     if args is None or len(args)<3:
         return
@@ -142,7 +142,7 @@ def new_pic(bot, update, args=None):
 @run_async
 def edit_pic(bot, update, args=None):
     logging.debug("%s %s" % (bot, update))
-    chat_id, chat_type, user_id, text, message = extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = extract_update_info(update)
 
     if args is None or len(args)!=1 or len(args[0])!=36:
         return
@@ -184,7 +184,7 @@ def edit_pic(bot, update, args=None):
 @run_async
 def rm_pic(bot, update, args=None):
     logging.debug("%s %s" % (bot, update))
-    chat_id, chat_type, user_id, text, message = extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = extract_update_info(update)
 
     if args is None or len(args)!=1 or len(args[0])!=36:
         return

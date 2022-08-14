@@ -47,7 +47,7 @@ with open('/var/local/profdumbledore/json/nelu.json') as file:
 
 @run_async
 def nelu_cmd(bot, update, job_queue):
-    chat_id, chat_type, user_id, text, message = support.extract_update_info(update)
+    chat_id, chat_type, user_id, text, message, message_type = support.extract_update_info(update)
     support.delete_message(chat_id, message.message_id, bot)
     realchat = chat_id
 
